@@ -1,14 +1,8 @@
-# openapi/openapi
+# Zavu PHP SDK
 
-Developer-friendly & type-safe Php SDK specifically catered to leverage *openapi/openapi* API.
+Developer-friendly & type-safe PHP SDK for the Zavu multi-channel messaging API.
 
-[![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=openapi/openapi&utm_campaign=php)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
-
-
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/crubing/zavu). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
@@ -30,7 +24,7 @@ Design goals:
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [openapi/openapi](#openapiopenapi)
+* [Zavu PHP SDK](#zavu-php-sdk)
   * [SDK Installation](#sdk-installation)
   * [SDK Example Usage](#sdk-example-usage)
   * [Authentication](#authentication)
@@ -59,7 +53,7 @@ To install the SDK first add the below to your `composer.json` file:
     "repositories": [
         {
             "type": "github",
-            "url": "<UNSET>.git"
+            "url": "https://github.com/zavudev/sdk-php.git"
         }
     ],
     "require": {

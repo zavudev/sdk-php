@@ -5,8 +5,8 @@ management:
   docVersion: 0.2.0
   speakeasyVersion: 1.666.2
   generationVersion: 2.768.1
-  releaseVersion: 0.0.7
-  configChecksum: 7562e2d087f3a70ba538c97715a9b45e
+  releaseVersion: 0.0.10
+  configChecksum: c100d3e757eb3a44439a3952ede7103b
 features:
   php:
     constsAndDefaults: 0.2.0

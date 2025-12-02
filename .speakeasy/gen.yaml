@@ -26,8 +26,9 @@ generation:
     generateTests: false
     generateNewTests: true
     skipResponseBodyAssertions: false
+  sdkName: Zavu PHP SDK
 php:
-  version: 0.0.7
+  version: 0.0.10
   additionalDependencies:
     autoload: {}
     autoload-dev: {}
@@ -56,3 +57,4 @@ php:
   namespace: Zavu\Sdk
   outputModelSuffix: output
   packageName: zavu/sdk-php
+  published: true
