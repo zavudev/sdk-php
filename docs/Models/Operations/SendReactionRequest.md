@@ -1,0 +1,10 @@
+# SendReactionRequest
+
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `messageId`                                                                        | *string*                                                                           | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |
+| `zavuSender`                                                                       | *?string*                                                                          | :heavy_minus_sign:                                                                 | Optional sender profile ID. If omitted, the project's default sender will be used. | sender_12345                                                                       |
+| `body`                                                                             | [Components\ReactionRequest](../../Models/Components/ReactionRequest.md)           | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |

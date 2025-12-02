@@ -1,0 +1,9 @@
+# SendMessageRequest
+
+
+## Fields
+
+| Field                                                                              | Type                                                                               | Required                                                                           | Description                                                                        | Example                                                                            |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `zavuSender`                                                                       | *?string*                                                                          | :heavy_minus_sign:                                                                 | Optional sender profile ID. If omitted, the project's default sender will be used. | sender_12345                                                                       |
+| `body`                                                                             | [Components\MessageRequest](../../Models/Components/MessageRequest.md)             | :heavy_check_mark:                                                                 | N/A                                                                                |                                                                                    |

@@ -1,0 +1,12 @@
+# TemplateCreateRequest
+
+
+## Fields
+
+| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 |
+| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `name`                                                                      | *string*                                                                    | :heavy_check_mark:                                                          | N/A                                                                         |
+| `language`                                                                  | *?string*                                                                   | :heavy_minus_sign:                                                          | N/A                                                                         |
+| `body`                                                                      | *string*                                                                    | :heavy_check_mark:                                                          | N/A                                                                         |
+| `whatsappCategory`                                                          | [?Components\WhatsAppCategory](../../Models/Components/WhatsAppCategory.md) | :heavy_minus_sign:                                                          | WhatsApp template category.                                                 |
+| `variables`                                                                 | array<*string*>                                                             | :heavy_minus_sign:                                                          | N/A                                                                         |

@@ -1,0 +1,461 @@
+lockVersion: 2.0.0
+id: 84e30957-571e-4408-8fff-17e39817344d
+management:
+  docChecksum: a29acad7c0d9bafc3f254157be1f47dd
+  docVersion: 0.2.0
+  speakeasyVersion: 1.666.1
+  generationVersion: 2.768.1
+  releaseVersion: 0.0.6
+  configChecksum: b38255d3730f64b454c156adf82e1328
+features:
+  php:
+    constsAndDefaults: 0.2.0
+    core: 3.9.5
+    flattening: 2.81.1
+    globalSecurity: 2.81.9
+    globalSecurityFlattening: 0.1.2
+    globalServerURLs: 2.83.0
+    methodArguments: 0.1.0
+    nullables: 1.0.1
+    responseFormat: 0.1.0
+generatedFiles:
+  - .gitattributes
+  - USAGE.md
+  - composer.json
+  - docs/Models/Components/Button.md
+  - docs/Models/Components/Capabilities.md
+  - docs/Models/Components/Channel.md
+  - docs/Models/Components/Contact.md
+  - docs/Models/Components/ContactUpdateRequest.md
+  - docs/Models/Components/Message.md
+  - docs/Models/Components/MessageContent.md
+  - docs/Models/Components/MessageContentContact.md
+  - docs/Models/Components/MessageRequest.md
+  - docs/Models/Components/MessageResponse.md
+  - docs/Models/Components/MessageStatus.md
+  - docs/Models/Components/MessageType.md
+  - docs/Models/Components/PhoneIntrospectionRequest.md
+  - docs/Models/Components/PhoneIntrospectionResponse.md
+  - docs/Models/Components/ReactionRequest.md
+  - docs/Models/Components/Row.md
+  - docs/Models/Components/Section.md
+  - docs/Models/Components/Security.md
+  - docs/Models/Components/Sender.md
+  - docs/Models/Components/SenderCreateRequest.md
+  - docs/Models/Components/SenderUpdateRequest.md
+  - docs/Models/Components/Status.md
+  - docs/Models/Components/Template.md
+  - docs/Models/Components/TemplateCreateRequest.md
+  - docs/Models/Components/WhatsAppCategory.md
+  - docs/Models/Errors/Error.md
+  - docs/Models/Operations/CreateSenderResponse.md
+  - docs/Models/Operations/CreateTemplateResponse.md
+  - docs/Models/Operations/DeleteSenderRequest.md
+  - docs/Models/Operations/DeleteSenderResponse.md
+  - docs/Models/Operations/DeleteTemplateRequest.md
+  - docs/Models/Operations/DeleteTemplateResponse.md
+  - docs/Models/Operations/GetContactByPhoneRequest.md
+  - docs/Models/Operations/GetContactByPhoneResponse.md
+  - docs/Models/Operations/GetContactRequest.md
+  - docs/Models/Operations/GetContactResponse.md
+  - docs/Models/Operations/GetMessageRequest.md
+  - docs/Models/Operations/GetMessageResponse.md
+  - docs/Models/Operations/GetSenderRequest.md
+  - docs/Models/Operations/GetSenderResponse.md
+  - docs/Models/Operations/GetTemplateRequest.md
+  - docs/Models/Operations/GetTemplateResponse.md
+  - docs/Models/Operations/IntrospectPhoneResponse.md
+  - docs/Models/Operations/ListContactsRequest.md
+  - docs/Models/Operations/ListContactsResponse.md
+  - docs/Models/Operations/ListContactsResponseBody.md
+  - docs/Models/Operations/ListMessagesRequest.md
+  - docs/Models/Operations/ListMessagesResponse.md
+  - docs/Models/Operations/ListMessagesResponseBody.md
+  - docs/Models/Operations/ListSendersResponse.md
+  - docs/Models/Operations/ListSendersResponseBody.md
+  - docs/Models/Operations/ListTemplatesResponse.md
+  - docs/Models/Operations/ListTemplatesResponseBody.md
+  - docs/Models/Operations/SendMessageRequest.md
+  - docs/Models/Operations/SendMessageResponse.md
+  - docs/Models/Operations/SendReactionRequest.md
+  - docs/Models/Operations/SendReactionResponse.md
+  - docs/Models/Operations/UpdateContactRequest.md
+  - docs/Models/Operations/UpdateContactResponse.md
+  - docs/Models/Operations/UpdateSenderRequest.md
+  - docs/Models/Operations/UpdateSenderResponse.md
+  - docs/sdks/zavu/README.md
+  - phpstan.neon
+  - phpunit.xml
+  - pint.json
+  - rector.php
+  - src/Hooks/AfterErrorContext.php
+  - src/Hooks/AfterErrorHook.php
+  - src/Hooks/AfterSuccessContext.php
+  - src/Hooks/AfterSuccessHook.php
+  - src/Hooks/BeforeRequestContext.php
+  - src/Hooks/BeforeRequestHook.php
+  - src/Hooks/Credentials.php
+  - src/Hooks/ErrorResponseContext.php
+  - src/Hooks/FailEarlyException.php
+  - src/Hooks/HookContext.php
+  - src/Hooks/Hooks.php
+  - src/Hooks/SDKHooks.php
+  - src/Hooks/SDKInitHook.php
+  - src/Hooks/Session.php
+  - src/Hooks/TokenResponse.php
+  - src/Models/Components/Button.php
+  - src/Models/Components/Capabilities.php
+  - src/Models/Components/Channel.php
+  - src/Models/Components/Contact.php
+  - src/Models/Components/ContactUpdateRequest.php
+  - src/Models/Components/Message.php
+  - src/Models/Components/MessageContent.php
+  - src/Models/Components/MessageContentContact.php
+  - src/Models/Components/MessageRequest.php
+  - src/Models/Components/MessageResponse.php
+  - src/Models/Components/MessageStatus.php
+  - src/Models/Components/MessageType.php
+  - src/Models/Components/PhoneIntrospectionRequest.php
+  - src/Models/Components/PhoneIntrospectionResponse.php
+  - src/Models/Components/ReactionRequest.php
+  - src/Models/Components/Row.php
+  - src/Models/Components/Section.php
+  - src/Models/Components/Security.php
+  - src/Models/Components/Sender.php
+  - src/Models/Components/SenderCreateRequest.php
+  - src/Models/Components/SenderUpdateRequest.php
+  - src/Models/Components/Status.php
+  - src/Models/Components/Template.php
+  - src/Models/Components/TemplateCreateRequest.php
+  - src/Models/Components/WhatsAppCategory.php
+  - src/Models/Errors/APIException.php
+  - src/Models/Errors/Error.php
+  - src/Models/Errors/ErrorThrowable.php
+  - src/Models/Operations/CreateSenderResponse.php
+  - src/Models/Operations/CreateTemplateResponse.php
+  - src/Models/Operations/DeleteSenderRequest.php
+  - src/Models/Operations/DeleteSenderResponse.php
+  - src/Models/Operations/DeleteTemplateRequest.php
+  - src/Models/Operations/DeleteTemplateResponse.php
+  - src/Models/Operations/GetContactByPhoneRequest.php
+  - src/Models/Operations/GetContactByPhoneResponse.php
+  - src/Models/Operations/GetContactRequest.php
+  - src/Models/Operations/GetContactResponse.php
+  - src/Models/Operations/GetMessageRequest.php
+  - src/Models/Operations/GetMessageResponse.php
+  - src/Models/Operations/GetSenderRequest.php
+  - src/Models/Operations/GetSenderResponse.php
+  - src/Models/Operations/GetTemplateRequest.php
+  - src/Models/Operations/GetTemplateResponse.php
+  - src/Models/Operations/IntrospectPhoneResponse.php
+  - src/Models/Operations/ListContactsRequest.php
+  - src/Models/Operations/ListContactsResponse.php
+  - src/Models/Operations/ListContactsResponseBody.php
+  - src/Models/Operations/ListMessagesRequest.php
+  - src/Models/Operations/ListMessagesResponse.php
+  - src/Models/Operations/ListMessagesResponseBody.php
+  - src/Models/Operations/ListSendersResponse.php
+  - src/Models/Operations/ListSendersResponseBody.php
+  - src/Models/Operations/ListTemplatesResponse.php
+  - src/Models/Operations/ListTemplatesResponseBody.php
+  - src/Models/Operations/SendMessageRequest.php
+  - src/Models/Operations/SendMessageResponse.php
+  - src/Models/Operations/SendReactionRequest.php
+  - src/Models/Operations/SendReactionResponse.php
+  - src/Models/Operations/UpdateContactRequest.php
+  - src/Models/Operations/UpdateContactResponse.php
+  - src/Models/Operations/UpdateSenderRequest.php
+  - src/Models/Operations/UpdateSenderResponse.php
+  - src/SDKConfiguration.php
+  - src/Utils/BigDecimalHandler.php
+  - src/Utils/BigIntHandler.php
+  - src/Utils/DateHandler.php
+  - src/Utils/DateTimeHandler.php
+  - src/Utils/DefaultRequest.php
+  - src/Utils/DefaultResponse.php
+  - src/Utils/DefaultStream.php
+  - src/Utils/DefaultUri.php
+  - src/Utils/EnumHandler.php
+  - src/Utils/FormMetadata.php
+  - src/Utils/Headers.php
+  - src/Utils/JSON.php
+  - src/Utils/MixedJSONHandler.php
+  - src/Utils/MultipartMetadata.php
+  - src/Utils/Options.php
+  - src/Utils/ParamsMetadata.php
+  - src/Utils/PathParameters.php
+  - src/Utils/PhpDocTypeParser.php
+  - src/Utils/QueryParameters.php
+  - src/Utils/RequestBodies.php
+  - src/Utils/RequestMetadata.php
+  - src/Utils/Retry/PermanentError.php
+  - src/Utils/Retry/RetryConfig.php
+  - src/Utils/Retry/RetryConfigBackoff.php
+  - src/Utils/Retry/RetryConfigNone.php
+  - src/Utils/Retry/RetryStrategy.php
+  - src/Utils/Retry/RetryUtils.php
+  - src/Utils/Retry/TemporaryError.php
+  - src/Utils/Security.php
+  - src/Utils/SecurityClient.php
+  - src/Utils/SecurityMetadata.php
+  - src/Utils/ServerDetails.php
+  - src/Utils/SpeakeasyMetadata.php
+  - src/Utils/UnionHandler.php
+  - src/Utils/Utils.php
+  - src/Zavu.php
+  - src/ZavuBuilder.php
+examples:
+  sendMessage:
+    sms:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "text": "Your verification code is 123456"}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "sms", "messageType": "contact", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-08-27T19:44:02.161Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+        "500":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    whatsapp_text:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "channel": "whatsapp", "text": "Hello from Zavu!"}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "sms", "messageType": "contact", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-08-27T19:44:02.161Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+        "500":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    whatsapp_image:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "messageType": "image", "text": "Check out this product!", "content": {"mediaUrl": "https://example.com/product.jpg"}}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "sms", "messageType": "contact", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-08-27T19:44:02.161Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+        "500":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    whatsapp_buttons:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "messageType": "buttons", "text": "How would you rate your experience?", "content": {"buttons": [{"id": "great", "title": "Great!"}, {"id": "okay", "title": "It was okay"}, {"id": "poor", "title": "Not good"}]}}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "sms", "messageType": "contact", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-08-27T19:44:02.161Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+        "500":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    whatsapp_template:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "messageType": "template", "content": {"templateId": "tmpl_abc123", "templateVariables": {"1": "John", "2": "ORD-12345"}}}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "sms", "messageType": "contact", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-08-27T19:44:02.161Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+        "500":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    window_closed:
+      parameters:
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"to": "+56912345678", "text": "Your verification code is 123456.", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "idempotencyKey": "msg_01HZY4ZP7VQY2J3BRW7Z6G0QGE"}
+      responses:
+        "400":
+          application/json: {"code": "whatsapp_window_closed", "message": "WhatsApp 24-hour window is not open. Use a template message or wait for user to message first."}
+        "500":
+          application/json: {"code": "whatsapp_window_closed", "message": "WhatsApp 24-hour window is not open. Use a template message or wait for user to message first."}
+  listMessages:
+    speakeasy-default-list-messages:
+      parameters:
+        query:
+          limit: 50
+      responses:
+        "200":
+          application/json: {"items": []}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  getMessage:
+    speakeasy-default-get-message:
+      parameters:
+        path:
+          messageId: "<id>"
+      responses:
+        "200":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "whatsapp", "messageType": "text", "status": "queued", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2023-02-18T07:11:13.852Z"}}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  sendReaction:
+    speakeasy-default-send-reaction:
+      parameters:
+        path:
+          messageId: "<id>"
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"emoji": "\U0001F44D"}
+      responses:
+        "202":
+          application/json: {"message": {"id": "jd7x2k3m4n5p6q7r8s9t0", "to": "+56912345678", "from": "+13125551212", "senderId": "sender_12345", "channel": "whatsapp", "messageType": "list", "status": "failed", "content": {"mediaUrl": "https://example.com/image.jpg", "mimeType": "image/jpeg", "filename": "invoice.pdf", "templateVariables": {"1": "John", "2": "ORD-12345"}}, "createdAt": "2025-11-21T04:36:32.962Z"}}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+    not_whatsapp:
+      parameters:
+        path:
+          messageId: "<id>"
+        header:
+          Zavu-Sender: "sender_12345"
+      requestBody:
+        application/json: {"emoji": "\U0001F44D"}
+      responses:
+        "400":
+          application/json: {"code": "bad_request", "message": "Reactions are only supported for WhatsApp messages"}
+  listTemplates:
+    speakeasy-default-list-templates:
+      responses:
+        "200":
+          application/json: {"items": []}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  createTemplate:
+    speakeasy-default-create-template:
+      requestBody:
+        application/json: {"name": "<value>", "language": "en", "body": "<value>"}
+      responses:
+        "201":
+          application/json: {"id": "<id>", "name": "order_confirmation", "language": "en", "body": "Hi {{1}}, your order {{2}} has shipped.", "category": "AUTHENTICATION", "status": "pending"}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  getTemplate:
+    speakeasy-default-get-template:
+      parameters:
+        path:
+          templateId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "order_confirmation", "language": "en", "body": "Hi {{1}}, your order {{2}} has shipped.", "category": "MARKETING", "status": "pending"}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  deleteTemplate:
+    speakeasy-default-delete-template:
+      parameters:
+        path:
+          templateId: "<id>"
+      responses:
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  listSenders:
+    speakeasy-default-list-senders:
+      responses:
+        "200":
+          application/json: {"items": []}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  createSender:
+    speakeasy-default-create-sender:
+      requestBody:
+        application/json: {"name": "<value>", "phoneNumber": "1-697-351-3400 x33934", "setAsDefault": false}
+      responses:
+        "201":
+          application/json: {"id": "sender_12345", "name": "Primary sender", "phoneNumber": "+13125551212", "isDefault": false}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  getSender:
+    speakeasy-default-get-sender:
+      parameters:
+        path:
+          senderId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "sender_12345", "name": "Primary sender", "phoneNumber": "+13125551212", "isDefault": false}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  updateSender:
+    speakeasy-default-update-sender:
+      parameters:
+        path:
+          senderId: "<id>"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"id": "sender_12345", "name": "Primary sender", "phoneNumber": "+13125551212", "isDefault": false}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  deleteSender:
+    speakeasy-default-delete-sender:
+      parameters:
+        path:
+          senderId: "<id>"
+      responses:
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  listContacts:
+    speakeasy-default-list-contacts:
+      parameters:
+        query:
+          limit: 50
+      responses:
+        "200":
+          application/json: {"items": []}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  getContact:
+    speakeasy-default-get-contact:
+      parameters:
+        path:
+          contactId: "<id>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "phoneNumber": "+56912345678", "countryCode": "CL"}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  updateContact:
+    speakeasy-default-update-contact:
+      parameters:
+        path:
+          contactId: "<id>"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "phoneNumber": "+56912345678", "countryCode": "CL"}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  getContactByPhone:
+    speakeasy-default-get-contact-by-phone:
+      parameters:
+        path:
+          phoneNumber: "397-335-4175 x077"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "phoneNumber": "+56912345678", "countryCode": "CL"}
+        "401":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+  introspectPhone:
+    speakeasy-default-introspect-phone:
+      requestBody:
+        application/json: {"phoneNumber": "+56912345678"}
+      responses:
+        "200":
+          application/json: {"phoneNumber": "810.798.7795 x9731", "countryCode": "CL", "validNumber": true}
+        "400":
+          application/json: {"code": "invalid_request", "message": "Phone number is invalid"}
+examplesVersion: 1.0.2
