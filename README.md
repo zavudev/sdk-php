@@ -40,8 +40,6 @@ Design goals:
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
 
 
 The SDK relies on [Composer](https://getcomposer.org/) to manage its dependencies.
