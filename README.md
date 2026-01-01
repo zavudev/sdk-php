@@ -1,299 +1,210 @@
-# Zavu PHP SDK
+# Zavudev PHP API library
 
-Developer-friendly & type-safe PHP SDK for the Zavu multi-channel messaging API.
+> [!NOTE]
+> The Zavudev PHP API Library is currently in **beta** and we're excited for you to experiment with it!
+>
+> This library has not yet been exhaustively tested in production environments and may be missing some features you'd expect in a stable release. As we continue development, there may be breaking changes that require updates to your code.
+>
+> **We'd love your feedback!** Please share any suggestions, bug reports, feature requests, or general thoughts by [filing an issue](https://www.github.com/stainless-sdks/zavudev-php/issues/new).
 
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
+The Zavudev PHP library provides convenient access to the Zavudev REST API from any PHP 8.1.0+ application.
 
-<!-- Start Summary [summary] -->
-## Summary
+It is generated with [Stainless](https://www.stainless.com/).
 
-Zavu Messaging API: Unified multi-channel messaging API for Zavu.
+## Documentation
 
-Supported channels:
-- **SMS**: Simple text messages
-- **WhatsApp**: Rich messaging with media, buttons, lists, and templates
+The REST API documentation can be found on [docs.zavu.dev](https://docs.zavu.dev).
 
-Design goals:
-- Simple `send()` entrypoint for developers
-- Project-level authentication via Bearer token
-- Support for all WhatsApp message types (text, image, video, audio, document, sticker, location, contact, buttons, list, reaction, template)
-- If a non-text message type is sent, WhatsApp channel is used automatically
-- 24-hour WhatsApp conversation window enforcement
-<!-- End Summary [summary] -->
+## Installation
 
-<!-- Start Table of Contents [toc] -->
-## Table of Contents
-<!-- $toc-max-depth=2 -->
-* [Zavu PHP SDK](#zavu-php-sdk)
-  * [SDK Installation](#sdk-installation)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Authentication](#authentication)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
-
-<!-- End Table of Contents [toc] -->
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
-
-
-The SDK relies on [Composer](https://getcomposer.org/) to manage its dependencies.
-
-To install the SDK first add the below to your `composer.json` file:
+To use this package, install via Composer by adding the following to your application's `composer.json`:
 
 ```json
 {
-    "repositories": [
-        {
-            "type": "github",
-            "url": "https://github.com/zavudev/sdk-php.git"
-        }
-    ],
-    "require": {
-        "zavu/sdk-php": "*"
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:stainless-sdks/zavudev-php.git"
     }
+  ],
+  "require": {
+    "org-placeholder/zavudev": "dev-main"
+  }
 }
 ```
 
-Then run the following command:
+## Usage
 
-```bash
-composer update
-```
-<!-- End SDK Installation [installation] -->
-
-<!-- Start SDK Example Usage [usage] -->
-## SDK Example Usage
-
-### Example
+This library uses named parameters to specify optional arguments.
+Parameters with a default value must be set by name.
 
 ```php
-declare(strict_types=1);
+<?php
 
-require 'vendor/autoload.php';
+use Zavudev\Client;
 
-use Zavu\Sdk;
-use Zavu\Sdk\Models\Components;
+$client = new Client(apiKey: getenv('ZAVUDEV_API_KEY') ?: 'My API Key');
 
-$sdk = Sdk\Zavu::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-$body = new Components\MessageRequest(
-    to: '+56912345678',
-    text: 'Your verification code is 123456',
+$messageResponse = $client->messages->send(
+  to: '+14155551234', text: 'Hello from Zavu!'
 );
 
-$response = $sdk->sendMessage(
-    body: $body,
-    zavuSender: 'sender_12345'
+var_dump($messageResponse->message);
+```
 
-);
+### Value Objects
 
-if ($response->messageResponse !== null) {
-    // handle response
+It is recommended to use the static `with` constructor `Dog::with(name: "Joey")`
+and named parameters to initialize value objects.
+
+However, builders are also provided `(new Dog)->withName("Joey")`.
+
+### Pagination
+
+List methods in the Zavudev API are paginated.
+
+This library provides auto-paginating iterators with each list response, so you do not have to request successive pages manually:
+
+```php
+<?php
+
+use Zavudev\Client;
+
+$client = new Client(apiKey: getenv('ZAVUDEV_API_KEY') ?: 'My API Key');
+
+$page = $client->messages->list();
+
+var_dump($page);
+
+// fetch items from the current page
+foreach ($page->getItems() as $item) {
+  var_dump($item->id);
+}
+// make additional network requests to fetch items from all pages, including and after the current page
+foreach ($page->pagingEachItem() as $item) {
+  var_dump($item->id);
 }
 ```
-<!-- End SDK Example Usage [usage] -->
 
-<!-- Start Authentication [security] -->
-## Authentication
+### Handling errors
 
-### Per-Client Security Schemes
-
-This SDK supports the following security scheme globally:
-
-| Name         | Type | Scheme      |
-| ------------ | ---- | ----------- |
-| `bearerAuth` | http | HTTP Bearer |
-
-To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK. For example:
-```php
-declare(strict_types=1);
-
-require 'vendor/autoload.php';
-
-use Zavu\Sdk;
-use Zavu\Sdk\Models\Components;
-
-$sdk = Sdk\Zavu::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-$body = new Components\MessageRequest(
-    to: '+56912345678',
-    text: 'Your verification code is 123456',
-);
-
-$response = $sdk->sendMessage(
-    body: $body,
-    zavuSender: 'sender_12345'
-
-);
-
-if ($response->messageResponse !== null) {
-    // handle response
-}
-```
-<!-- End Authentication [security] -->
-
-<!-- Start Available Resources and Operations [operations] -->
-## Available Resources and Operations
-
-<details open>
-<summary>Available methods</summary>
-
-### [Zavu SDK](docs/sdks/zavu/README.md)
-
-* [sendMessage](docs/sdks/zavu/README.md#sendmessage) - Send a message
-* [listMessages](docs/sdks/zavu/README.md#listmessages) - List messages
-* [getMessage](docs/sdks/zavu/README.md#getmessage) - Get message by ID
-* [sendReaction](docs/sdks/zavu/README.md#sendreaction) - Send reaction to message
-* [listTemplates](docs/sdks/zavu/README.md#listtemplates) - List templates
-* [createTemplate](docs/sdks/zavu/README.md#createtemplate) - Create template
-* [getTemplate](docs/sdks/zavu/README.md#gettemplate) - Get template
-* [deleteTemplate](docs/sdks/zavu/README.md#deletetemplate) - Delete template
-* [listSenders](docs/sdks/zavu/README.md#listsenders) - List senders
-* [createSender](docs/sdks/zavu/README.md#createsender) - Create sender
-* [getSender](docs/sdks/zavu/README.md#getsender) - Get sender
-* [updateSender](docs/sdks/zavu/README.md#updatesender) - Update sender
-* [deleteSender](docs/sdks/zavu/README.md#deletesender) - Delete sender
-* [listContacts](docs/sdks/zavu/README.md#listcontacts) - List contacts
-* [getContact](docs/sdks/zavu/README.md#getcontact) - Get contact
-* [updateContact](docs/sdks/zavu/README.md#updatecontact) - Update contact
-* [getContactByPhone](docs/sdks/zavu/README.md#getcontactbyphone) - Get contact by phone number
-* [introspectPhone](docs/sdks/zavu/README.md#introspectphone) - Introspect phone number
-
-</details>
-<!-- End Available Resources and Operations [operations] -->
-
-<!-- Start Error Handling [errors] -->
-## Error Handling
-
-Handling errors in this SDK should largely match your expectations. All operations return a response object or throw an exception.
-
-By default an API error will raise a `Errors\APIException` exception, which has the following properties:
-
-| Property       | Type                                    | Description           |
-|----------------|-----------------------------------------|-----------------------|
-| `$message`     | *string*                                | The error message     |
-| `$statusCode`  | *int*                                   | The HTTP status code  |
-| `$rawResponse` | *?\Psr\Http\Message\ResponseInterface*  | The raw HTTP response |
-| `$body`        | *string*                                | The response content  |
-
-When custom error responses are specified for an operation, the SDK may also throw their associated exception. You can refer to respective *Errors* tables in SDK docs for more details on possible exception types for each operation. For example, the `sendMessage` method throws the following exceptions:
-
-| Error Type          | Status Code             | Content Type     |
-| ------------------- | ----------------------- | ---------------- |
-| Errors\Error        | 400, 401, 404, 409, 429 | application/json |
-| Errors\Error        | 500                     | application/json |
-| Errors\APIException | 4XX, 5XX                | \*/\*            |
-
-### Example
+When the library is unable to connect to the API, or if the API returns a non-success status code (i.e., 4xx or 5xx response), a subclass of `Zavudev\Core\Exceptions\APIException` will be thrown:
 
 ```php
-declare(strict_types=1);
+<?php
 
-require 'vendor/autoload.php';
-
-use Zavu\Sdk;
-use Zavu\Sdk\Models\Components;
-use Zavu\Sdk\Models\Errors;
-
-$sdk = Sdk\Zavu::builder()
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
+use Zavudev\Core\Exceptions\APIConnectionException;
 
 try {
-    $body = new Components\MessageRequest(
-        to: '+56912345678',
-        text: 'Your verification code is 123456',
-    );
-
-    $response = $sdk->sendMessage(
-        body: $body,
-        zavuSender: 'sender_12345'
-
-    );
-
-    if ($response->messageResponse !== null) {
-        // handle response
-    }
-} catch (Errors\ErrorThrowable $e) {
-    // handle $e->$container data
-    throw $e;
-} catch (Errors\ErrorThrowable $e) {
-    // handle $e->$container data
-    throw $e;
-} catch (Errors\APIException $e) {
-    // handle default exception
-    throw $e;
+  $messageResponse = $client->messages->send(to: '+14155551234');
+} catch (APIConnectionException $e) {
+  echo "The server could not be reached", PHP_EOL;
+  var_dump($e->getPrevious());
+} catch (RateLimitError $e) {
+  echo "A 429 status code was received; we should back off a bit.", PHP_EOL;
+} catch (APIStatusError $e) {
+  echo "Another non-200-range status code was received", PHP_EOL;
+  echo $e->getMessage();
 }
 ```
-<!-- End Error Handling [errors] -->
 
-<!-- Start Server Selection [server] -->
-## Server Selection
+Error codes are as follows:
 
-### Override Server URL Per-Client
+| Cause            | Error Type                     |
+| ---------------- | ------------------------------ |
+| HTTP 400         | `BadRequestException`          |
+| HTTP 401         | `AuthenticationException`      |
+| HTTP 403         | `PermissionDeniedException`    |
+| HTTP 404         | `NotFoundException`            |
+| HTTP 409         | `ConflictException`            |
+| HTTP 422         | `UnprocessableEntityException` |
+| HTTP 429         | `RateLimitException`           |
+| HTTP >= 500      | `InternalServerException`      |
+| Other HTTP error | `APIStatusException`           |
+| Timeout          | `APITimeoutException`          |
+| Network error    | `APIConnectionException`       |
 
-The default server can be overridden globally using the `setServerUrl(string $serverUrl)` builder method when initializing the SDK client instance. For example:
+### Retries
+
+Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
+
+Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, >=500 Internal errors, and timeouts will all be retried by default.
+
+You can use the `maxRetries` option to configure or disable this:
+
 ```php
-declare(strict_types=1);
+<?php
 
-require 'vendor/autoload.php';
+use Zavudev\Client;
+use Zavudev\RequestOptions;
 
-use Zavu\Sdk;
-use Zavu\Sdk\Models\Components;
+// Configure the default for all requests:
+$client = new Client(maxRetries: 0);
 
-$sdk = Sdk\Zavu::builder()
-    ->setServerURL('https://api.zavu.dev')
-    ->setSecurity(
-        '<YOUR_BEARER_TOKEN_HERE>'
-    )
-    ->build();
-
-$body = new Components\MessageRequest(
-    to: '+56912345678',
-    text: 'Your verification code is 123456',
+// Or, configure per-request:
+$result = $client->messages->send(
+  to: '+14155551234',
+  text: 'Hello from Zavu!',
+  requestOptions: RequestOptions::with(maxRetries: 5),
 );
-
-$response = $sdk->sendMessage(
-    body: $body,
-    zavuSender: 'sender_12345'
-
-);
-
-if ($response->messageResponse !== null) {
-    // handle response
-}
 ```
-<!-- End Server Selection [server] -->
 
-<!-- Placeholder for Future Speakeasy SDK Sections -->
+## Advanced concepts
 
-# Development
+### Making custom or undocumented requests
 
-## Maturity
+#### Undocumented properties
 
-This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning usage
-to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
-looking for the latest version.
+You can send undocumented parameters to any endpoint, and read undocumented response properties, like so:
 
-## Contributions
+Note: the `extra*` parameters of the same name overrides the documented parameters.
 
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
+```php
+<?php
 
-### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=openapi/openapi&utm_campaign=php)
+use Zavudev\RequestOptions;
+
+$messageResponse = $client->messages->send(
+  to: '+14155551234',
+  text: 'Hello from Zavu!',
+  requestOptions: RequestOptions::with(
+    extraQueryParams: ['my_query_parameter' => 'value'],
+    extraBodyParams: ['my_body_parameter' => 'value'],
+    extraHeaders: ['my-header' => 'value'],
+  ),
+);
+```
+
+#### Undocumented request params
+
+If you want to explicitly send an extra param, you can do so with the `extra_query`, `extra_body`, and `extra_headers` under the `request_options:` parameter when making a request, as seen in the examples above.
+
+#### Undocumented endpoints
+
+To make requests to undocumented endpoints while retaining the benefit of auth, retries, and so on, you can make requests using `client.request`, like so:
+
+```php
+<?php
+
+$response = $client->request(
+  method: "post",
+  path: '/undocumented/endpoint',
+  query: ['dog' => 'woof'],
+  headers: ['useful-header' => 'interesting-value'],
+  body: ['hello' => 'world']
+);
+```
+
+## Versioning
+
+This package follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions. As the library is in initial development and has a major version of `0`, APIs may change at any time.
+
+This package considers improvements to the (non-runtime) PHPDoc type definitions to be non-breaking changes.
+
+## Requirements
+
+PHP 8.1.0 or higher.
+
+## Contributing
+
+See [the contributing documentation](https://github.com/stainless-sdks/zavudev-php/tree/main/CONTRIBUTING.md).

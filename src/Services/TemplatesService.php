@@ -1,0 +1,146 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Zavudev\Services;
+
+use Zavudev\Client;
+use Zavudev\Core\Exceptions\APIException;
+use Zavudev\Core\Util;
+use Zavudev\Cursor;
+use Zavudev\RequestOptions;
+use Zavudev\ServiceContracts\TemplatesContract;
+use Zavudev\Templates\Template;
+use Zavudev\Templates\WhatsappCategory;
+
+final class TemplatesService implements TemplatesContract
+{
+    /**
+     * @api
+     */
+    public TemplatesRawService $raw;
+
+    /**
+     * @internal
+     */
+    public function __construct(private Client $client)
+    {
+        $this->raw = new TemplatesRawService($client);
+    }
+
+    /**
+     * @api
+     *
+     * Create a WhatsApp message template. Note: Templates must be approved by Meta before use.
+     *
+     * @param list<string> $variables
+     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $whatsappCategory whatsApp template category
+     *
+     * @throws APIException
+     */
+    public function create(
+        string $body,
+        string $name,
+        string $language = 'en',
+        ?array $variables = null,
+        string|WhatsappCategory|null $whatsappCategory = null,
+        ?RequestOptions $requestOptions = null,
+    ): Template {
+        $params = Util::removeNulls(
+            [
+                'body' => $body,
+                'language' => $language,
+                'name' => $name,
+                'variables' => $variables,
+                'whatsappCategory' => $whatsappCategory,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->create(params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Get template
+     *
+     * @throws APIException
+     */
+    public function retrieve(
+        string $templateID,
+        ?RequestOptions $requestOptions = null
+    ): Template {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->retrieve($templateID, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * List WhatsApp message templates for this project.
+     *
+     * @return Cursor<Template>
+     *
+     * @throws APIException
+     */
+    public function list(
+        ?string $cursor = null,
+        int $limit = 50,
+        ?RequestOptions $requestOptions = null,
+    ): Cursor {
+        $params = Util::removeNulls(['cursor' => $cursor, 'limit' => $limit]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->list(params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Delete template
+     *
+     * @throws APIException
+     */
+    public function delete(
+        string $templateID,
+        ?RequestOptions $requestOptions = null
+    ): mixed {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->delete($templateID, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Submit a WhatsApp template to Meta for approval. The template must be in draft status and associated with a sender that has a WhatsApp Business Account configured.
+     *
+     * @param string $senderID the sender ID with the WhatsApp Business Account to submit the template to
+     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $category Template category. If not provided, uses the category set on the template.
+     *
+     * @throws APIException
+     */
+    public function submit(
+        string $templateID,
+        string $senderID,
+        string|WhatsappCategory|null $category = null,
+        ?RequestOptions $requestOptions = null,
+    ): Template {
+        $params = Util::removeNulls(
+            ['senderID' => $senderID, 'category' => $category]
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->submit($templateID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+}
