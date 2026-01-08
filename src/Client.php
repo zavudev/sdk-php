@@ -19,8 +19,8 @@ use Zavudev\Services\SendersService;
 use Zavudev\Services\TemplatesService;
 
 /**
- * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 class Client extends BaseClient
 {
@@ -71,17 +71,26 @@ class Client extends BaseClient
      */
     public RegulatoryDocumentsService $regulatoryDocuments;
 
-    public function __construct(?string $apiKey = null, ?string $baseUrl = null)
-    {
+    /**
+     * @param RequestOpts|null $requestOptions
+     */
+    public function __construct(
+        ?string $apiKey = null,
+        ?string $baseUrl = null,
+        RequestOptions|array|null $requestOptions = null,
+    ) {
         $this->apiKey = (string) ($apiKey ?? getenv('ZAVUDEV_API_KEY'));
 
         $baseUrl ??= getenv('ZAVUDEV_BASE_URL') ?: 'https://api.zavu.dev';
 
-        $options = RequestOptions::with(
-            uriFactory: Psr17FactoryDiscovery::findUriFactory(),
-            streamFactory: Psr17FactoryDiscovery::findStreamFactory(),
-            requestFactory: Psr17FactoryDiscovery::findRequestFactory(),
-            transporter: Psr18ClientDiscovery::find(),
+        $options = RequestOptions::parse(
+            RequestOptions::with(
+                uriFactory: Psr17FactoryDiscovery::findUriFactory(),
+                streamFactory: Psr17FactoryDiscovery::findStreamFactory(),
+                requestFactory: Psr17FactoryDiscovery::findRequestFactory(),
+                transporter: Psr18ClientDiscovery::find(),
+            ),
+            $requestOptions,
         );
 
         parent::__construct(
