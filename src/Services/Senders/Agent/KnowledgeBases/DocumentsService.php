@@ -13,6 +13,9 @@ use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBases\DocumentsContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class DocumentsService implements DocumentsContract
 {
     /**
@@ -37,6 +40,7 @@ final class DocumentsService implements DocumentsContract
      * @param string $senderID Path param:
      * @param string $content Body param:
      * @param string $title Body param:
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -45,7 +49,7 @@ final class DocumentsService implements DocumentsContract
         string $senderID,
         string $content,
         string $title,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): DocumentNewResponse {
         $params = Util::removeNulls(
             ['senderID' => $senderID, 'content' => $content, 'title' => $title]
@@ -66,6 +70,7 @@ final class DocumentsService implements DocumentsContract
      * @param string $senderID Path param:
      * @param string $cursor Query param:
      * @param int $limit Query param:
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentDocument>
      *
@@ -76,7 +81,7 @@ final class DocumentsService implements DocumentsContract
         string $senderID,
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(
             ['senderID' => $senderID, 'cursor' => $cursor, 'limit' => $limit]
@@ -93,13 +98,15 @@ final class DocumentsService implements DocumentsContract
      *
      * Delete a document from a knowledge base.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $docID,
         string $senderID,
         string $kbID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): mixed {
         $params = Util::removeNulls(['senderID' => $senderID, 'kbID' => $kbID]);
 

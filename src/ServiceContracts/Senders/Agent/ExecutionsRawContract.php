@@ -11,12 +11,16 @@ use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentExecution;
 use Zavudev\Senders\Agent\Executions\ExecutionListParams;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ExecutionsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|ExecutionListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentExecution>>
      *
@@ -25,6 +29,6 @@ interface ExecutionsRawContract
     public function list(
         string $senderID,
         array|ExecutionListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

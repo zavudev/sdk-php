@@ -12,10 +12,15 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ContactsRawContract
 {
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Contact>
      *
@@ -23,13 +28,14 @@ interface ContactsRawContract
      */
     public function retrieve(
         string $contactID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ContactUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Contact>
      *
@@ -38,13 +44,14 @@ interface ContactsRawContract
     public function update(
         string $contactID,
         array|ContactUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ContactListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Contact>>
      *
@@ -52,13 +59,14 @@ interface ContactsRawContract
      */
     public function list(
         array|ContactListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param string $phoneNumber E.164 phone number.
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Contact>
      *
@@ -66,6 +74,6 @@ interface ContactsRawContract
      */
     public function retrieveByPhone(
         string $phoneNumber,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 }

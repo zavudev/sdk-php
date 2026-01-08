@@ -16,6 +16,9 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\AddressesRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class AddressesRawService implements AddressesRawContract
 {
     // @phpstan-ignore-next-line
@@ -40,6 +43,7 @@ final class AddressesRawService implements AddressesRawContract
      *   firstName?: string,
      *   lastName?: string,
      * }|AddressCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AddressNewResponse>
      *
@@ -47,7 +51,7 @@ final class AddressesRawService implements AddressesRawContract
      */
     public function create(
         array|AddressCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = AddressCreateParams::parseRequest(
             $params,
@@ -69,13 +73,15 @@ final class AddressesRawService implements AddressesRawContract
      *
      * Get a specific regulatory address.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<AddressGetResponse>
      *
      * @throws APIException
      */
     public function retrieve(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -92,6 +98,7 @@ final class AddressesRawService implements AddressesRawContract
      * List regulatory addresses for this project.
      *
      * @param array{cursor?: string, limit?: int}|AddressListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Address>>
      *
@@ -99,7 +106,7 @@ final class AddressesRawService implements AddressesRawContract
      */
     public function list(
         array|AddressListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = AddressListParams::parseRequest(
             $params,
@@ -122,13 +129,15 @@ final class AddressesRawService implements AddressesRawContract
      *
      * Delete a regulatory address. Cannot delete addresses that are in use.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function delete(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(

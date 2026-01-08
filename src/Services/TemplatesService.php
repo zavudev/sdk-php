@@ -13,6 +13,9 @@ use Zavudev\ServiceContracts\TemplatesContract;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\WhatsappCategory;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class TemplatesService implements TemplatesContract
 {
     /**
@@ -34,7 +37,8 @@ final class TemplatesService implements TemplatesContract
      * Create a WhatsApp message template. Note: Templates must be approved by Meta before use.
      *
      * @param list<string> $variables
-     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $whatsappCategory whatsApp template category
+     * @param WhatsappCategory|value-of<WhatsappCategory> $whatsappCategory whatsApp template category
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -43,8 +47,8 @@ final class TemplatesService implements TemplatesContract
         string $name,
         string $language = 'en',
         ?array $variables = null,
-        string|WhatsappCategory|null $whatsappCategory = null,
-        ?RequestOptions $requestOptions = null,
+        WhatsappCategory|string|null $whatsappCategory = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Template {
         $params = Util::removeNulls(
             [
@@ -67,11 +71,13 @@ final class TemplatesService implements TemplatesContract
      *
      * Get template
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): Template {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($templateID, requestOptions: $requestOptions);
@@ -84,6 +90,8 @@ final class TemplatesService implements TemplatesContract
      *
      * List WhatsApp message templates for this project.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return Cursor<Template>
      *
      * @throws APIException
@@ -91,7 +99,7 @@ final class TemplatesService implements TemplatesContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(['cursor' => $cursor, 'limit' => $limit]);
 
@@ -106,11 +114,13 @@ final class TemplatesService implements TemplatesContract
      *
      * Delete template
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($templateID, requestOptions: $requestOptions);
@@ -124,15 +134,16 @@ final class TemplatesService implements TemplatesContract
      * Submit a WhatsApp template to Meta for approval. The template must be in draft status and associated with a sender that has a WhatsApp Business Account configured.
      *
      * @param string $senderID the sender ID with the WhatsApp Business Account to submit the template to
-     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $category Template category. If not provided, uses the category set on the template.
+     * @param WhatsappCategory|value-of<WhatsappCategory> $category Template category. If not provided, uses the category set on the template.
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function submit(
         string $templateID,
         string $senderID,
-        string|WhatsappCategory|null $category = null,
-        ?RequestOptions $requestOptions = null,
+        WhatsappCategory|string|null $category = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Template {
         $params = Util::removeNulls(
             ['senderID' => $senderID, 'category' => $category]

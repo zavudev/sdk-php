@@ -18,7 +18,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   action: string,
  *   countryCode: string,
  *   phoneNumberType: string,
- *   requirementTypes: list<RequirementTypeShape>,
+ *   requirementTypes: list<RequirementType|RequirementTypeShape>,
  * }
  */
 final class Requirement implements BaseModel
@@ -77,7 +77,7 @@ final class Requirement implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<RequirementTypeShape> $requirementTypes
+     * @param list<RequirementType|RequirementTypeShape> $requirementTypes
      */
     public static function with(
         string $id,
@@ -130,7 +130,7 @@ final class Requirement implements BaseModel
     }
 
     /**
-     * @param list<RequirementTypeShape> $requirementTypes
+     * @param list<RequirementType|RequirementTypeShape> $requirementTypes
      */
     public function withRequirementTypes(array $requirementTypes): self
     {

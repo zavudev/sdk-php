@@ -15,12 +15,16 @@ use Zavudev\RegulatoryDocuments\RegulatoryDocumentNewResponse;
 use Zavudev\RegulatoryDocuments\RegulatoryDocumentUploadURLResponse;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface RegulatoryDocumentsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|RegulatoryDocumentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<RegulatoryDocumentNewResponse>
      *
@@ -28,11 +32,13 @@ interface RegulatoryDocumentsRawContract
      */
     public function create(
         array|RegulatoryDocumentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<RegulatoryDocumentGetResponse>
      *
@@ -40,13 +46,14 @@ interface RegulatoryDocumentsRawContract
      */
     public function retrieve(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|RegulatoryDocumentListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<RegulatoryDocument>>
      *
@@ -54,11 +61,13 @@ interface RegulatoryDocumentsRawContract
      */
     public function list(
         array|RegulatoryDocumentListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -66,17 +75,19 @@ interface RegulatoryDocumentsRawContract
      */
     public function delete(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<RegulatoryDocumentUploadURLResponse>
      *
      * @throws APIException
      */
     public function uploadURL(
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 }

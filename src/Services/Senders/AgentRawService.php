@@ -15,6 +15,9 @@ use Zavudev\Senders\Agent\AgentStats;
 use Zavudev\Senders\Agent\AgentUpdateParams;
 use Zavudev\ServiceContracts\Senders\AgentRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class AgentRawService implements AgentRawContract
 {
     // @phpstan-ignore-next-line
@@ -31,7 +34,7 @@ final class AgentRawService implements AgentRawContract
      * @param array{
      *   model: string,
      *   name: string,
-     *   provider: 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider,
+     *   provider: AgentProvider|value-of<AgentProvider>,
      *   systemPrompt: string,
      *   apiKey?: string,
      *   contextWindowMessages?: int,
@@ -41,6 +44,7 @@ final class AgentRawService implements AgentRawContract
      *   triggerOnChannels?: list<string>,
      *   triggerOnMessageTypes?: list<string>,
      * }|AgentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentResponse>
      *
@@ -49,7 +53,7 @@ final class AgentRawService implements AgentRawContract
     public function create(
         string $senderID,
         array|AgentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = AgentCreateParams::parseRequest(
             $params,
@@ -71,13 +75,15 @@ final class AgentRawService implements AgentRawContract
      *
      * Get the AI agent configuration for a sender.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<AgentResponse>
      *
      * @throws APIException
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -101,12 +107,13 @@ final class AgentRawService implements AgentRawContract
      *   maxTokens?: int|null,
      *   model?: string,
      *   name?: string,
-     *   provider?: 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider,
+     *   provider?: AgentProvider|value-of<AgentProvider>,
      *   systemPrompt?: string,
      *   temperature?: float|null,
      *   triggerOnChannels?: list<string>,
      *   triggerOnMessageTypes?: list<string>,
      * }|AgentUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentResponse>
      *
@@ -115,7 +122,7 @@ final class AgentRawService implements AgentRawContract
     public function update(
         string $senderID,
         array|AgentUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = AgentUpdateParams::parseRequest(
             $params,
@@ -137,13 +144,15 @@ final class AgentRawService implements AgentRawContract
      *
      * Delete an AI agent.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -159,13 +168,15 @@ final class AgentRawService implements AgentRawContract
      *
      * Get statistics for an AI agent including invocations, tokens, and costs.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<AgentStats>
      *
      * @throws APIException
      */
     public function stats(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(

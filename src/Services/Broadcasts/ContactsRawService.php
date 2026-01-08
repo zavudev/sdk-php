@@ -7,6 +7,7 @@ namespace Zavudev\Services\Broadcasts;
 use Zavudev\Broadcasts\BroadcastContact;
 use Zavudev\Broadcasts\BroadcastContactStatus;
 use Zavudev\Broadcasts\Contacts\ContactAddParams;
+use Zavudev\Broadcasts\Contacts\ContactAddParams\Contact;
 use Zavudev\Broadcasts\Contacts\ContactAddResponse;
 use Zavudev\Broadcasts\Contacts\ContactListParams;
 use Zavudev\Broadcasts\Contacts\ContactRemoveParams;
@@ -17,6 +18,10 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\Broadcasts\ContactsRawContract;
 
+/**
+ * @phpstan-import-type ContactShape from \Zavudev\Broadcasts\Contacts\ContactAddParams\Contact
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ContactsRawService implements ContactsRawContract
 {
     // @phpstan-ignore-next-line
@@ -33,8 +38,9 @@ final class ContactsRawService implements ContactsRawContract
      * @param array{
      *   cursor?: string,
      *   limit?: int,
-     *   status?: 'pending'|'queued'|'sending'|'delivered'|'failed'|'skipped'|BroadcastContactStatus,
+     *   status?: BroadcastContactStatus|value-of<BroadcastContactStatus>,
      * }|ContactListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<BroadcastContact>>
      *
@@ -43,7 +49,7 @@ final class ContactsRawService implements ContactsRawContract
     public function list(
         string $broadcastID,
         array|ContactListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ContactListParams::parseRequest(
             $params,
@@ -66,11 +72,8 @@ final class ContactsRawService implements ContactsRawContract
      *
      * Add contacts to a broadcast in batch. Maximum 1000 contacts per request.
      *
-     * @param array{
-     *   contacts: list<array{
-     *     recipient: string, templateVariables?: array<string,string>
-     *   }>,
-     * }|ContactAddParams $params
+     * @param array{contacts: list<Contact|ContactShape>}|ContactAddParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ContactAddResponse>
      *
@@ -79,7 +82,7 @@ final class ContactsRawService implements ContactsRawContract
     public function add(
         string $broadcastID,
         array|ContactAddParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ContactAddParams::parseRequest(
             $params,
@@ -103,6 +106,7 @@ final class ContactsRawService implements ContactsRawContract
      *
      * @param string $contactID Broadcast contact ID (not the global contact ID)
      * @param array{broadcastID: string}|ContactRemoveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -111,7 +115,7 @@ final class ContactsRawService implements ContactsRawContract
     public function remove(
         string $contactID,
         array|ContactRemoveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ContactRemoveParams::parseRequest(
             $params,

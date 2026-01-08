@@ -19,6 +19,9 @@ use Zavudev\PhoneNumbers\PhoneNumberUpdateResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\PhoneNumbersContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class PhoneNumbersService implements PhoneNumbersContract
 {
     /**
@@ -39,11 +42,13 @@ final class PhoneNumbersService implements PhoneNumbersContract
      *
      * Get details of a specific phone number.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): PhoneNumberGetResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($phoneNumberID, requestOptions: $requestOptions);
@@ -58,6 +63,7 @@ final class PhoneNumbersService implements PhoneNumbersContract
      *
      * @param string|null $name Custom name for the phone number. Set to null to clear.
      * @param string|null $senderID Sender ID to assign the phone number to. Set to null to unassign.
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -65,7 +71,7 @@ final class PhoneNumbersService implements PhoneNumbersContract
         string $phoneNumberID,
         ?string $name = null,
         ?string $senderID = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberUpdateResponse {
         $params = Util::removeNulls(['name' => $name, 'senderID' => $senderID]);
 
@@ -81,7 +87,8 @@ final class PhoneNumbersService implements PhoneNumbersContract
      * List all phone numbers owned by this project.
      *
      * @param string $cursor pagination cursor
-     * @param 'active'|'suspended'|'pending'|PhoneNumberStatus $status filter by phone number status
+     * @param PhoneNumberStatus|value-of<PhoneNumberStatus> $status filter by phone number status
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<OwnedPhoneNumber>
      *
@@ -90,8 +97,8 @@ final class PhoneNumbersService implements PhoneNumbersContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        string|PhoneNumberStatus|null $status = null,
-        ?RequestOptions $requestOptions = null,
+        PhoneNumberStatus|string|null $status = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(
             ['cursor' => $cursor, 'limit' => $limit, 'status' => $status]
@@ -110,13 +117,14 @@ final class PhoneNumbersService implements PhoneNumbersContract
      *
      * @param string $phoneNumber Phone number in E.164 format.
      * @param string $name optional custom name for the phone number
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function purchase(
         string $phoneNumber,
         ?string $name = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberPurchaseResponse {
         $params = Util::removeNulls(
             ['phoneNumber' => $phoneNumber, 'name' => $name]
@@ -133,11 +141,13 @@ final class PhoneNumbersService implements PhoneNumbersContract
      *
      * Release a phone number. The phone number must not be assigned to a sender.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function release(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->release($phoneNumberID, requestOptions: $requestOptions);
@@ -151,14 +161,15 @@ final class PhoneNumbersService implements PhoneNumbersContract
      * Get regulatory requirements for purchasing phone numbers in a specific country. Some countries require additional documentation (addresses, identity documents) before phone numbers can be activated.
      *
      * @param string $countryCode two-letter ISO country code
-     * @param 'local'|'mobile'|'tollFree'|PhoneNumberType $type type of phone number (local, mobile, tollFree)
+     * @param PhoneNumberType|value-of<PhoneNumberType> $type type of phone number (local, mobile, tollFree)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function requirements(
         string $countryCode,
-        string|PhoneNumberType|null $type = null,
-        ?RequestOptions $requestOptions = null,
+        PhoneNumberType|string|null $type = null,
+        RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberRequirementsResponse {
         $params = Util::removeNulls(
             ['countryCode' => $countryCode, 'type' => $type]
@@ -178,7 +189,8 @@ final class PhoneNumbersService implements PhoneNumbersContract
      * @param string $countryCode two-letter ISO country code
      * @param string $contains search for numbers containing this string
      * @param int $limit maximum number of results to return
-     * @param 'local'|'mobile'|'tollFree'|PhoneNumberType $type type of phone number to search for
+     * @param PhoneNumberType|value-of<PhoneNumberType> $type type of phone number to search for
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -186,8 +198,8 @@ final class PhoneNumbersService implements PhoneNumbersContract
         string $countryCode,
         ?string $contains = null,
         int $limit = 10,
-        string|PhoneNumberType|null $type = null,
-        ?RequestOptions $requestOptions = null,
+        PhoneNumberType|string|null $type = null,
+        RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberSearchAvailableResponse {
         $params = Util::removeNulls(
             [

@@ -14,6 +14,9 @@ use Zavudev\Senders\Agent\AgentExecutionStatus;
 use Zavudev\Senders\Agent\Executions\ExecutionListParams;
 use Zavudev\ServiceContracts\Senders\Agent\ExecutionsRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ExecutionsRawService implements ExecutionsRawContract
 {
     // @phpstan-ignore-next-line
@@ -30,8 +33,9 @@ final class ExecutionsRawService implements ExecutionsRawContract
      * @param array{
      *   cursor?: string,
      *   limit?: int,
-     *   status?: 'success'|'error'|'filtered'|'rate_limited'|'balance_insufficient'|AgentExecutionStatus,
+     *   status?: AgentExecutionStatus|value-of<AgentExecutionStatus>,
      * }|ExecutionListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentExecution>>
      *
@@ -40,7 +44,7 @@ final class ExecutionsRawService implements ExecutionsRawContract
     public function list(
         string $senderID,
         array|ExecutionListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ExecutionListParams::parseRequest(
             $params,

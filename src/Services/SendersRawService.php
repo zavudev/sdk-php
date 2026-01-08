@@ -24,6 +24,9 @@ use Zavudev\Senders\WhatsappBusinessProfileResponse;
 use Zavudev\Senders\WhatsappBusinessProfileVertical;
 use Zavudev\ServiceContracts\SendersRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class SendersRawService implements SendersRawContract
 {
     // @phpstan-ignore-next-line
@@ -41,9 +44,10 @@ final class SendersRawService implements SendersRawContract
      *   name: string,
      *   phoneNumber: string,
      *   setAsDefault?: bool,
-     *   webhookEvents?: list<'message.queued'|'message.sent'|'message.delivered'|'message.failed'|'message.inbound'|'message.unsupported'|'conversation.new'|'template.status_changed'|WebhookEvent>,
+     *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>,
      *   webhookURL?: string,
      * }|SenderCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Sender>
      *
@@ -51,7 +55,7 @@ final class SendersRawService implements SendersRawContract
      */
     public function create(
         array|SenderCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SenderCreateParams::parseRequest(
             $params,
@@ -73,13 +77,15 @@ final class SendersRawService implements SendersRawContract
      *
      * Get sender
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<Sender>
      *
      * @throws APIException
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -100,9 +106,10 @@ final class SendersRawService implements SendersRawContract
      *   name?: string,
      *   setAsDefault?: bool,
      *   webhookActive?: bool,
-     *   webhookEvents?: list<'message.queued'|'message.sent'|'message.delivered'|'message.failed'|'message.inbound'|'message.unsupported'|'conversation.new'|'template.status_changed'|WebhookEvent>,
+     *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>,
      *   webhookURL?: string|null,
      * }|SenderUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Sender>
      *
@@ -111,7 +118,7 @@ final class SendersRawService implements SendersRawContract
     public function update(
         string $senderID,
         array|SenderUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SenderUpdateParams::parseRequest(
             $params,
@@ -134,6 +141,7 @@ final class SendersRawService implements SendersRawContract
      * List senders
      *
      * @param array{cursor?: string, limit?: int}|SenderListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Sender>>
      *
@@ -141,7 +149,7 @@ final class SendersRawService implements SendersRawContract
      */
     public function list(
         array|SenderListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SenderListParams::parseRequest(
             $params,
@@ -164,13 +172,15 @@ final class SendersRawService implements SendersRawContract
      *
      * Delete sender
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -186,13 +196,15 @@ final class SendersRawService implements SendersRawContract
      *
      * Get the WhatsApp Business profile for a sender. The sender must have a WhatsApp Business Account connected.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<WhatsappBusinessProfileResponse>
      *
      * @throws APIException
      */
     public function getProfile(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -208,13 +220,15 @@ final class SendersRawService implements SendersRawContract
      *
      * Regenerate the webhook secret for a sender. The old secret will be invalidated immediately.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<WebhookSecretResponse>
      *
      * @throws APIException
      */
     public function regenerateWebhookSecret(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -238,6 +252,7 @@ final class SendersRawService implements SendersRawContract
      *   vertical?: value-of<WhatsappBusinessProfileVertical>,
      *   websites?: list<string>,
      * }|SenderUpdateProfileParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SenderUpdateProfileResponse>
      *
@@ -246,7 +261,7 @@ final class SendersRawService implements SendersRawContract
     public function updateProfile(
         string $senderID,
         array|SenderUpdateProfileParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SenderUpdateProfileParams::parseRequest(
             $params,
@@ -269,8 +284,9 @@ final class SendersRawService implements SendersRawContract
      * Upload a new profile picture for the WhatsApp Business profile. The image will be uploaded to Meta and set as the profile picture.
      *
      * @param array{
-     *   imageURL: string, mimeType: 'image/jpeg'|'image/png'|MimeType
+     *   imageURL: string, mimeType: MimeType|value-of<MimeType>
      * }|SenderUploadProfilePictureParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SenderUploadProfilePictureResponse>
      *
@@ -279,7 +295,7 @@ final class SendersRawService implements SendersRawContract
     public function uploadProfilePicture(
         string $senderID,
         array|SenderUploadProfilePictureParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = SenderUploadProfilePictureParams::parseRequest(
             $params,
