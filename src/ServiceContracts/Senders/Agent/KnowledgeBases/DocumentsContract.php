@@ -10,6 +10,9 @@ use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface DocumentsContract
 {
     /**
@@ -19,6 +22,7 @@ interface DocumentsContract
      * @param string $senderID Path param:
      * @param string $content Body param:
      * @param string $title Body param:
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -27,7 +31,7 @@ interface DocumentsContract
         string $senderID,
         string $content,
         string $title,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): DocumentNewResponse;
 
     /**
@@ -37,6 +41,7 @@ interface DocumentsContract
      * @param string $senderID Path param:
      * @param string $cursor Query param:
      * @param int $limit Query param:
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentDocument>
      *
@@ -47,11 +52,13 @@ interface DocumentsContract
         string $senderID,
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -59,6 +66,6 @@ interface DocumentsContract
         string $docID,
         string $senderID,
         string $kbID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): mixed;
 }

@@ -12,7 +12,7 @@ use Zavudev\Core\Contracts\BaseModel;
  * @phpstan-import-type RequirementShape from \Zavudev\PhoneNumbers\Requirement
  *
  * @phpstan-type PhoneNumberRequirementsResponseShape = array{
- *   items: list<RequirementShape>
+ *   items: list<Requirement|RequirementShape>
  * }
  */
 final class PhoneNumberRequirementsResponse implements BaseModel
@@ -48,7 +48,7 @@ final class PhoneNumberRequirementsResponse implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<RequirementShape> $items
+     * @param list<Requirement|RequirementShape> $items
      */
     public static function with(array $items): self
     {
@@ -60,7 +60,7 @@ final class PhoneNumberRequirementsResponse implements BaseModel
     }
 
     /**
-     * @param list<RequirementShape> $items
+     * @param list<Requirement|RequirementShape> $items
      */
     public function withItems(array $items): self
     {

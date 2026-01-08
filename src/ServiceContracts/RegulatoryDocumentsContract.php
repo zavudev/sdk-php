@@ -13,37 +13,45 @@ use Zavudev\RegulatoryDocuments\RegulatoryDocumentNewResponse;
 use Zavudev\RegulatoryDocuments\RegulatoryDocumentUploadURLResponse;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface RegulatoryDocumentsContract
 {
     /**
      * @api
      *
-     * @param 'passport'|'national_id'|'drivers_license'|'utility_bill'|'tax_id'|'business_registration'|'proof_of_address'|'other'|DocumentType $documentType
+     * @param DocumentType|value-of<DocumentType> $documentType
      * @param string $storageID storage ID from the upload-url endpoint
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function create(
-        string|DocumentType $documentType,
+        DocumentType|string $documentType,
         int $fileSize,
         string $mimeType,
         string $name,
         string $storageID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): RegulatoryDocumentNewResponse;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): RegulatoryDocumentGetResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<RegulatoryDocument>
      *
@@ -52,25 +60,29 @@ interface RegulatoryDocumentsContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function uploadURL(
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): RegulatoryDocumentUploadURLResponse;
 }

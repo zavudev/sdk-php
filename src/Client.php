@@ -19,8 +19,8 @@ use Zavudev\Services\SendersService;
 use Zavudev\Services\TemplatesService;
 
 /**
- * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
  */
 class Client extends BaseClient
 {

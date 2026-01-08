@@ -8,24 +8,26 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
-use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters\Type;
+use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 
+/**
+ * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters
+ * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters as ParametersShape1
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ToolsContract
 {
     /**
      * @api
      *
-     * @param array{
-     *   properties: array<string,array{description?: string, type?: string}>,
-     *   required: list<string>,
-     *   type: 'object'|Type,
-     * } $parameters
+     * @param Parameters|ParametersShape $parameters
      * @param string $webhookURL must be HTTPS
      * @param string $webhookSecret optional secret for webhook signature verification
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -33,22 +35,24 @@ interface ToolsContract
         string $senderID,
         string $description,
         string $name,
-        array $parameters,
+        Parameters|array $parameters,
         string $webhookURL,
         bool $enabled = true,
         ?string $webhookSecret = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): ToolNewResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function retrieve(
         string $toolID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): ToolGetResponse;
 
     /**
@@ -59,13 +63,10 @@ interface ToolsContract
      * @param string $description Body param:
      * @param bool $enabled Body param:
      * @param string $name Body param:
-     * @param array{
-     *   properties: array<string,array{description?: string, type?: string}>,
-     *   required: list<string>,
-     *   type: 'object'|\Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters\Type,
-     * } $parameters Body param:
+     * @param \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|ParametersShape1 $parameters Body param:
      * @param string|null $webhookSecret Body param:
      * @param string $webhookURL Body param:
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -75,14 +76,16 @@ interface ToolsContract
         ?string $description = null,
         ?bool $enabled = null,
         ?string $name = null,
-        ?array $parameters = null,
+        \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|array|null $parameters = null,
         ?string $webhookSecret = null,
         ?string $webhookURL = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): ToolUpdateResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentTool>
      *
@@ -93,18 +96,20 @@ interface ToolsContract
         ?string $cursor = null,
         ?bool $enabled = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function delete(
         string $toolID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): mixed;
 
     /**
@@ -113,6 +118,7 @@ interface ToolsContract
      * @param string $toolID Path param:
      * @param string $senderID Path param:
      * @param array<string,mixed> $testParams body param: Parameters to pass to the tool for testing
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -120,6 +126,6 @@ interface ToolsContract
         string $toolID,
         string $senderID,
         array $testParams,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): ToolTestResponse;
 }

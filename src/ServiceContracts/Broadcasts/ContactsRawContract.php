@@ -14,12 +14,16 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ContactsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|ContactListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<BroadcastContact>>
      *
@@ -28,13 +32,14 @@ interface ContactsRawContract
     public function list(
         string $broadcastID,
         array|ContactListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ContactAddParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ContactAddResponse>
      *
@@ -43,7 +48,7 @@ interface ContactsRawContract
     public function add(
         string $broadcastID,
         array|ContactAddParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -51,6 +56,7 @@ interface ContactsRawContract
      *
      * @param string $contactID Broadcast contact ID (not the global contact ID)
      * @param array<string,mixed>|ContactRemoveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -59,6 +65,6 @@ interface ContactsRawContract
     public function remove(
         string $contactID,
         array|ContactRemoveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

@@ -14,7 +14,10 @@ use Zavudev\Core\Contracts\BaseModel;
  * @phpstan-import-type ErrorShape from \Zavudev\Broadcasts\Contacts\ContactAddResponse\Error
  *
  * @phpstan-type ContactAddResponseShape = array{
- *   added: int, duplicates: int, invalid: int, errors?: list<ErrorShape>|null
+ *   added: int,
+ *   duplicates: int,
+ *   invalid: int,
+ *   errors?: list<Error|ErrorShape>|null,
  * }
  */
 final class ContactAddResponse implements BaseModel
@@ -72,7 +75,7 @@ final class ContactAddResponse implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ErrorShape>|null $errors
+     * @param list<Error|ErrorShape>|null $errors
      */
     public static function with(
         int $added,
@@ -127,7 +130,7 @@ final class ContactAddResponse implements BaseModel
     /**
      * Details about invalid contacts.
      *
-     * @param list<ErrorShape> $errors
+     * @param list<Error|ErrorShape> $errors
      */
     public function withErrors(array $errors): self
     {

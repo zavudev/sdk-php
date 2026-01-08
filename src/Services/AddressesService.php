@@ -14,6 +14,9 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\AddressesContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class AddressesService implements AddressesContract
 {
     /**
@@ -34,6 +37,8 @@ final class AddressesService implements AddressesContract
      *
      * Create a regulatory address for phone number purchases. Some countries require a verified address before phone numbers can be activated.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function create(
@@ -46,7 +51,7 @@ final class AddressesService implements AddressesContract
         ?string $extendedAddress = null,
         ?string $firstName = null,
         ?string $lastName = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): AddressNewResponse {
         $params = Util::removeNulls(
             [
@@ -73,11 +78,13 @@ final class AddressesService implements AddressesContract
      *
      * Get a specific regulatory address.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): AddressGetResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($addressID, requestOptions: $requestOptions);
@@ -90,6 +97,8 @@ final class AddressesService implements AddressesContract
      *
      * List regulatory addresses for this project.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return Cursor<Address>
      *
      * @throws APIException
@@ -97,7 +106,7 @@ final class AddressesService implements AddressesContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(['cursor' => $cursor, 'limit' => $limit]);
 
@@ -112,11 +121,13 @@ final class AddressesService implements AddressesContract
      *
      * Delete a regulatory address. Cannot delete addresses that are in use.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($addressID, requestOptions: $requestOptions);

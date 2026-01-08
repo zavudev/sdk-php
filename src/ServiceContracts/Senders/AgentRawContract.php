@@ -12,12 +12,16 @@ use Zavudev\Senders\Agent\AgentResponse;
 use Zavudev\Senders\Agent\AgentStats;
 use Zavudev\Senders\Agent\AgentUpdateParams;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface AgentRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|AgentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentResponse>
      *
@@ -26,11 +30,13 @@ interface AgentRawContract
     public function create(
         string $senderID,
         array|AgentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentResponse>
      *
@@ -38,13 +44,14 @@ interface AgentRawContract
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|AgentUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentResponse>
      *
@@ -53,11 +60,13 @@ interface AgentRawContract
     public function update(
         string $senderID,
         array|AgentUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -65,11 +74,13 @@ interface AgentRawContract
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AgentStats>
      *
@@ -77,6 +88,6 @@ interface AgentRawContract
      */
     public function stats(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 }

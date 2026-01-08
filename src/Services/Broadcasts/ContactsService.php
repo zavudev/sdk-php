@@ -6,6 +6,7 @@ namespace Zavudev\Services\Broadcasts;
 
 use Zavudev\Broadcasts\BroadcastContact;
 use Zavudev\Broadcasts\BroadcastContactStatus;
+use Zavudev\Broadcasts\Contacts\ContactAddParams\Contact;
 use Zavudev\Broadcasts\Contacts\ContactAddResponse;
 use Zavudev\Client;
 use Zavudev\Core\Exceptions\APIException;
@@ -14,6 +15,10 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\Broadcasts\ContactsContract;
 
+/**
+ * @phpstan-import-type ContactShape from \Zavudev\Broadcasts\Contacts\ContactAddParams\Contact
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ContactsService implements ContactsContract
 {
     /**
@@ -34,7 +39,8 @@ final class ContactsService implements ContactsContract
      *
      * List contacts in a broadcast with optional status filter.
      *
-     * @param 'pending'|'queued'|'sending'|'delivered'|'failed'|'skipped'|BroadcastContactStatus $status status of a contact within a broadcast
+     * @param BroadcastContactStatus|value-of<BroadcastContactStatus> $status status of a contact within a broadcast
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<BroadcastContact>
      *
@@ -44,8 +50,8 @@ final class ContactsService implements ContactsContract
         string $broadcastID,
         ?string $cursor = null,
         int $limit = 50,
-        string|BroadcastContactStatus|null $status = null,
-        ?RequestOptions $requestOptions = null,
+        BroadcastContactStatus|string|null $status = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(
             ['cursor' => $cursor, 'limit' => $limit, 'status' => $status]
@@ -62,16 +68,15 @@ final class ContactsService implements ContactsContract
      *
      * Add contacts to a broadcast in batch. Maximum 1000 contacts per request.
      *
-     * @param list<array{
-     *   recipient: string, templateVariables?: array<string,string>
-     * }> $contacts List of contacts to add (max 1000 per request)
+     * @param list<Contact|ContactShape> $contacts list of contacts to add (max 1000 per request)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function add(
         string $broadcastID,
         array $contacts,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): ContactAddResponse {
         $params = Util::removeNulls(['contacts' => $contacts]);
 
@@ -87,13 +92,14 @@ final class ContactsService implements ContactsContract
      * Remove a contact from a broadcast in draft status.
      *
      * @param string $contactID Broadcast contact ID (not the global contact ID)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function remove(
         string $contactID,
         string $broadcastID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): mixed {
         $params = Util::removeNulls(['broadcastID' => $broadcastID]);
 

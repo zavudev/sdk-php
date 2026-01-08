@@ -12,7 +12,7 @@ use Zavudev\Messages\MessageContent\Section\Row;
 /**
  * @phpstan-import-type RowShape from \Zavudev\Messages\MessageContent\Section\Row
  *
- * @phpstan-type SectionShape = array{rows: list<RowShape>, title: string}
+ * @phpstan-type SectionShape = array{rows: list<Row|RowShape>, title: string}
  */
 final class Section implements BaseModel
 {
@@ -50,7 +50,7 @@ final class Section implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<RowShape> $rows
+     * @param list<Row|RowShape> $rows
      */
     public static function with(array $rows, string $title): self
     {
@@ -63,7 +63,7 @@ final class Section implements BaseModel
     }
 
     /**
-     * @param list<RowShape> $rows
+     * @param list<Row|RowShape> $rows
      */
     public function withRows(array $rows): self
     {

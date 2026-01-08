@@ -11,6 +11,9 @@ use Zavudev\Introspect\IntrospectValidatePhoneResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\IntrospectContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class IntrospectService implements IntrospectContract
 {
     /**
@@ -31,11 +34,13 @@ final class IntrospectService implements IntrospectContract
      *
      * Validate a phone number and check if a WhatsApp conversation window is open.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function validatePhone(
         string $phoneNumber,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): IntrospectValidatePhoneResponse {
         $params = Util::removeNulls(['phoneNumber' => $phoneNumber]);
 

@@ -22,7 +22,7 @@ use Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger;
  *
  * @phpstan-type FlowCreateParamsShape = array{
  *   name: string,
- *   steps: list<StepShape>,
+ *   steps: list<Step|StepShape>,
  *   trigger: Trigger|TriggerShape,
  *   description?: string|null,
  *   enabled?: bool|null,
@@ -78,7 +78,7 @@ final class FlowCreateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<StepShape> $steps
+     * @param list<Step|StepShape> $steps
      * @param Trigger|TriggerShape $trigger
      */
     public static function with(
@@ -111,7 +111,7 @@ final class FlowCreateParams implements BaseModel
     }
 
     /**
-     * @param list<StepShape> $steps
+     * @param list<Step|StepShape> $steps
      */
     public function withSteps(array $steps): self
     {

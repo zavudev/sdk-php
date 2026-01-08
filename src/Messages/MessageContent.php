@@ -19,8 +19,8 @@ use Zavudev\Messages\MessageContent\Section;
  * @phpstan-import-type SectionShape from \Zavudev\Messages\MessageContent\Section
  *
  * @phpstan-type MessageContentShape = array{
- *   buttons?: list<ButtonShape>|null,
- *   contacts?: list<ContactShape>|null,
+ *   buttons?: list<Button|ButtonShape>|null,
+ *   contacts?: list<Contact|ContactShape>|null,
  *   emoji?: string|null,
  *   filename?: string|null,
  *   latitude?: float|null,
@@ -32,7 +32,7 @@ use Zavudev\Messages\MessageContent\Section;
  *   mediaURL?: string|null,
  *   mimeType?: string|null,
  *   reactToMessageID?: string|null,
- *   sections?: list<SectionShape>|null,
+ *   sections?: list<Section|SectionShape>|null,
  *   templateID?: string|null,
  *   templateVariables?: array<string,string>|null,
  * }
@@ -156,9 +156,9 @@ final class MessageContent implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ButtonShape>|null $buttons
-     * @param list<ContactShape>|null $contacts
-     * @param list<SectionShape>|null $sections
+     * @param list<Button|ButtonShape>|null $buttons
+     * @param list<Contact|ContactShape>|null $contacts
+     * @param list<Section|SectionShape>|null $sections
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -204,7 +204,7 @@ final class MessageContent implements BaseModel
     /**
      * Interactive buttons (max 3).
      *
-     * @param list<ButtonShape> $buttons
+     * @param list<Button|ButtonShape> $buttons
      */
     public function withButtons(array $buttons): self
     {
@@ -217,7 +217,7 @@ final class MessageContent implements BaseModel
     /**
      * Contact cards for contact messages.
      *
-     * @param list<ContactShape> $contacts
+     * @param list<Contact|ContactShape> $contacts
      */
     public function withContacts(array $contacts): self
     {
@@ -351,7 +351,7 @@ final class MessageContent implements BaseModel
     /**
      * Sections for list messages.
      *
-     * @param list<SectionShape> $sections
+     * @param list<Section|SectionShape> $sections
      */
     public function withSections(array $sections): self
     {

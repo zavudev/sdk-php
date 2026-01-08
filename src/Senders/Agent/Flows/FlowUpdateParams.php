@@ -26,7 +26,7 @@ use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger;
  *   enabled?: bool|null,
  *   name?: string|null,
  *   priority?: int|null,
- *   steps?: list<StepShape>|null,
+ *   steps?: list<Step|StepShape>|null,
  *   trigger?: null|Trigger|TriggerShape,
  * }
  */
@@ -82,7 +82,7 @@ final class FlowUpdateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<StepShape>|null $steps
+     * @param list<Step|StepShape>|null $steps
      * @param Trigger|TriggerShape|null $trigger
      */
     public static function with(
@@ -149,7 +149,7 @@ final class FlowUpdateParams implements BaseModel
     }
 
     /**
-     * @param list<StepShape> $steps
+     * @param list<Step|StepShape> $steps
      */
     public function withSteps(array $steps): self
     {

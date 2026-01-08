@@ -11,7 +11,7 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
 use Zavudev\Senders\Agent\Tools\ToolCreateParams;
-use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters\Type;
+use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters;
 use Zavudev\Senders\Agent\Tools\ToolDeleteParams;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolListParams;
@@ -23,6 +23,11 @@ use Zavudev\Senders\Agent\Tools\ToolUpdateParams;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\ToolsRawContract;
 
+/**
+ * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters
+ * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters as ParametersShape1
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ToolsRawService implements ToolsRawContract
 {
     // @phpstan-ignore-next-line
@@ -39,15 +44,12 @@ final class ToolsRawService implements ToolsRawContract
      * @param array{
      *   description: string,
      *   name: string,
-     *   parameters: array{
-     *     properties: array<string,array{description?: string, type?: string}>,
-     *     required: list<string>,
-     *     type: 'object'|Type,
-     *   },
+     *   parameters: Parameters|ParametersShape,
      *   webhookURL: string,
      *   enabled?: bool,
      *   webhookSecret?: string,
      * }|ToolCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolNewResponse>
      *
@@ -56,7 +58,7 @@ final class ToolsRawService implements ToolsRawContract
     public function create(
         string $senderID,
         array|ToolCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolCreateParams::parseRequest(
             $params,
@@ -79,6 +81,7 @@ final class ToolsRawService implements ToolsRawContract
      * Get a specific tool.
      *
      * @param array{senderID: string}|ToolRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolGetResponse>
      *
@@ -87,7 +90,7 @@ final class ToolsRawService implements ToolsRawContract
     public function retrieve(
         string $toolID,
         array|ToolRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolRetrieveParams::parseRequest(
             $params,
@@ -116,14 +119,11 @@ final class ToolsRawService implements ToolsRawContract
      *   description?: string,
      *   enabled?: bool,
      *   name?: string,
-     *   parameters?: array{
-     *     properties: array<string,array{description?: string, type?: string}>,
-     *     required: list<string>,
-     *     type: 'object'|ToolUpdateParams\Parameters\Type,
-     *   },
+     *   parameters?: ToolUpdateParams\Parameters|ParametersShape1,
      *   webhookSecret?: string|null,
      *   webhookURL?: string,
      * }|ToolUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolUpdateResponse>
      *
@@ -132,7 +132,7 @@ final class ToolsRawService implements ToolsRawContract
     public function update(
         string $toolID,
         array|ToolUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolUpdateParams::parseRequest(
             $params,
@@ -159,6 +159,7 @@ final class ToolsRawService implements ToolsRawContract
      * @param array{
      *   cursor?: string, enabled?: bool, limit?: int
      * }|ToolListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentTool>>
      *
@@ -167,7 +168,7 @@ final class ToolsRawService implements ToolsRawContract
     public function list(
         string $senderID,
         array|ToolListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolListParams::parseRequest(
             $params,
@@ -191,6 +192,7 @@ final class ToolsRawService implements ToolsRawContract
      * Delete a tool.
      *
      * @param array{senderID: string}|ToolDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -199,7 +201,7 @@ final class ToolsRawService implements ToolsRawContract
     public function delete(
         string $toolID,
         array|ToolDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolDeleteParams::parseRequest(
             $params,
@@ -226,6 +228,7 @@ final class ToolsRawService implements ToolsRawContract
      * @param array{
      *   senderID: string, testParams: array<string,mixed>
      * }|ToolTestParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolTestResponse>
      *
@@ -234,7 +237,7 @@ final class ToolsRawService implements ToolsRawContract
     public function test(
         string $toolID,
         array|ToolTestParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ToolTestParams::parseRequest(
             $params,

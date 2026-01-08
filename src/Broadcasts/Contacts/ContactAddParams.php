@@ -17,7 +17,9 @@ use Zavudev\Core\Contracts\BaseModel;
  *
  * @phpstan-import-type ContactShape from \Zavudev\Broadcasts\Contacts\ContactAddParams\Contact
  *
- * @phpstan-type ContactAddParamsShape = array{contacts: list<ContactShape>}
+ * @phpstan-type ContactAddParamsShape = array{
+ *   contacts: list<Contact|ContactShape>
+ * }
  */
 final class ContactAddParams implements BaseModel
 {
@@ -57,7 +59,7 @@ final class ContactAddParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<ContactShape> $contacts
+     * @param list<Contact|ContactShape> $contacts
      */
     public static function with(array $contacts): self
     {
@@ -71,7 +73,7 @@ final class ContactAddParams implements BaseModel
     /**
      * List of contacts to add (max 1000 per request).
      *
-     * @param list<ContactShape> $contacts
+     * @param list<Contact|ContactShape> $contacts
      */
     public function withContacts(array $contacts): self
     {

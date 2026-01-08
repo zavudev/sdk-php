@@ -13,12 +13,16 @@ use Zavudev\Templates\TemplateCreateParams;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface TemplatesRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|TemplateCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Template>
      *
@@ -26,11 +30,13 @@ interface TemplatesRawContract
      */
     public function create(
         array|TemplateCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Template>
      *
@@ -38,13 +44,14 @@ interface TemplatesRawContract
      */
     public function retrieve(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|TemplateListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Template>>
      *
@@ -52,11 +59,13 @@ interface TemplatesRawContract
      */
     public function list(
         array|TemplateListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -64,13 +73,14 @@ interface TemplatesRawContract
      */
     public function delete(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|TemplateSubmitParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Template>
      *
@@ -79,6 +89,6 @@ interface TemplatesRawContract
     public function submit(
         string $templateID,
         array|TemplateSubmitParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

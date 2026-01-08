@@ -12,6 +12,9 @@ use Zavudev\Introspect\IntrospectValidatePhoneResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\IntrospectRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class IntrospectRawService implements IntrospectRawContract
 {
     // @phpstan-ignore-next-line
@@ -26,6 +29,7 @@ final class IntrospectRawService implements IntrospectRawContract
      * Validate a phone number and check if a WhatsApp conversation window is open.
      *
      * @param array{phoneNumber: string}|IntrospectValidatePhoneParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<IntrospectValidatePhoneResponse>
      *
@@ -33,7 +37,7 @@ final class IntrospectRawService implements IntrospectRawContract
      */
     public function validatePhone(
         array|IntrospectValidatePhoneParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = IntrospectValidatePhoneParams::parseRequest(
             $params,

@@ -14,10 +14,15 @@ use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface MessagesRawContract
 {
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<MessageResponse>
      *
@@ -25,13 +30,14 @@ interface MessagesRawContract
      */
     public function retrieve(
         string $messageID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|MessageListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Message>>
      *
@@ -39,7 +45,7 @@ interface MessagesRawContract
      */
     public function list(
         array|MessageListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
@@ -47,6 +53,7 @@ interface MessagesRawContract
      *
      * @param string $messageID Path param:
      * @param array<string,mixed>|MessageReactParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<MessageResponse>
      *
@@ -55,13 +62,14 @@ interface MessagesRawContract
     public function react(
         string $messageID,
         array|MessageReactParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|MessageSendParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<MessageResponse>
      *
@@ -69,6 +77,6 @@ interface MessagesRawContract
      */
     public function send(
         array|MessageSendParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

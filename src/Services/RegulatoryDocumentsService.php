@@ -16,6 +16,9 @@ use Zavudev\RegulatoryDocuments\RegulatoryDocumentUploadURLResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\RegulatoryDocumentsContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
 {
     /**
@@ -36,18 +39,19 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
      *
      * Create a regulatory document record after uploading the file. Use the upload-url endpoint first to get an upload URL.
      *
-     * @param 'passport'|'national_id'|'drivers_license'|'utility_bill'|'tax_id'|'business_registration'|'proof_of_address'|'other'|DocumentType $documentType
+     * @param DocumentType|value-of<DocumentType> $documentType
      * @param string $storageID storage ID from the upload-url endpoint
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function create(
-        string|DocumentType $documentType,
+        DocumentType|string $documentType,
         int $fileSize,
         string $mimeType,
         string $name,
         string $storageID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): RegulatoryDocumentNewResponse {
         $params = Util::removeNulls(
             [
@@ -70,11 +74,13 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
      *
      * Get a specific regulatory document.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): RegulatoryDocumentGetResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($documentID, requestOptions: $requestOptions);
@@ -87,6 +93,8 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
      *
      * List regulatory documents for this project.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return Cursor<RegulatoryDocument>
      *
      * @throws APIException
@@ -94,7 +102,7 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(['cursor' => $cursor, 'limit' => $limit]);
 
@@ -109,11 +117,13 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
      *
      * Delete a regulatory document. Cannot delete verified documents.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($documentID, requestOptions: $requestOptions);
@@ -126,10 +136,12 @@ final class RegulatoryDocumentsService implements RegulatoryDocumentsContract
      *
      * Get a presigned URL to upload a document file. After uploading, use the storageId to create the document record.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function uploadURL(
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): RegulatoryDocumentUploadURLResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->uploadURL(requestOptions: $requestOptions);

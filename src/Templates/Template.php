@@ -22,7 +22,7 @@ use Zavudev\Templates\Template\Whatsapp;
  *   category: WhatsappCategory|value-of<WhatsappCategory>,
  *   language: string,
  *   name: string,
- *   buttons?: list<ButtonShape>|null,
+ *   buttons?: list<Button|ButtonShape>|null,
  *   createdAt?: \DateTimeInterface|null,
  *   footer?: string|null,
  *   headerContent?: string|null,
@@ -147,7 +147,7 @@ final class Template implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param WhatsappCategory|value-of<WhatsappCategory> $category
-     * @param list<ButtonShape>|null $buttons
+     * @param list<Button|ButtonShape>|null $buttons
      * @param Status|value-of<Status>|null $status
      * @param list<string>|null $variables
      * @param Whatsapp|WhatsappShape|null $whatsapp
@@ -246,7 +246,7 @@ final class Template implements BaseModel
     /**
      * Template buttons.
      *
-     * @param list<ButtonShape> $buttons
+     * @param list<Button|ButtonShape> $buttons
      */
     public function withButtons(array $buttons): self
     {

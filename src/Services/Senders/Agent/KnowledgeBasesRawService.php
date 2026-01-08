@@ -20,6 +20,9 @@ use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateParams;
 use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBasesRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
 {
     // @phpstan-ignore-next-line
@@ -36,6 +39,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      * @param array{
      *   name: string, description?: string
      * }|KnowledgeBaseCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseNewResponse>
      *
@@ -44,7 +48,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
     public function create(
         string $senderID,
         array|KnowledgeBaseCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = KnowledgeBaseCreateParams::parseRequest(
             $params,
@@ -67,6 +71,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      * Get a specific knowledge base.
      *
      * @param array{senderID: string}|KnowledgeBaseRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseGetResponse>
      *
@@ -75,7 +80,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
     public function retrieve(
         string $kbID,
         array|KnowledgeBaseRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = KnowledgeBaseRetrieveParams::parseRequest(
             $params,
@@ -102,6 +107,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      * @param array{
      *   senderID: string, description?: string|null, name?: string
      * }|KnowledgeBaseUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseUpdateResponse>
      *
@@ -110,7 +116,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
     public function update(
         string $kbID,
         array|KnowledgeBaseUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = KnowledgeBaseUpdateParams::parseRequest(
             $params,
@@ -135,6 +141,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      * List knowledge bases for an agent.
      *
      * @param array{cursor?: string, limit?: int}|KnowledgeBaseListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentKnowledgeBase>>
      *
@@ -143,7 +150,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
     public function list(
         string $senderID,
         array|KnowledgeBaseListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = KnowledgeBaseListParams::parseRequest(
             $params,
@@ -167,6 +174,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      * Delete a knowledge base and all its documents.
      *
      * @param array{senderID: string}|KnowledgeBaseDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -175,7 +183,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
     public function delete(
         string $kbID,
         array|KnowledgeBaseDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = KnowledgeBaseDeleteParams::parseRequest(
             $params,
