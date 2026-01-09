@@ -9,16 +9,22 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Templates\TemplateCreateParams\Button;
 
 /**
  * Create a WhatsApp message template. Note: Templates must be approved by Meta before use.
  *
  * @see Zavudev\Services\TemplatesService::create()
  *
+ * @phpstan-import-type ButtonShape from \Zavudev\Templates\TemplateCreateParams\Button
+ *
  * @phpstan-type TemplateCreateParamsShape = array{
  *   body: string,
  *   language: string,
  *   name: string,
+ *   addSecurityRecommendation?: bool|null,
+ *   buttons?: list<Button|ButtonShape>|null,
+ *   codeExpirationMinutes?: int|null,
  *   variables?: list<string>|null,
  *   whatsappCategory?: null|WhatsappCategory|value-of<WhatsappCategory>,
  * }
@@ -37,6 +43,26 @@ final class TemplateCreateParams implements BaseModel
 
     #[Required]
     public string $name;
+
+    /**
+     * Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     */
+    #[Optional]
+    public ?bool $addSecurityRecommendation;
+
+    /**
+     * Template buttons (max 3).
+     *
+     * @var list<Button>|null $buttons
+     */
+    #[Optional(list: Button::class)]
+    public ?array $buttons;
+
+    /**
+     * Code expiration time in minutes. Only for AUTHENTICATION templates.
+     */
+    #[Optional]
+    public ?int $codeExpirationMinutes;
 
     /** @var list<string>|null $variables */
     #[Optional(list: 'string')]
@@ -74,6 +100,7 @@ final class TemplateCreateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<Button|ButtonShape>|null $buttons
      * @param list<string>|null $variables
      * @param WhatsappCategory|value-of<WhatsappCategory>|null $whatsappCategory
      */
@@ -81,6 +108,9 @@ final class TemplateCreateParams implements BaseModel
         string $body,
         string $name,
         string $language = 'en',
+        ?bool $addSecurityRecommendation = null,
+        ?array $buttons = null,
+        ?int $codeExpirationMinutes = null,
         ?array $variables = null,
         WhatsappCategory|string|null $whatsappCategory = null,
     ): self {
@@ -90,6 +120,9 @@ final class TemplateCreateParams implements BaseModel
         $self['language'] = $language;
         $self['name'] = $name;
 
+        null !== $addSecurityRecommendation && $self['addSecurityRecommendation'] = $addSecurityRecommendation;
+        null !== $buttons && $self['buttons'] = $buttons;
+        null !== $codeExpirationMinutes && $self['codeExpirationMinutes'] = $codeExpirationMinutes;
         null !== $variables && $self['variables'] = $variables;
         null !== $whatsappCategory && $self['whatsappCategory'] = $whatsappCategory;
 
@@ -116,6 +149,42 @@ final class TemplateCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['name'] = $name;
+
+        return $self;
+    }
+
+    /**
+     * Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     */
+    public function withAddSecurityRecommendation(
+        bool $addSecurityRecommendation
+    ): self {
+        $self = clone $this;
+        $self['addSecurityRecommendation'] = $addSecurityRecommendation;
+
+        return $self;
+    }
+
+    /**
+     * Template buttons (max 3).
+     *
+     * @param list<Button|ButtonShape> $buttons
+     */
+    public function withButtons(array $buttons): self
+    {
+        $self = clone $this;
+        $self['buttons'] = $buttons;
+
+        return $self;
+    }
+
+    /**
+     * Code expiration time in minutes. Only for AUTHENTICATION templates.
+     */
+    public function withCodeExpirationMinutes(int $codeExpirationMinutes): self
+    {
+        $self = clone $this;
+        $self['codeExpirationMinutes'] = $codeExpirationMinutes;
 
         return $self;
     }
