@@ -140,16 +140,15 @@ You can use the `maxRetries` option to configure or disable this:
 <?php
 
 use Zavudev\Client;
-use Zavudev\RequestOptions;
 
 // Configure the default for all requests:
-$client = new Client(maxRetries: 0);
+$client = new Client(requestOptions: ['maxRetries' => 0]);
 
 // Or, configure per-request:
 $result = $client->messages->send(
   to: '+14155551234',
   text: 'Hello from Zavu!',
-  requestOptions: RequestOptions::with(maxRetries: 5),
+  requestOptions: ['maxRetries' => 5],
 );
 ```
 
@@ -166,16 +165,14 @@ Note: the `extra*` parameters of the same name overrides the documented paramete
 ```php
 <?php
 
-use Zavudev\RequestOptions;
-
 $messageResponse = $client->messages->send(
   to: '+14155551234',
   text: 'Hello from Zavu!',
-  requestOptions: RequestOptions::with(
-    extraQueryParams: ['my_query_parameter' => 'value'],
-    extraBodyParams: ['my_body_parameter' => 'value'],
-    extraHeaders: ['my-header' => 'value'],
-  ),
+  requestOptions: [
+    'extraQueryParams' => ['my_query_parameter' => 'value'],
+    'extraBodyParams' => ['my_body_parameter' => 'value'],
+    'extraHeaders' => ['my-header' => 'value'],
+  ],
 );
 ```
 
