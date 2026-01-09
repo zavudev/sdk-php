@@ -2,22 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Templates\Template;
+namespace Zavudev\Templates\TemplateCreateParams;
 
 use Zavudev\Core\Attributes\Optional;
+use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Templates\Template\Button\OtpType;
-use Zavudev\Templates\Template\Button\Type;
+use Zavudev\Templates\TemplateCreateParams\Button\OtpType;
+use Zavudev\Templates\TemplateCreateParams\Button\Type;
 
 /**
  * @phpstan-type ButtonShape = array{
+ *   text: string,
+ *   type: Type|value-of<Type>,
  *   otpType?: null|OtpType|value-of<OtpType>,
  *   packageName?: string|null,
  *   phoneNumber?: string|null,
  *   signatureHash?: string|null,
- *   text?: string|null,
- *   type?: null|Type|value-of<Type>,
  *   url?: string|null,
  * }
  */
@@ -26,8 +27,15 @@ final class Button implements BaseModel
     /** @use SdkModel<ButtonShape> */
     use SdkModel;
 
+    #[Required]
+    public string $text;
+
+    /** @var value-of<Type> $type */
+    #[Required(enum: Type::class)]
+    public string $type;
+
     /**
-     * OTP button type. Required when type is 'otp'.
+     * Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
      *
      * @var value-of<OtpType>|null $otpType
      */
@@ -50,15 +58,22 @@ final class Button implements BaseModel
     public ?string $signatureHash;
 
     #[Optional]
-    public ?string $text;
-
-    /** @var value-of<Type>|null $type */
-    #[Optional(enum: Type::class)]
-    public ?string $type;
-
-    #[Optional]
     public ?string $url;
 
+    /**
+     * `new Button()` is missing required properties by the API.
+     *
+     * To enforce required parameters use
+     * ```
+     * Button::with(text: ..., type: ...)
+     * ```
+     *
+     * Otherwise ensure the following setters are called
+     *
+     * ```
+     * (new Button)->withText(...)->withType(...)
+     * ```
+     */
     public function __construct()
     {
         $this->initialize();
@@ -69,33 +84,53 @@ final class Button implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param Type|value-of<Type> $type
      * @param OtpType|value-of<OtpType>|null $otpType
-     * @param Type|value-of<Type>|null $type
      */
     public static function with(
+        string $text,
+        Type|string $type,
         OtpType|string|null $otpType = null,
         ?string $packageName = null,
         ?string $phoneNumber = null,
         ?string $signatureHash = null,
-        ?string $text = null,
-        Type|string|null $type = null,
         ?string $url = null,
     ): self {
         $self = new self;
+
+        $self['text'] = $text;
+        $self['type'] = $type;
 
         null !== $otpType && $self['otpType'] = $otpType;
         null !== $packageName && $self['packageName'] = $packageName;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
         null !== $signatureHash && $self['signatureHash'] = $signatureHash;
-        null !== $text && $self['text'] = $text;
-        null !== $type && $self['type'] = $type;
         null !== $url && $self['url'] = $url;
 
         return $self;
     }
 
+    public function withText(string $text): self
+    {
+        $self = clone $this;
+        $self['text'] = $text;
+
+        return $self;
+    }
+
     /**
-     * OTP button type. Required when type is 'otp'.
+     * @param Type|value-of<Type> $type
+     */
+    public function withType(Type|string $type): self
+    {
+        $self = clone $this;
+        $self['type'] = $type;
+
+        return $self;
+    }
+
+    /**
+     * Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
      *
      * @param OtpType|value-of<OtpType> $otpType
      */
@@ -133,25 +168,6 @@ final class Button implements BaseModel
     {
         $self = clone $this;
         $self['signatureHash'] = $signatureHash;
-
-        return $self;
-    }
-
-    public function withText(string $text): self
-    {
-        $self = clone $this;
-        $self['text'] = $text;
-
-        return $self;
-    }
-
-    /**
-     * @param Type|value-of<Type> $type
-     */
-    public function withType(Type|string $type): self
-    {
-        $self = clone $this;
-        $self['type'] = $type;
 
         return $self;
     }

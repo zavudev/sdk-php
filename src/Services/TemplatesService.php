@@ -11,9 +11,11 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\TemplatesContract;
 use Zavudev\Templates\Template;
+use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
+ * @phpstan-import-type ButtonShape from \Zavudev\Templates\TemplateCreateParams\Button
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class TemplatesService implements TemplatesContract
@@ -36,6 +38,9 @@ final class TemplatesService implements TemplatesContract
      *
      * Create a WhatsApp message template. Note: Templates must be approved by Meta before use.
      *
+     * @param bool $addSecurityRecommendation Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     * @param list<Button|ButtonShape> $buttons template buttons (max 3)
+     * @param int $codeExpirationMinutes Code expiration time in minutes. Only for AUTHENTICATION templates.
      * @param list<string> $variables
      * @param WhatsappCategory|value-of<WhatsappCategory> $whatsappCategory whatsApp template category
      * @param RequestOpts|null $requestOptions
@@ -46,6 +51,9 @@ final class TemplatesService implements TemplatesContract
         string $body,
         string $name,
         string $language = 'en',
+        ?bool $addSecurityRecommendation = null,
+        ?array $buttons = null,
+        ?int $codeExpirationMinutes = null,
         ?array $variables = null,
         WhatsappCategory|string|null $whatsappCategory = null,
         RequestOptions|array|null $requestOptions = null,
@@ -55,6 +63,9 @@ final class TemplatesService implements TemplatesContract
                 'body' => $body,
                 'language' => $language,
                 'name' => $name,
+                'addSecurityRecommendation' => $addSecurityRecommendation,
+                'buttons' => $buttons,
+                'codeExpirationMinutes' => $codeExpirationMinutes,
                 'variables' => $variables,
                 'whatsappCategory' => $whatsappCategory,
             ],

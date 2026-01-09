@@ -12,11 +12,13 @@ use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\TemplatesRawContract;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams;
+use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
+ * @phpstan-import-type ButtonShape from \Zavudev\Templates\TemplateCreateParams\Button
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class TemplatesRawService implements TemplatesRawContract
@@ -36,6 +38,9 @@ final class TemplatesRawService implements TemplatesRawContract
      *   body: string,
      *   language: string,
      *   name: string,
+     *   addSecurityRecommendation?: bool,
+     *   buttons?: list<Button|ButtonShape>,
+     *   codeExpirationMinutes?: int,
      *   variables?: list<string>,
      *   whatsappCategory?: WhatsappCategory|value-of<WhatsappCategory>,
      * }|TemplateCreateParams $params
