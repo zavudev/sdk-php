@@ -152,9 +152,7 @@ final class BroadcastsRawService implements BroadcastsRawContract
      * List broadcasts for this project.
      *
      * @param array{
-     *   cursor?: string,
-     *   limit?: int,
-     *   status?: BroadcastStatus|value-of<BroadcastStatus>,
+     *   cursor?: string, limit?: int, status?: value-of<BroadcastStatus>
      * }|BroadcastListParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -289,7 +287,7 @@ final class BroadcastsRawService implements BroadcastsRawContract
     /**
      * @api
      *
-     * Start sending the broadcast immediately or schedule for later. Reserves the estimated cost from your balance.
+     * Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance.
      *
      * @param array{scheduledAt?: \DateTimeInterface}|BroadcastSendParams $params
      * @param RequestOpts|null $requestOptions

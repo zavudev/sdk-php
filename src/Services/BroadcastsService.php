@@ -273,7 +273,7 @@ final class BroadcastsService implements BroadcastsContract
     /**
      * @api
      *
-     * Start sending the broadcast immediately or schedule for later. Reserves the estimated cost from your balance.
+     * Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance.
      *
      * @param \DateTimeInterface $scheduledAt Schedule for future delivery. Omit to send immediately.
      * @param RequestOpts|null $requestOptions

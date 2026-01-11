@@ -11,6 +11,16 @@ enum BroadcastStatus: string
 {
     case DRAFT = 'draft';
 
+    case PENDING_REVIEW = 'pending_review';
+
+    case APPROVED = 'approved';
+
+    case REJECTED = 'rejected';
+
+    case ESCALATED = 'escalated';
+
+    case REJECTED_FINAL = 'rejected_final';
+
     case SCHEDULED = 'scheduled';
 
     case SENDING = 'sending';
