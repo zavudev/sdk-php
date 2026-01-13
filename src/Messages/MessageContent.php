@@ -12,7 +12,7 @@ use Zavudev\Messages\MessageContent\Contact;
 use Zavudev\Messages\MessageContent\Section;
 
 /**
- * Content for non-text message types (WhatsApp only).
+ * Content for non-text message types (WhatsApp and Telegram).
  *
  * @phpstan-import-type ButtonShape from \Zavudev\Messages\MessageContent\Button
  * @phpstan-import-type ContactShape from \Zavudev\Messages\MessageContent\Contact
