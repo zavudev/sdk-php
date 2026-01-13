@@ -53,7 +53,7 @@ final class Message implements BaseModel
     public \DateTimeInterface $createdAt;
 
     /**
-     * Type of message. Non-text types are WhatsApp only.
+     * Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
      *
      * @var value-of<MessageType> $messageType
      */
@@ -68,7 +68,7 @@ final class Message implements BaseModel
     public string $to;
 
     /**
-     * Content for non-text message types (WhatsApp only).
+     * Content for non-text message types (WhatsApp and Telegram).
      */
     #[Optional]
     public ?MessageContent $content;
@@ -235,7 +235,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * Type of message. Non-text types are WhatsApp only.
+     * Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
      *
      * @param MessageType|value-of<MessageType> $messageType
      */
@@ -267,7 +267,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * Content for non-text message types (WhatsApp only).
+     * Content for non-text message types (WhatsApp and Telegram).
      *
      * @param MessageContent|MessageContentShape $content
      */
