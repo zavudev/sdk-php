@@ -15,4 +15,6 @@ enum MessageStatus: string
     case FAILED = 'failed';
 
     case RECEIVED = 'received';
+
+    case PENDING_URL_VERIFICATION = 'pending_url_verification';
 }
