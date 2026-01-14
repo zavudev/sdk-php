@@ -58,7 +58,7 @@ interface KnowledgeBasesRawContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|KnowledgeBaseUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *

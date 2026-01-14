@@ -47,10 +47,10 @@ interface KnowledgeBasesContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string|null $description Body param:
-     * @param string $name Body param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string|null $description Body param
+     * @param string $name Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException

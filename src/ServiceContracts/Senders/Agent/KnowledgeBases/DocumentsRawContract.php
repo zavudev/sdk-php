@@ -22,7 +22,7 @@ interface DocumentsRawContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|DocumentCreateParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -39,7 +39,7 @@ interface DocumentsRawContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|DocumentListParams $params
      * @param RequestOpts|null $requestOptions
      *

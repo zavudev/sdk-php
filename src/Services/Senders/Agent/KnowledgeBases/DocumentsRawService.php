@@ -32,7 +32,7 @@ final class DocumentsRawService implements DocumentsRawContract
      *
      * Add a document to a knowledge base. The document will be automatically processed for RAG.
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array{
      *   senderID: string, content: string, title: string
      * }|DocumentCreateParams $params
@@ -71,7 +71,7 @@ final class DocumentsRawService implements DocumentsRawContract
      *
      * List documents in a knowledge base.
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array{
      *   senderID: string, cursor?: string, limit?: int
      * }|DocumentListParams $params

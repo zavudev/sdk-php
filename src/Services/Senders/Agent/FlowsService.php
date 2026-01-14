@@ -105,14 +105,14 @@ final class FlowsService implements FlowsContract
      *
      * Update a flow.
      *
-     * @param string $flowID Path param:
-     * @param string $senderID Path param:
-     * @param string $description Body param:
-     * @param bool $enabled Body param:
-     * @param string $name Body param:
-     * @param int $priority Body param:
-     * @param list<\Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step|StepShape1> $steps Body param:
-     * @param \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger|TriggerShape1 $trigger Body param:
+     * @param string $flowID Path param
+     * @param string $senderID Path param
+     * @param string $description Body param
+     * @param bool $enabled Body param
+     * @param string $name Body param
+     * @param int $priority Body param
+     * @param list<\Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step|StepShape1> $steps Body param
+     * @param \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger|TriggerShape1 $trigger Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -201,9 +201,9 @@ final class FlowsService implements FlowsContract
      *
      * Create a copy of an existing flow with a new name.
      *
-     * @param string $flowID Path param:
-     * @param string $senderID Path param:
-     * @param string $newName Body param:
+     * @param string $flowID Path param
+     * @param string $senderID Path param
+     * @param string $newName Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException

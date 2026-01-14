@@ -116,7 +116,7 @@ final class FlowsRawService implements FlowsRawContract
      *
      * Update a flow.
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array{
      *   senderID: string,
      *   description?: string,
@@ -227,7 +227,7 @@ final class FlowsRawService implements FlowsRawContract
      *
      * Create a copy of an existing flow with a new name.
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array{senderID: string, newName: string}|FlowDuplicateParams $params
      * @param RequestOpts|null $requestOptions
      *

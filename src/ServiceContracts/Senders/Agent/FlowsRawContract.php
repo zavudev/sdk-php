@@ -60,7 +60,7 @@ interface FlowsRawContract
     /**
      * @api
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array<string,mixed>|FlowUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -109,7 +109,7 @@ interface FlowsRawContract
     /**
      * @api
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array<string,mixed>|FlowDuplicateParams $params
      * @param RequestOpts|null $requestOptions
      *

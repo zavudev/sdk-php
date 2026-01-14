@@ -51,7 +51,7 @@ interface MessagesRawContract
     /**
      * @api
      *
-     * @param string $messageID Path param:
+     * @param string $messageID Path param
      * @param array<string,mixed>|MessageReactParams $params
      * @param RequestOpts|null $requestOptions
      *

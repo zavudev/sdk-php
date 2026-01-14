@@ -100,7 +100,7 @@ final class MessagesRawService implements MessagesRawContract
      *
      * Send an emoji reaction to an existing WhatsApp message. Reactions are only supported for WhatsApp messages.
      *
-     * @param string $messageID Path param:
+     * @param string $messageID Path param
      * @param array{emoji: string, zavuSender?: string}|MessageReactParams $params
      * @param RequestOpts|null $requestOptions
      *
