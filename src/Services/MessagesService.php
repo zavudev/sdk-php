@@ -97,7 +97,7 @@ final class MessagesService implements MessagesContract
      *
      * Send an emoji reaction to an existing WhatsApp message. Reactions are only supported for WhatsApp messages.
      *
-     * @param string $messageID Path param:
+     * @param string $messageID Path param
      * @param string $emoji body param: Single emoji character to react with
      * @param string $zavuSender Header param: Optional sender profile ID. If omitted, the project's default sender will be used.
      * @param RequestOpts|null $requestOptions

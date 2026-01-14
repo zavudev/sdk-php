@@ -103,7 +103,7 @@ final class KnowledgeBasesRawService implements KnowledgeBasesRawContract
      *
      * Update a knowledge base.
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array{
      *   senderID: string, description?: string|null, name?: string
      * }|KnowledgeBaseUpdateParams $params

@@ -36,10 +36,10 @@ final class DocumentsService implements DocumentsContract
      *
      * Add a document to a knowledge base. The document will be automatically processed for RAG.
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string $content Body param:
-     * @param string $title Body param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string $content Body param
+     * @param string $title Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -66,10 +66,10 @@ final class DocumentsService implements DocumentsContract
      *
      * List documents in a knowledge base.
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string $cursor Query param:
-     * @param int $limit Query param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string $cursor Query param
+     * @param int $limit Query param
      * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentDocument>

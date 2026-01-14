@@ -113,7 +113,7 @@ final class ToolsRawService implements ToolsRawContract
      *
      * Update a tool.
      *
-     * @param string $toolID Path param:
+     * @param string $toolID Path param
      * @param array{
      *   senderID: string,
      *   description?: string,
@@ -224,7 +224,7 @@ final class ToolsRawService implements ToolsRawContract
      *
      * Test a tool by triggering its webhook with test parameters.
      *
-     * @param string $toolID Path param:
+     * @param string $toolID Path param
      * @param array{
      *   senderID: string, testParams: array<string,mixed>
      * }|ToolTestParams $params

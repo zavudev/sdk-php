@@ -18,10 +18,10 @@ interface DocumentsContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string $content Body param:
-     * @param string $title Body param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string $content Body param
+     * @param string $title Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -37,10 +37,10 @@ interface DocumentsContract
     /**
      * @api
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string $cursor Query param:
-     * @param int $limit Query param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string $cursor Query param
+     * @param int $limit Query param
      * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentDocument>

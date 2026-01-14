@@ -103,14 +103,14 @@ final class ToolsService implements ToolsContract
      *
      * Update a tool.
      *
-     * @param string $toolID Path param:
-     * @param string $senderID Path param:
-     * @param string $description Body param:
-     * @param bool $enabled Body param:
-     * @param string $name Body param:
-     * @param \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|ParametersShape1 $parameters Body param:
-     * @param string|null $webhookSecret Body param:
-     * @param string $webhookURL Body param:
+     * @param string $toolID Path param
+     * @param string $senderID Path param
+     * @param string $description Body param
+     * @param bool $enabled Body param
+     * @param string $name Body param
+     * @param \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|ParametersShape1 $parameters Body param
+     * @param string|null $webhookSecret Body param
+     * @param string $webhookURL Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -199,8 +199,8 @@ final class ToolsService implements ToolsContract
      *
      * Test a tool by triggering its webhook with test parameters.
      *
-     * @param string $toolID Path param:
-     * @param string $senderID Path param:
+     * @param string $toolID Path param
+     * @param string $senderID Path param
      * @param array<string,mixed> $testParams body param: Parameters to pass to the tool for testing
      * @param RequestOpts|null $requestOptions
      *
