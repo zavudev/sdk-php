@@ -10,6 +10,8 @@ enum MessageStatus: string
 
     case SENDING = 'sending';
 
+    case SENT = 'sent';
+
     case DELIVERED = 'delivered';
 
     case FAILED = 'failed';

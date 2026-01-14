@@ -66,7 +66,7 @@ final class MessagesRawService implements MessagesRawContract
      *   channel?: Channel|value-of<Channel>,
      *   cursor?: string,
      *   limit?: int,
-     *   status?: MessageStatus|value-of<MessageStatus>,
+     *   status?: value-of<MessageStatus>,
      *   to?: string,
      * }|MessageListParams $params
      * @param RequestOpts|null $requestOptions
