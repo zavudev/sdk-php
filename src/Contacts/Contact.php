@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zavudev\Contacts;
 
+use Zavudev\Contacts\Contact\Channel1 as Channel;
 use Zavudev\Contacts\Contact\DefaultChannel;
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
@@ -11,17 +12,24 @@ use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
+ * @phpstan-import-type Channel1Shape from \Zavudev\Contacts\Contact\Channel1
+ *
  * @phpstan-type ContactShape = array{
  *   id: string,
- *   phoneNumber: string,
- *   availableChannels?: list<string>|null,
+ *   availableChannels: list<string>,
+ *   createdAt: \DateTimeInterface,
+ *   metadata: array<string,string>,
+ *   verified: bool,
+ *   channels?: list<Channel|Channel1Shape>|null,
  *   countryCode?: string|null,
- *   createdAt?: \DateTimeInterface|null,
  *   defaultChannel?: null|DefaultChannel|value-of<DefaultChannel>,
- *   metadata?: array<string,string>|null,
+ *   displayName?: string|null,
+ *   phoneNumber?: string|null,
+ *   primaryEmail?: string|null,
+ *   primaryPhone?: string|null,
  *   profileName?: string|null,
+ *   suggestedMergeWith?: string|null,
  *   updatedAt?: \DateTimeInterface|null,
- *   verified?: bool|null,
  * }
  */
 final class Contact implements BaseModel
@@ -33,24 +41,36 @@ final class Contact implements BaseModel
     public string $id;
 
     /**
-     * E.164 phone number.
-     */
-    #[Required]
-    public string $phoneNumber;
-
-    /**
      * List of available messaging channels for this contact.
      *
-     * @var list<string>|null $availableChannels
+     * @var list<string> $availableChannels
      */
-    #[Optional(list: 'string')]
-    public ?array $availableChannels;
+    #[Required(list: 'string')]
+    public array $availableChannels;
+
+    #[Required]
+    public \DateTimeInterface $createdAt;
+
+    /** @var array<string,string> $metadata */
+    #[Required(map: 'string')]
+    public array $metadata;
+
+    /**
+     * Whether this contact has been verified.
+     */
+    #[Required]
+    public bool $verified;
+
+    /**
+     * All communication channels for this contact.
+     *
+     * @var list<Channel>|null $channels
+     */
+    #[Optional(list: Channel::class)]
+    public ?array $channels;
 
     #[Optional]
     public ?string $countryCode;
-
-    #[Optional]
-    public ?\DateTimeInterface $createdAt;
 
     /**
      * Preferred channel for this contact.
@@ -60,9 +80,29 @@ final class Contact implements BaseModel
     #[Optional(enum: DefaultChannel::class)]
     public ?string $defaultChannel;
 
-    /** @var array<string,string>|null $metadata */
-    #[Optional(map: 'string')]
-    public ?array $metadata;
+    /**
+     * Display name for the contact.
+     */
+    #[Optional]
+    public ?string $displayName;
+
+    /**
+     * DEPRECATED: Use primaryPhone instead. Primary phone number in E.164 format.
+     */
+    #[Optional]
+    public ?string $phoneNumber;
+
+    /**
+     * Primary email address.
+     */
+    #[Optional]
+    public ?string $primaryEmail;
+
+    /**
+     * Primary phone number in E.164 format.
+     */
+    #[Optional]
+    public ?string $primaryPhone;
 
     /**
      * Contact's WhatsApp profile name. Only available for WhatsApp contacts.
@@ -70,27 +110,34 @@ final class Contact implements BaseModel
     #[Optional(nullable: true)]
     public ?string $profileName;
 
-    #[Optional]
-    public ?\DateTimeInterface $updatedAt;
-
     /**
-     * Whether this contact has been verified.
+     * ID of a contact suggested for merging.
      */
     #[Optional]
-    public ?bool $verified;
+    public ?string $suggestedMergeWith;
+
+    #[Optional]
+    public ?\DateTimeInterface $updatedAt;
 
     /**
      * `new Contact()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Contact::with(id: ..., phoneNumber: ...)
+     * Contact::with(
+     *   id: ..., availableChannels: ..., createdAt: ..., metadata: ..., verified: ...
+     * )
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Contact)->withID(...)->withPhoneNumber(...)
+     * (new Contact)
+     *   ->withID(...)
+     *   ->withAvailableChannels(...)
+     *   ->withCreatedAt(...)
+     *   ->withMetadata(...)
+     *   ->withVerified(...)
      * ```
      */
     public function __construct()
@@ -103,35 +150,46 @@ final class Contact implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<string>|null $availableChannels
+     * @param list<string> $availableChannels
+     * @param array<string,string> $metadata
+     * @param list<Channel|Channel1Shape>|null $channels
      * @param DefaultChannel|value-of<DefaultChannel>|null $defaultChannel
-     * @param array<string,string>|null $metadata
      */
     public static function with(
         string $id,
-        string $phoneNumber,
-        ?array $availableChannels = null,
+        array $availableChannels,
+        \DateTimeInterface $createdAt,
+        array $metadata,
+        bool $verified,
+        ?array $channels = null,
         ?string $countryCode = null,
-        ?\DateTimeInterface $createdAt = null,
         DefaultChannel|string|null $defaultChannel = null,
-        ?array $metadata = null,
+        ?string $displayName = null,
+        ?string $phoneNumber = null,
+        ?string $primaryEmail = null,
+        ?string $primaryPhone = null,
         ?string $profileName = null,
+        ?string $suggestedMergeWith = null,
         ?\DateTimeInterface $updatedAt = null,
-        ?bool $verified = null,
     ): self {
         $self = new self;
 
         $self['id'] = $id;
-        $self['phoneNumber'] = $phoneNumber;
+        $self['availableChannels'] = $availableChannels;
+        $self['createdAt'] = $createdAt;
+        $self['metadata'] = $metadata;
+        $self['verified'] = $verified;
 
-        null !== $availableChannels && $self['availableChannels'] = $availableChannels;
+        null !== $channels && $self['channels'] = $channels;
         null !== $countryCode && $self['countryCode'] = $countryCode;
-        null !== $createdAt && $self['createdAt'] = $createdAt;
         null !== $defaultChannel && $self['defaultChannel'] = $defaultChannel;
-        null !== $metadata && $self['metadata'] = $metadata;
+        null !== $displayName && $self['displayName'] = $displayName;
+        null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
+        null !== $primaryEmail && $self['primaryEmail'] = $primaryEmail;
+        null !== $primaryPhone && $self['primaryPhone'] = $primaryPhone;
         null !== $profileName && $self['profileName'] = $profileName;
+        null !== $suggestedMergeWith && $self['suggestedMergeWith'] = $suggestedMergeWith;
         null !== $updatedAt && $self['updatedAt'] = $updatedAt;
-        null !== $verified && $self['verified'] = $verified;
 
         return $self;
     }
@@ -140,17 +198,6 @@ final class Contact implements BaseModel
     {
         $self = clone $this;
         $self['id'] = $id;
-
-        return $self;
-    }
-
-    /**
-     * E.164 phone number.
-     */
-    public function withPhoneNumber(string $phoneNumber): self
-    {
-        $self = clone $this;
-        $self['phoneNumber'] = $phoneNumber;
 
         return $self;
     }
@@ -168,18 +215,53 @@ final class Contact implements BaseModel
         return $self;
     }
 
-    public function withCountryCode(string $countryCode): self
-    {
-        $self = clone $this;
-        $self['countryCode'] = $countryCode;
-
-        return $self;
-    }
-
     public function withCreatedAt(\DateTimeInterface $createdAt): self
     {
         $self = clone $this;
         $self['createdAt'] = $createdAt;
+
+        return $self;
+    }
+
+    /**
+     * @param array<string,string> $metadata
+     */
+    public function withMetadata(array $metadata): self
+    {
+        $self = clone $this;
+        $self['metadata'] = $metadata;
+
+        return $self;
+    }
+
+    /**
+     * Whether this contact has been verified.
+     */
+    public function withVerified(bool $verified): self
+    {
+        $self = clone $this;
+        $self['verified'] = $verified;
+
+        return $self;
+    }
+
+    /**
+     * All communication channels for this contact.
+     *
+     * @param list<Channel|Channel1Shape> $channels
+     */
+    public function withChannels(array $channels): self
+    {
+        $self = clone $this;
+        $self['channels'] = $channels;
+
+        return $self;
+    }
+
+    public function withCountryCode(string $countryCode): self
+    {
+        $self = clone $this;
+        $self['countryCode'] = $countryCode;
 
         return $self;
     }
@@ -199,12 +281,45 @@ final class Contact implements BaseModel
     }
 
     /**
-     * @param array<string,string> $metadata
+     * Display name for the contact.
      */
-    public function withMetadata(array $metadata): self
+    public function withDisplayName(string $displayName): self
     {
         $self = clone $this;
-        $self['metadata'] = $metadata;
+        $self['displayName'] = $displayName;
+
+        return $self;
+    }
+
+    /**
+     * DEPRECATED: Use primaryPhone instead. Primary phone number in E.164 format.
+     */
+    public function withPhoneNumber(string $phoneNumber): self
+    {
+        $self = clone $this;
+        $self['phoneNumber'] = $phoneNumber;
+
+        return $self;
+    }
+
+    /**
+     * Primary email address.
+     */
+    public function withPrimaryEmail(string $primaryEmail): self
+    {
+        $self = clone $this;
+        $self['primaryEmail'] = $primaryEmail;
+
+        return $self;
+    }
+
+    /**
+     * Primary phone number in E.164 format.
+     */
+    public function withPrimaryPhone(string $primaryPhone): self
+    {
+        $self = clone $this;
+        $self['primaryPhone'] = $primaryPhone;
 
         return $self;
     }
@@ -220,21 +335,21 @@ final class Contact implements BaseModel
         return $self;
     }
 
-    public function withUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * ID of a contact suggested for merging.
+     */
+    public function withSuggestedMergeWith(string $suggestedMergeWith): self
     {
         $self = clone $this;
-        $self['updatedAt'] = $updatedAt;
+        $self['suggestedMergeWith'] = $suggestedMergeWith;
 
         return $self;
     }
 
-    /**
-     * Whether this contact has been verified.
-     */
-    public function withVerified(bool $verified): self
+    public function withUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $self = clone $this;
-        $self['verified'] = $verified;
+        $self['updatedAt'] = $updatedAt;
 
         return $self;
     }

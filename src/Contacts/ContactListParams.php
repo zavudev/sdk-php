@@ -10,7 +10,7 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * List contacts.
+ * List contacts with their communication channels.
  *
  * @see Zavudev\Services\ContactsService::list()
  *

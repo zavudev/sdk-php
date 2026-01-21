@@ -80,7 +80,7 @@ final class ContactsService implements ContactsContract
     /**
      * @api
      *
-     * List contacts
+     * List contacts with their communication channels.
      *
      * @param RequestOpts|null $requestOptions
      *
