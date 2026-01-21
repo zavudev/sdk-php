@@ -88,7 +88,7 @@ final class ContactsRawService implements ContactsRawContract
     /**
      * @api
      *
-     * List contacts
+     * List contacts with their communication channels.
      *
      * @param array{
      *   cursor?: string, limit?: int, phoneNumber?: string
