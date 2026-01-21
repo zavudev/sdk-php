@@ -1,5 +1,45 @@
 # Changelog
 
+## 0.2.0 (2026-01-21)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/zavudev/sdk-php/compare/v0.1.0...v0.2.0)
+
+### ⚠ BREAKING CHANGES
+
+* replace special flag type `omittable` with just `null`
+
+### Features
+
+* **api:** api update ([d16bd99](https://github.com/zavudev/sdk-php/commit/d16bd9918ef1f31340e690c634de38e6d3f374df))
+* **api:** api update ([f030cef](https://github.com/zavudev/sdk-php/commit/f030cefa7ab58cb6f4e960903f4b01334f85aa84))
+* **api:** api update ([b969187](https://github.com/zavudev/sdk-php/commit/b96918752afb652ebb74960fe5c5570d4287d6fa))
+* **api:** api update ([2595cb3](https://github.com/zavudev/sdk-php/commit/2595cb35bd766edc7ea518e9f425e98ea892040c))
+* **api:** api update ([5c01082](https://github.com/zavudev/sdk-php/commit/5c010823fee5441218b71c42e3f6e16c2f3d09cf))
+* **api:** api update ([a8164db](https://github.com/zavudev/sdk-php/commit/a8164db149247afabea2ae93a307712a3d3285e6))
+* replace special flag type `omittable` with just `null` ([e2d51ba](https://github.com/zavudev/sdk-php/commit/e2d51ba475bb678215cf8aa5cf5a68ffdd268b07))
+* simplify and make the phpstan types more consistent ([b69b43a](https://github.com/zavudev/sdk-php/commit/b69b43a88f54ab322e520c780d3e1223556cdf59))
+
+
+### Bug Fixes
+
+* typos in README.md ([af9a0d0](https://github.com/zavudev/sdk-php/commit/af9a0d021a7e613322cce59b323211cc7684c592))
+
+
+### Chores
+
+* add git attributes and composer lock file ([f19a1bb](https://github.com/zavudev/sdk-php/commit/f19a1bbad7a7c3c3a3895785ec70ad74579f6d82))
+* fix typo in descriptions ([a1de745](https://github.com/zavudev/sdk-php/commit/a1de74566c22f57b99689d3ae5cb2137149eeef6))
+* **internal:** add a basic client test ([60e9ccd](https://github.com/zavudev/sdk-php/commit/60e9ccdb45c2920c316a7eaab6f8293e5af6051e))
+* **internal:** codegen related update ([af7f6f0](https://github.com/zavudev/sdk-php/commit/af7f6f030ef1cc2e6f947bbdd42525c4d6a1902d))
+* **internal:** codegen related update ([b41a6f0](https://github.com/zavudev/sdk-php/commit/b41a6f0861c5bfecb47d9cd0ec841fdfeb7e2888))
+* **internal:** codegen related update ([707448c](https://github.com/zavudev/sdk-php/commit/707448c6c52576d5a487bb8f4392e0c998bed146))
+* **internal:** codegen related update ([b913ed8](https://github.com/zavudev/sdk-php/commit/b913ed80dad1903cb99825b6d3fd95f34b21646d))
+* **internal:** minor test script reformatting ([e8361aa](https://github.com/zavudev/sdk-php/commit/e8361aabc78c4e5fd186ec1d317663d5e19cac46))
+* **internal:** refactor auth by moving concern from base client into client ([7d6f164](https://github.com/zavudev/sdk-php/commit/7d6f164027081f3dba1c2bd7a7ab42000bd4f02e))
+* **internal:** update `actions/checkout` version ([6537220](https://github.com/zavudev/sdk-php/commit/653722041acb4ab4d3d486944370b86f0a229559))
+* **internal:** update phpstan comments ([56a3d3b](https://github.com/zavudev/sdk-php/commit/56a3d3be58c7c99533aaccc98f64f021e9359674))
+* **readme:** remove beta warning now that we're in ga ([3c149f0](https://github.com/zavudev/sdk-php/commit/3c149f05bdbf7c9566e92422f96b51c4fd227940))
+
 ## 0.1.0 (2026-01-01)
 
 Full Changelog: [v0.0.1...v0.1.0](https://github.com/zavudev/sdk-php/compare/v0.0.1...v0.1.0)
