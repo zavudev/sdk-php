@@ -10,15 +10,19 @@ use Zavudev\Senders\Agent\AgentProvider;
 use Zavudev\Senders\Agent\AgentResponse;
 use Zavudev\Senders\Agent\AgentStats;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface AgentContract
 {
     /**
      * @api
      *
-     * @param 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider $provider LLM provider for the AI agent
+     * @param AgentProvider|value-of<AgentProvider> $provider LLM provider for the AI agent
      * @param string $apiKey API key for the LLM provider. Required unless provider is 'zavu'.
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -26,7 +30,7 @@ interface AgentContract
         string $senderID,
         string $model,
         string $name,
-        string|AgentProvider $provider,
+        AgentProvider|string $provider,
         string $systemPrompt,
         ?string $apiKey = null,
         int $contextWindowMessages = 10,
@@ -35,25 +39,28 @@ interface AgentContract
         ?float $temperature = null,
         array $triggerOnChannels = ['*'],
         array $triggerOnMessageTypes = ['text'],
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): AgentResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): AgentResponse;
 
     /**
      * @api
      *
-     * @param 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider $provider LLM provider for the AI agent
+     * @param AgentProvider|value-of<AgentProvider> $provider LLM provider for the AI agent
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -66,31 +73,35 @@ interface AgentContract
         ?int $maxTokens = null,
         ?string $model = null,
         ?string $name = null,
-        string|AgentProvider|null $provider = null,
+        AgentProvider|string|null $provider = null,
         ?string $systemPrompt = null,
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): AgentResponse;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function stats(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): AgentStats;
 }

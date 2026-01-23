@@ -22,12 +22,16 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface BroadcastsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|BroadcastCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastNewResponse>
      *
@@ -35,11 +39,13 @@ interface BroadcastsRawContract
      */
     public function create(
         array|BroadcastCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastGetResponse>
      *
@@ -47,13 +53,14 @@ interface BroadcastsRawContract
      */
     public function retrieve(
         string $broadcastID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|BroadcastUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastUpdateResponse>
      *
@@ -62,13 +69,14 @@ interface BroadcastsRawContract
     public function update(
         string $broadcastID,
         array|BroadcastUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|BroadcastListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Broadcast>>
      *
@@ -76,11 +84,13 @@ interface BroadcastsRawContract
      */
     public function list(
         array|BroadcastListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -88,11 +98,13 @@ interface BroadcastsRawContract
      */
     public function delete(
         string $broadcastID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastCancelResponse>
      *
@@ -100,11 +112,13 @@ interface BroadcastsRawContract
      */
     public function cancel(
         string $broadcastID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastProgress>
      *
@@ -112,13 +126,14 @@ interface BroadcastsRawContract
      */
     public function progress(
         string $broadcastID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|BroadcastRescheduleParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastRescheduleResponse>
      *
@@ -127,13 +142,14 @@ interface BroadcastsRawContract
     public function reschedule(
         string $broadcastID,
         array|BroadcastRescheduleParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|BroadcastSendParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<BroadcastSendResponse>
      *
@@ -142,6 +158,6 @@ interface BroadcastsRawContract
     public function send(
         string $broadcastID,
         array|BroadcastSendParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

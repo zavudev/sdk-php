@@ -10,12 +10,16 @@ use Zavudev\Introspect\IntrospectValidatePhoneParams;
 use Zavudev\Introspect\IntrospectValidatePhoneResponse;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface IntrospectRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|IntrospectValidatePhoneParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<IntrospectValidatePhoneResponse>
      *
@@ -23,6 +27,6 @@ interface IntrospectRawContract
      */
     public function validatePhone(
         array|IntrospectValidatePhoneParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

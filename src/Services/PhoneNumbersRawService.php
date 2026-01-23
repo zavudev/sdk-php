@@ -24,6 +24,9 @@ use Zavudev\PhoneNumbers\PhoneNumberUpdateResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\PhoneNumbersRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class PhoneNumbersRawService implements PhoneNumbersRawContract
 {
     // @phpstan-ignore-next-line
@@ -37,13 +40,15 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      *
      * Get details of a specific phone number.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<PhoneNumberGetResponse>
      *
      * @throws APIException
      */
     public function retrieve(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -62,6 +67,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      * @param array{
      *   name?: string|null, senderID?: string|null
      * }|PhoneNumberUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberUpdateResponse>
      *
@@ -70,7 +76,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
     public function update(
         string $phoneNumberID,
         array|PhoneNumberUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = PhoneNumberUpdateParams::parseRequest(
             $params,
@@ -95,8 +101,9 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      * @param array{
      *   cursor?: string,
      *   limit?: int,
-     *   status?: 'active'|'suspended'|'pending'|PhoneNumberStatus,
+     *   status?: PhoneNumberStatus|value-of<PhoneNumberStatus>,
      * }|PhoneNumberListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<OwnedPhoneNumber>>
      *
@@ -104,7 +111,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      */
     public function list(
         array|PhoneNumberListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = PhoneNumberListParams::parseRequest(
             $params,
@@ -130,6 +137,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      * @param array{
      *   phoneNumber: string, name?: string
      * }|PhoneNumberPurchaseParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberPurchaseResponse>
      *
@@ -137,7 +145,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      */
     public function purchase(
         array|PhoneNumberPurchaseParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = PhoneNumberPurchaseParams::parseRequest(
             $params,
@@ -159,13 +167,15 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      *
      * Release a phone number. The phone number must not be assigned to a sender.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function release(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -182,8 +192,9 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      * Get regulatory requirements for purchasing phone numbers in a specific country. Some countries require additional documentation (addresses, identity documents) before phone numbers can be activated.
      *
      * @param array{
-     *   countryCode: string, type?: 'local'|'mobile'|'tollFree'|PhoneNumberType
+     *   countryCode: string, type?: PhoneNumberType|value-of<PhoneNumberType>
      * }|PhoneNumberRequirementsParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberRequirementsResponse>
      *
@@ -191,7 +202,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      */
     public function requirements(
         array|PhoneNumberRequirementsParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = PhoneNumberRequirementsParams::parseRequest(
             $params,
@@ -217,8 +228,9 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      *   countryCode: string,
      *   contains?: string,
      *   limit?: int,
-     *   type?: 'local'|'mobile'|'tollFree'|PhoneNumberType,
+     *   type?: PhoneNumberType|value-of<PhoneNumberType>,
      * }|PhoneNumberSearchAvailableParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberSearchAvailableResponse>
      *
@@ -226,7 +238,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      */
     public function searchAvailable(
         array|PhoneNumberSearchAvailableParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = PhoneNumberSearchAvailableParams::parseRequest(
             $params,

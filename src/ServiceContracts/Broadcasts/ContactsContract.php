@@ -6,17 +6,23 @@ namespace Zavudev\ServiceContracts\Broadcasts;
 
 use Zavudev\Broadcasts\BroadcastContact;
 use Zavudev\Broadcasts\BroadcastContactStatus;
+use Zavudev\Broadcasts\Contacts\ContactAddParams\Contact;
 use Zavudev\Broadcasts\Contacts\ContactAddResponse;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type ContactShape from \Zavudev\Broadcasts\Contacts\ContactAddParams\Contact
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ContactsContract
 {
     /**
      * @api
      *
-     * @param 'pending'|'queued'|'sending'|'delivered'|'failed'|'skipped'|BroadcastContactStatus $status status of a contact within a broadcast
+     * @param BroadcastContactStatus|value-of<BroadcastContactStatus> $status status of a contact within a broadcast
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<BroadcastContact>
      *
@@ -26,35 +32,35 @@ interface ContactsContract
         string $broadcastID,
         ?string $cursor = null,
         int $limit = 50,
-        string|BroadcastContactStatus|null $status = null,
-        ?RequestOptions $requestOptions = null,
+        BroadcastContactStatus|string|null $status = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
      *
-     * @param list<array{
-     *   recipient: string, templateVariables?: array<string,string>
-     * }> $contacts List of contacts to add (max 1000 per request)
+     * @param list<Contact|ContactShape> $contacts list of contacts to add (max 1000 per request)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function add(
         string $broadcastID,
         array $contacts,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): ContactAddResponse;
 
     /**
      * @api
      *
      * @param string $contactID Broadcast contact ID (not the global contact ID)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function remove(
         string $contactID,
         string $broadcastID,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): mixed;
 }

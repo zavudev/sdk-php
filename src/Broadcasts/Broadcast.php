@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zavudev\Broadcasts;
 
+use Zavudev\Broadcasts\Broadcast\ReviewResult;
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
@@ -11,6 +12,7 @@ use Zavudev\Core\Contracts\BaseModel;
 
 /**
  * @phpstan-import-type BroadcastContentShape from \Zavudev\Broadcasts\BroadcastContent
+ * @phpstan-import-type ReviewResultShape from \Zavudev\Broadcasts\Broadcast\ReviewResult
  *
  * @phpstan-type BroadcastShape = array{
  *   id: string,
@@ -30,6 +32,8 @@ use Zavudev\Core\Contracts\BaseModel;
  *   metadata?: array<string,string>|null,
  *   pendingCount?: int|null,
  *   reservedAmount?: float|null,
+ *   reviewAttempts?: int|null,
+ *   reviewResult?: null|ReviewResult|ReviewResultShape,
  *   scheduledAt?: \DateTimeInterface|null,
  *   senderID?: string|null,
  *   sendingCount?: int|null,
@@ -125,6 +129,18 @@ final class Broadcast implements BaseModel
     #[Optional(nullable: true)]
     public ?float $reservedAmount;
 
+    /**
+     * Number of review attempts (max 3).
+     */
+    #[Optional(nullable: true)]
+    public ?int $reviewAttempts;
+
+    /**
+     * AI content review result.
+     */
+    #[Optional(nullable: true)]
+    public ?ReviewResult $reviewResult;
+
     #[Optional]
     public ?\DateTimeInterface $scheduledAt;
 
@@ -187,6 +203,7 @@ final class Broadcast implements BaseModel
      * @param BroadcastStatus|value-of<BroadcastStatus> $status
      * @param BroadcastContent|BroadcastContentShape|null $content
      * @param array<string,string>|null $metadata
+     * @param ReviewResult|ReviewResultShape|null $reviewResult
      */
     public static function with(
         string $id,
@@ -206,6 +223,8 @@ final class Broadcast implements BaseModel
         ?array $metadata = null,
         ?int $pendingCount = null,
         ?float $reservedAmount = null,
+        ?int $reviewAttempts = null,
+        ReviewResult|array|null $reviewResult = null,
         ?\DateTimeInterface $scheduledAt = null,
         ?string $senderID = null,
         ?int $sendingCount = null,
@@ -233,6 +252,8 @@ final class Broadcast implements BaseModel
         null !== $metadata && $self['metadata'] = $metadata;
         null !== $pendingCount && $self['pendingCount'] = $pendingCount;
         null !== $reservedAmount && $self['reservedAmount'] = $reservedAmount;
+        null !== $reviewAttempts && $self['reviewAttempts'] = $reviewAttempts;
+        null !== $reviewResult && $self['reviewResult'] = $reviewResult;
         null !== $scheduledAt && $self['scheduledAt'] = $scheduledAt;
         null !== $senderID && $self['senderID'] = $senderID;
         null !== $sendingCount && $self['sendingCount'] = $sendingCount;
@@ -411,6 +432,31 @@ final class Broadcast implements BaseModel
     {
         $self = clone $this;
         $self['reservedAmount'] = $reservedAmount;
+
+        return $self;
+    }
+
+    /**
+     * Number of review attempts (max 3).
+     */
+    public function withReviewAttempts(?int $reviewAttempts): self
+    {
+        $self = clone $this;
+        $self['reviewAttempts'] = $reviewAttempts;
+
+        return $self;
+    }
+
+    /**
+     * AI content review result.
+     *
+     * @param ReviewResult|ReviewResultShape|null $reviewResult
+     */
+    public function withReviewResult(
+        ReviewResult|array|null $reviewResult
+    ): self {
+        $self = clone $this;
+        $self['reviewResult'] = $reviewResult;
 
         return $self;
     }

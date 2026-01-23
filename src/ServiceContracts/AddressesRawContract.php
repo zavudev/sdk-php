@@ -14,12 +14,16 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface AddressesRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|AddressCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AddressNewResponse>
      *
@@ -27,11 +31,13 @@ interface AddressesRawContract
      */
     public function create(
         array|AddressCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<AddressGetResponse>
      *
@@ -39,13 +45,14 @@ interface AddressesRawContract
      */
     public function retrieve(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|AddressListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Address>>
      *
@@ -53,11 +60,13 @@ interface AddressesRawContract
      */
     public function list(
         array|AddressListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -65,6 +74,6 @@ interface AddressesRawContract
      */
     public function delete(
         string $addressID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 }

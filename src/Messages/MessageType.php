@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Zavudev\Messages;
 
 /**
- * Type of message. Non-text types are WhatsApp only.
+ * Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
  */
 enum MessageType: string
 {

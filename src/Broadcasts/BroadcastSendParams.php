@@ -10,7 +10,7 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * Start sending the broadcast immediately or schedule for later. Reserves the estimated cost from your balance.
+ * Start sending the broadcast immediately or schedule for later. Broadcasts go through automated AI content review before sending. If the review passes, the broadcast proceeds. If rejected, use PATCH to edit content, then call POST /retry-review. Reserves the estimated cost from your balance.
  *
  * @see Zavudev\Services\BroadcastsService::send()
  *

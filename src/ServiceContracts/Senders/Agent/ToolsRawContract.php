@@ -20,12 +20,16 @@ use Zavudev\Senders\Agent\Tools\ToolTestResponse;
 use Zavudev\Senders\Agent\Tools\ToolUpdateParams;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ToolsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|ToolCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolNewResponse>
      *
@@ -34,13 +38,14 @@ interface ToolsRawContract
     public function create(
         string $senderID,
         array|ToolCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ToolRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolGetResponse>
      *
@@ -49,14 +54,15 @@ interface ToolsRawContract
     public function retrieve(
         string $toolID,
         array|ToolRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $toolID Path param:
+     * @param string $toolID Path param
      * @param array<string,mixed>|ToolUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolUpdateResponse>
      *
@@ -65,13 +71,14 @@ interface ToolsRawContract
     public function update(
         string $toolID,
         array|ToolUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ToolListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentTool>>
      *
@@ -80,13 +87,14 @@ interface ToolsRawContract
     public function list(
         string $senderID,
         array|ToolListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|ToolDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -95,14 +103,15 @@ interface ToolsRawContract
     public function delete(
         string $toolID,
         array|ToolDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $toolID Path param:
+     * @param string $toolID Path param
      * @param array<string,mixed>|ToolTestParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<ToolTestResponse>
      *
@@ -111,6 +120,6 @@ interface ToolsRawContract
     public function test(
         string $toolID,
         array|ToolTestParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

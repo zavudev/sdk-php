@@ -12,10 +12,15 @@ use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseGetResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseNewResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface KnowledgeBasesContract
 {
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -23,27 +28,30 @@ interface KnowledgeBasesContract
         string $senderID,
         string $name,
         ?string $description = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseNewResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function retrieve(
         string $kbID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseGetResponse;
 
     /**
      * @api
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string|null $description Body param:
-     * @param string $name Body param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string|null $description Body param
+     * @param string $name Body param
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -52,11 +60,13 @@ interface KnowledgeBasesContract
         string $senderID,
         ?string $description = null,
         ?string $name = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseUpdateResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentKnowledgeBase>
      *
@@ -66,17 +76,19 @@ interface KnowledgeBasesContract
         string $senderID,
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function delete(
         string $kbID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): mixed;
 }

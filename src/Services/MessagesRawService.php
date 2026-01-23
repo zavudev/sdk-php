@@ -21,6 +21,10 @@ use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\MessagesRawContract;
 
+/**
+ * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class MessagesRawService implements MessagesRawContract
 {
     // @phpstan-ignore-next-line
@@ -34,13 +38,15 @@ final class MessagesRawService implements MessagesRawContract
      *
      * Get message by ID
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<MessageResponse>
      *
      * @throws APIException
      */
     public function retrieve(
         string $messageID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -57,12 +63,13 @@ final class MessagesRawService implements MessagesRawContract
      * List messages previously sent by this project.
      *
      * @param array{
-     *   channel?: 'auto'|'sms'|'whatsapp'|'email'|Channel,
+     *   channel?: Channel|value-of<Channel>,
      *   cursor?: string,
      *   limit?: int,
-     *   status?: 'queued'|'sending'|'delivered'|'failed'|'received'|MessageStatus,
+     *   status?: value-of<MessageStatus>,
      *   to?: string,
      * }|MessageListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Message>>
      *
@@ -70,7 +77,7 @@ final class MessagesRawService implements MessagesRawContract
      */
     public function list(
         array|MessageListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = MessageListParams::parseRequest(
             $params,
@@ -93,8 +100,9 @@ final class MessagesRawService implements MessagesRawContract
      *
      * Send an emoji reaction to an existing WhatsApp message. Reactions are only supported for WhatsApp messages.
      *
-     * @param string $messageID Path param:
+     * @param string $messageID Path param
      * @param array{emoji: string, zavuSender?: string}|MessageReactParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<MessageResponse>
      *
@@ -103,7 +111,7 @@ final class MessagesRawService implements MessagesRawContract
     public function react(
         string $messageID,
         array|MessageReactParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = MessageReactParams::parseRequest(
             $params,
@@ -144,25 +152,8 @@ final class MessagesRawService implements MessagesRawContract
      *
      * @param array{
      *   to: string,
-     *   channel?: 'auto'|'sms'|'whatsapp'|'email'|Channel,
-     *   content?: array{
-     *     buttons?: list<array<string,mixed>>,
-     *     contacts?: list<array<string,mixed>>,
-     *     emoji?: string,
-     *     filename?: string,
-     *     latitude?: float,
-     *     listButton?: string,
-     *     locationAddress?: string,
-     *     locationName?: string,
-     *     longitude?: float,
-     *     mediaID?: string,
-     *     mediaURL?: string,
-     *     mimeType?: string,
-     *     reactToMessageID?: string,
-     *     sections?: list<array<string,mixed>>,
-     *     templateID?: string,
-     *     templateVariables?: array<string,string>,
-     *   }|MessageContent,
+     *   channel?: Channel|value-of<Channel>,
+     *   content?: MessageContent|MessageContentShape,
      *   fallbackEnabled?: bool,
      *   htmlBody?: string,
      *   idempotencyKey?: string,
@@ -173,6 +164,7 @@ final class MessagesRawService implements MessagesRawContract
      *   text?: string,
      *   zavuSender?: string,
      * }|MessageSendParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<MessageResponse>
      *
@@ -180,7 +172,7 @@ final class MessagesRawService implements MessagesRawContract
      */
     public function send(
         array|MessageSendParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = MessageSendParams::parseRequest(
             $params,

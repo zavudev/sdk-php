@@ -14,7 +14,7 @@ use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters\Type;
  * @phpstan-import-type PropertyShape from \Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters\Property
  *
  * @phpstan-type ParametersShape = array{
- *   properties: array<string,PropertyShape>,
+ *   properties: array<string,Property|PropertyShape>,
  *   required: list<string>,
  *   type: Type|value-of<Type>,
  * }
@@ -60,7 +60,7 @@ final class Parameters implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param array<string,PropertyShape> $properties
+     * @param array<string,Property|PropertyShape> $properties
      * @param list<string> $required
      * @param Type|value-of<Type> $type
      */
@@ -79,7 +79,7 @@ final class Parameters implements BaseModel
     }
 
     /**
-     * @param array<string,PropertyShape> $properties
+     * @param array<string,Property|PropertyShape> $properties
      */
     public function withProperties(array $properties): self
     {

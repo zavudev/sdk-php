@@ -16,6 +16,9 @@ use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentListParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBases\DocumentsRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class DocumentsRawService implements DocumentsRawContract
 {
     // @phpstan-ignore-next-line
@@ -29,10 +32,11 @@ final class DocumentsRawService implements DocumentsRawContract
      *
      * Add a document to a knowledge base. The document will be automatically processed for RAG.
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array{
      *   senderID: string, content: string, title: string
      * }|DocumentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<DocumentNewResponse>
      *
@@ -41,7 +45,7 @@ final class DocumentsRawService implements DocumentsRawContract
     public function create(
         string $kbID,
         array|DocumentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = DocumentCreateParams::parseRequest(
             $params,
@@ -67,10 +71,11 @@ final class DocumentsRawService implements DocumentsRawContract
      *
      * List documents in a knowledge base.
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array{
      *   senderID: string, cursor?: string, limit?: int
      * }|DocumentListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentDocument>>
      *
@@ -79,7 +84,7 @@ final class DocumentsRawService implements DocumentsRawContract
     public function list(
         string $kbID,
         array|DocumentListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = DocumentListParams::parseRequest(
             $params,
@@ -107,6 +112,7 @@ final class DocumentsRawService implements DocumentsRawContract
      * Delete a document from a knowledge base.
      *
      * @param array{senderID: string, kbID: string}|DocumentDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -115,7 +121,7 @@ final class DocumentsRawService implements DocumentsRawContract
     public function delete(
         string $docID,
         array|DocumentDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = DocumentDeleteParams::parseRequest(
             $params,

@@ -17,6 +17,9 @@ use Zavudev\Services\Senders\Agent\FlowsService;
 use Zavudev\Services\Senders\Agent\KnowledgeBasesService;
 use Zavudev\Services\Senders\Agent\ToolsService;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class AgentService implements AgentContract
 {
     /**
@@ -61,10 +64,11 @@ final class AgentService implements AgentContract
      *
      * Create an AI agent for a sender. Each sender can have at most one agent.
      *
-     * @param 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider $provider LLM provider for the AI agent
+     * @param AgentProvider|value-of<AgentProvider> $provider LLM provider for the AI agent
      * @param string $apiKey API key for the LLM provider. Required unless provider is 'zavu'.
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -72,7 +76,7 @@ final class AgentService implements AgentContract
         string $senderID,
         string $model,
         string $name,
-        string|AgentProvider $provider,
+        AgentProvider|string $provider,
         string $systemPrompt,
         ?string $apiKey = null,
         int $contextWindowMessages = 10,
@@ -81,7 +85,7 @@ final class AgentService implements AgentContract
         ?float $temperature = null,
         array $triggerOnChannels = ['*'],
         array $triggerOnMessageTypes = ['text'],
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): AgentResponse {
         $params = Util::removeNulls(
             [
@@ -110,11 +114,13 @@ final class AgentService implements AgentContract
      *
      * Get the AI agent configuration for a sender.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): AgentResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($senderID, requestOptions: $requestOptions);
@@ -127,9 +133,10 @@ final class AgentService implements AgentContract
      *
      * Update an AI agent's configuration.
      *
-     * @param 'openai'|'anthropic'|'google'|'mistral'|'zavu'|AgentProvider $provider LLM provider for the AI agent
+     * @param AgentProvider|value-of<AgentProvider> $provider LLM provider for the AI agent
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -142,12 +149,12 @@ final class AgentService implements AgentContract
         ?int $maxTokens = null,
         ?string $model = null,
         ?string $name = null,
-        string|AgentProvider|null $provider = null,
+        AgentProvider|string|null $provider = null,
         ?string $systemPrompt = null,
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): AgentResponse {
         $params = Util::removeNulls(
             [
@@ -177,11 +184,13 @@ final class AgentService implements AgentContract
      *
      * Delete an AI agent.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($senderID, requestOptions: $requestOptions);
@@ -194,11 +203,13 @@ final class AgentService implements AgentContract
      *
      * Get statistics for an AI agent including invocations, tokens, and costs.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function stats(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): AgentStats {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->stats($senderID, requestOptions: $requestOptions);

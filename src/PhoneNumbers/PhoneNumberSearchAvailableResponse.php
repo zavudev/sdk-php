@@ -12,7 +12,7 @@ use Zavudev\Core\Contracts\BaseModel;
  * @phpstan-import-type AvailablePhoneNumberShape from \Zavudev\PhoneNumbers\AvailablePhoneNumber
  *
  * @phpstan-type PhoneNumberSearchAvailableResponseShape = array{
- *   items: list<AvailablePhoneNumberShape>
+ *   items: list<AvailablePhoneNumber|AvailablePhoneNumberShape>
  * }
  */
 final class PhoneNumberSearchAvailableResponse implements BaseModel
@@ -48,7 +48,7 @@ final class PhoneNumberSearchAvailableResponse implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<AvailablePhoneNumberShape> $items
+     * @param list<AvailablePhoneNumber|AvailablePhoneNumberShape> $items
      */
     public static function with(array $items): self
     {
@@ -60,7 +60,7 @@ final class PhoneNumberSearchAvailableResponse implements BaseModel
     }
 
     /**
-     * @param list<AvailablePhoneNumberShape> $items
+     * @param list<AvailablePhoneNumber|AvailablePhoneNumberShape> $items
      */
     public function withItems(array $items): self
     {

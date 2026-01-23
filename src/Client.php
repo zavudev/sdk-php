@@ -18,6 +18,10 @@ use Zavudev\Services\RegulatoryDocumentsService;
 use Zavudev\Services\SendersService;
 use Zavudev\Services\TemplatesService;
 
+/**
+ * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 class Client extends BaseClient
 {
     public string $apiKey;
@@ -67,17 +71,26 @@ class Client extends BaseClient
      */
     public RegulatoryDocumentsService $regulatoryDocuments;
 
-    public function __construct(?string $apiKey = null, ?string $baseUrl = null)
-    {
+    /**
+     * @param RequestOpts|null $requestOptions
+     */
+    public function __construct(
+        ?string $apiKey = null,
+        ?string $baseUrl = null,
+        RequestOptions|array|null $requestOptions = null,
+    ) {
         $this->apiKey = (string) ($apiKey ?? getenv('ZAVUDEV_API_KEY'));
 
         $baseUrl ??= getenv('ZAVUDEV_BASE_URL') ?: 'https://api.zavu.dev';
 
-        $options = RequestOptions::with(
-            uriFactory: Psr17FactoryDiscovery::findUriFactory(),
-            streamFactory: Psr17FactoryDiscovery::findStreamFactory(),
-            requestFactory: Psr17FactoryDiscovery::findRequestFactory(),
-            transporter: Psr18ClientDiscovery::find(),
+        $options = RequestOptions::parse(
+            RequestOptions::with(
+                uriFactory: Psr17FactoryDiscovery::findUriFactory(),
+                streamFactory: Psr17FactoryDiscovery::findStreamFactory(),
+                requestFactory: Psr17FactoryDiscovery::findRequestFactory(),
+                transporter: Psr18ClientDiscovery::find(),
+            ),
+            $requestOptions,
         );
 
         parent::__construct(
@@ -111,5 +124,33 @@ class Client extends BaseClient
     protected function authHeaders(): array
     {
         return $this->apiKey ? ['Authorization' => "Bearer {$this->apiKey}"] : [];
+    }
+
+    /**
+     * @internal
+     *
+     * @param string|list<string> $path
+     * @param array<string,mixed> $query
+     * @param array<string,string|int|list<string|int>|null> $headers
+     * @param RequestOpts|null $opts
+     *
+     * @return array{NormalizedRequest, RequestOptions}
+     */
+    protected function buildRequest(
+        string $method,
+        string|array $path,
+        array $query,
+        array $headers,
+        mixed $body,
+        RequestOptions|array|null $opts,
+    ): array {
+        return parent::buildRequest(
+            method: $method,
+            path: $path,
+            query: $query,
+            headers: [...$this->authHeaders(), ...$headers],
+            body: $body,
+            opts: $opts,
+        );
     }
 }

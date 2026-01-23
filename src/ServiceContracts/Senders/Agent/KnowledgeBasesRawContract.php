@@ -18,12 +18,16 @@ use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseRetrieveParams;
 use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateParams;
 use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface KnowledgeBasesRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|KnowledgeBaseCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseNewResponse>
      *
@@ -32,13 +36,14 @@ interface KnowledgeBasesRawContract
     public function create(
         string $senderID,
         array|KnowledgeBaseCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|KnowledgeBaseRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseGetResponse>
      *
@@ -47,14 +52,15 @@ interface KnowledgeBasesRawContract
     public function retrieve(
         string $kbID,
         array|KnowledgeBaseRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|KnowledgeBaseUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<KnowledgeBaseUpdateResponse>
      *
@@ -63,13 +69,14 @@ interface KnowledgeBasesRawContract
     public function update(
         string $kbID,
         array|KnowledgeBaseUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|KnowledgeBaseListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentKnowledgeBase>>
      *
@@ -78,13 +85,14 @@ interface KnowledgeBasesRawContract
     public function list(
         string $senderID,
         array|KnowledgeBaseListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|KnowledgeBaseDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -93,6 +101,6 @@ interface KnowledgeBasesRawContract
     public function delete(
         string $kbID,
         array|KnowledgeBaseDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

@@ -20,10 +20,15 @@ use Zavudev\PhoneNumbers\PhoneNumberUpdateParams;
 use Zavudev\PhoneNumbers\PhoneNumberUpdateResponse;
 use Zavudev\RequestOptions;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface PhoneNumbersRawContract
 {
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberGetResponse>
      *
@@ -31,13 +36,14 @@ interface PhoneNumbersRawContract
      */
     public function retrieve(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|PhoneNumberUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberUpdateResponse>
      *
@@ -46,13 +52,14 @@ interface PhoneNumbersRawContract
     public function update(
         string $phoneNumberID,
         array|PhoneNumberUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|PhoneNumberListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<OwnedPhoneNumber>>
      *
@@ -60,13 +67,14 @@ interface PhoneNumbersRawContract
      */
     public function list(
         array|PhoneNumberListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|PhoneNumberPurchaseParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberPurchaseResponse>
      *
@@ -74,11 +82,13 @@ interface PhoneNumbersRawContract
      */
     public function purchase(
         array|PhoneNumberPurchaseParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -86,13 +96,14 @@ interface PhoneNumbersRawContract
      */
     public function release(
         string $phoneNumberID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|PhoneNumberRequirementsParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberRequirementsResponse>
      *
@@ -100,13 +111,14 @@ interface PhoneNumbersRawContract
      */
     public function requirements(
         array|PhoneNumberRequirementsParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|PhoneNumberSearchAvailableParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<PhoneNumberSearchAvailableResponse>
      *
@@ -114,6 +126,6 @@ interface PhoneNumbersRawContract
      */
     public function searchAvailable(
         array|PhoneNumberSearchAvailableParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

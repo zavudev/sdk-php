@@ -16,6 +16,9 @@ use Zavudev\Senders\Agent\KnowledgeBases\KnowledgeBaseUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBasesContract;
 use Zavudev\Services\Senders\Agent\KnowledgeBases\DocumentsService;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class KnowledgeBasesService implements KnowledgeBasesContract
 {
     /**
@@ -42,13 +45,15 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
      *
      * Create a new knowledge base for an agent.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function create(
         string $senderID,
         string $name,
         ?string $description = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseNewResponse {
         $params = Util::removeNulls(
             ['name' => $name, 'description' => $description]
@@ -65,12 +70,14 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
      *
      * Get a specific knowledge base.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $kbID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseGetResponse {
         $params = Util::removeNulls(['senderID' => $senderID]);
 
@@ -85,10 +92,11 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
      *
      * Update a knowledge base.
      *
-     * @param string $kbID Path param:
-     * @param string $senderID Path param:
-     * @param string|null $description Body param:
-     * @param string $name Body param:
+     * @param string $kbID Path param
+     * @param string $senderID Path param
+     * @param string|null $description Body param
+     * @param string $name Body param
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -97,7 +105,7 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
         string $senderID,
         ?string $description = null,
         ?string $name = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): KnowledgeBaseUpdateResponse {
         $params = Util::removeNulls(
             ['senderID' => $senderID, 'description' => $description, 'name' => $name]
@@ -114,6 +122,8 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
      *
      * List knowledge bases for an agent.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return Cursor<AgentKnowledgeBase>
      *
      * @throws APIException
@@ -122,7 +132,7 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
         string $senderID,
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(['cursor' => $cursor, 'limit' => $limit]);
 
@@ -137,12 +147,14 @@ final class KnowledgeBasesService implements KnowledgeBasesContract
      *
      * Delete a knowledge base and all its documents.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $kbID,
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): mixed {
         $params = Util::removeNulls(['senderID' => $senderID]);
 

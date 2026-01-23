@@ -8,15 +8,24 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Templates\Template;
+use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\WhatsappCategory;
 
+/**
+ * @phpstan-import-type ButtonShape from \Zavudev\Templates\TemplateCreateParams\Button
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface TemplatesContract
 {
     /**
      * @api
      *
+     * @param bool $addSecurityRecommendation Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     * @param list<Button|ButtonShape> $buttons template buttons (max 3)
+     * @param int $codeExpirationMinutes Code expiration time in minutes. Only for AUTHENTICATION templates.
      * @param list<string> $variables
-     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $whatsappCategory whatsApp template category
+     * @param WhatsappCategory|value-of<WhatsappCategory> $whatsappCategory whatsApp template category
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -24,23 +33,30 @@ interface TemplatesContract
         string $body,
         string $name,
         string $language = 'en',
+        ?bool $addSecurityRecommendation = null,
+        ?array $buttons = null,
+        ?int $codeExpirationMinutes = null,
         ?array $variables = null,
-        string|WhatsappCategory|null $whatsappCategory = null,
-        ?RequestOptions $requestOptions = null,
+        WhatsappCategory|string|null $whatsappCategory = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Template;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): Template;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<Template>
      *
@@ -49,31 +65,34 @@ interface TemplatesContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed;
 
     /**
      * @api
      *
      * @param string $senderID the sender ID with the WhatsApp Business Account to submit the template to
-     * @param 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory $category Template category. If not provided, uses the category set on the template.
+     * @param WhatsappCategory|value-of<WhatsappCategory> $category Template category. If not provided, uses the category set on the template.
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function submit(
         string $templateID,
         string $senderID,
-        string|WhatsappCategory|null $category = null,
-        ?RequestOptions $requestOptions = null,
+        WhatsappCategory|string|null $category = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Template;
 }

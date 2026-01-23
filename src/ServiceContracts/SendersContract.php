@@ -16,13 +16,17 @@ use Zavudev\Senders\WebhookSecretResponse;
 use Zavudev\Senders\WhatsappBusinessProfileResponse;
 use Zavudev\Senders\WhatsappBusinessProfileVertical;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface SendersContract
 {
     /**
      * @api
      *
-     * @param list<'message.queued'|'message.sent'|'message.delivered'|'message.failed'|'message.inbound'|'message.unsupported'|'conversation.new'|'template.status_changed'|WebhookEvent> $webhookEvents Events to subscribe to.
+     * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
      * @param string $webhookURL HTTPS URL for webhook events
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -32,17 +36,19 @@ interface SendersContract
         bool $setAsDefault = false,
         ?array $webhookEvents = null,
         ?string $webhookURL = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Sender;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): Sender;
 
     /**
@@ -50,8 +56,9 @@ interface SendersContract
      *
      * @param bool $emailReceivingEnabled enable or disable inbound email receiving for this sender
      * @param bool $webhookActive whether the webhook is active
-     * @param list<'message.queued'|'message.sent'|'message.delivered'|'message.failed'|'message.inbound'|'message.unsupported'|'conversation.new'|'template.status_changed'|WebhookEvent> $webhookEvents Events to subscribe to.
+     * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
      * @param string|null $webhookURL HTTPS URL for webhook events. Set to null to remove webhook.
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -63,11 +70,13 @@ interface SendersContract
         ?bool $webhookActive = null,
         ?array $webhookEvents = null,
         ?string $webhookURL = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Sender;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<Sender>
      *
@@ -76,37 +85,43 @@ interface SendersContract
     public function list(
         ?string $cursor = null,
         int $limit = 50,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): mixed;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function getProfile(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): WhatsappBusinessProfileResponse;
 
     /**
      * @api
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function regenerateWebhookSecret(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): WebhookSecretResponse;
 
     /**
@@ -116,8 +131,9 @@ interface SendersContract
      * @param string $address physical address of the business (max 256 characters)
      * @param string $description extended description of the business (max 512 characters)
      * @param string $email business email address
-     * @param 'UNDEFINED'|'OTHER'|'AUTO'|'BEAUTY'|'APPAREL'|'EDU'|'ENTERTAIN'|'EVENT_PLAN'|'FINANCE'|'GROCERY'|'GOVT'|'HOTEL'|'HEALTH'|'NONPROFIT'|'PROF_SERVICES'|'RETAIL'|'TRAVEL'|'RESTAURANT'|'NOT_A_BIZ'|WhatsappBusinessProfileVertical $vertical business category for WhatsApp Business profile
+     * @param WhatsappBusinessProfileVertical|value-of<WhatsappBusinessProfileVertical> $vertical business category for WhatsApp Business profile
      * @param list<string> $websites business website URLs (maximum 2)
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
@@ -127,23 +143,24 @@ interface SendersContract
         ?string $address = null,
         ?string $description = null,
         ?string $email = null,
-        string|WhatsappBusinessProfileVertical|null $vertical = null,
+        WhatsappBusinessProfileVertical|string|null $vertical = null,
         ?array $websites = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): SenderUpdateProfileResponse;
 
     /**
      * @api
      *
      * @param string $imageURL URL of the image to upload
-     * @param 'image/jpeg'|'image/png'|MimeType $mimeType MIME type of the image
+     * @param MimeType|value-of<MimeType> $mimeType MIME type of the image
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function uploadProfilePicture(
         string $senderID,
         string $imageURL,
-        string|MimeType $mimeType,
-        ?RequestOptions $requestOptions = null,
+        MimeType|string $mimeType,
+        RequestOptions|array|null $requestOptions = null,
     ): SenderUploadProfilePictureResponse;
 }

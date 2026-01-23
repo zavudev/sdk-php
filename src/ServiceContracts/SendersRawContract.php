@@ -19,12 +19,16 @@ use Zavudev\Senders\SenderUploadProfilePictureResponse;
 use Zavudev\Senders\WebhookSecretResponse;
 use Zavudev\Senders\WhatsappBusinessProfileResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface SendersRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|SenderCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Sender>
      *
@@ -32,11 +36,13 @@ interface SendersRawContract
      */
     public function create(
         array|SenderCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Sender>
      *
@@ -44,13 +50,14 @@ interface SendersRawContract
      */
     public function retrieve(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|SenderUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Sender>
      *
@@ -59,13 +66,14 @@ interface SendersRawContract
     public function update(
         string $senderID,
         array|SenderUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|SenderListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Sender>>
      *
@@ -73,11 +81,13 @@ interface SendersRawContract
      */
     public function list(
         array|SenderListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -85,11 +95,13 @@ interface SendersRawContract
      */
     public function delete(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<WhatsappBusinessProfileResponse>
      *
@@ -97,11 +109,13 @@ interface SendersRawContract
      */
     public function getProfile(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<WebhookSecretResponse>
      *
@@ -109,13 +123,14 @@ interface SendersRawContract
      */
     public function regenerateWebhookSecret(
         string $senderID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|SenderUpdateProfileParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SenderUpdateProfileResponse>
      *
@@ -124,13 +139,14 @@ interface SendersRawContract
     public function updateProfile(
         string $senderID,
         array|SenderUpdateProfileParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|SenderUploadProfilePictureParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<SenderUploadProfilePictureResponse>
      *
@@ -139,6 +155,6 @@ interface SendersRawContract
     public function uploadProfilePicture(
         string $senderID,
         array|SenderUploadProfilePictureParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

@@ -18,6 +18,9 @@ use Zavudev\RegulatoryDocuments\RegulatoryDocumentUploadURLResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\RegulatoryDocumentsRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContract
 {
     // @phpstan-ignore-next-line
@@ -38,6 +41,7 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      *   name: string,
      *   storageID: string,
      * }|RegulatoryDocumentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<RegulatoryDocumentNewResponse>
      *
@@ -45,7 +49,7 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      */
     public function create(
         array|RegulatoryDocumentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = RegulatoryDocumentCreateParams::parseRequest(
             $params,
@@ -67,13 +71,15 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      *
      * Get a specific regulatory document.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<RegulatoryDocumentGetResponse>
      *
      * @throws APIException
      */
     public function retrieve(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -90,6 +96,7 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      * List regulatory documents for this project.
      *
      * @param array{cursor?: string, limit?: int}|RegulatoryDocumentListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<RegulatoryDocument>>
      *
@@ -97,7 +104,7 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      */
     public function list(
         array|RegulatoryDocumentListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = RegulatoryDocumentListParams::parseRequest(
             $params,
@@ -120,13 +127,15 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      *
      * Delete a regulatory document. Cannot delete verified documents.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function delete(
         string $documentID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -142,12 +151,14 @@ final class RegulatoryDocumentsRawService implements RegulatoryDocumentsRawContr
      *
      * Get a presigned URL to upload a document file. After uploading, use the storageId to create the document record.
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<RegulatoryDocumentUploadURLResponse>
      *
      * @throws APIException
      */
     public function uploadURL(
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(

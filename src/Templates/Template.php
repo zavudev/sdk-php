@@ -22,7 +22,9 @@ use Zavudev\Templates\Template\Whatsapp;
  *   category: WhatsappCategory|value-of<WhatsappCategory>,
  *   language: string,
  *   name: string,
- *   buttons?: list<ButtonShape>|null,
+ *   addSecurityRecommendation?: bool|null,
+ *   buttons?: list<Button|ButtonShape>|null,
+ *   codeExpirationMinutes?: int|null,
  *   createdAt?: \DateTimeInterface|null,
  *   footer?: string|null,
  *   headerContent?: string|null,
@@ -68,12 +70,24 @@ final class Template implements BaseModel
     public string $name;
 
     /**
+     * Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     */
+    #[Optional]
+    public ?bool $addSecurityRecommendation;
+
+    /**
      * Template buttons.
      *
      * @var list<Button>|null $buttons
      */
     #[Optional(list: Button::class)]
     public ?array $buttons;
+
+    /**
+     * Code expiration time in minutes. Only for AUTHENTICATION templates.
+     */
+    #[Optional]
+    public ?int $codeExpirationMinutes;
 
     #[Optional]
     public ?\DateTimeInterface $createdAt;
@@ -147,7 +161,7 @@ final class Template implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param WhatsappCategory|value-of<WhatsappCategory> $category
-     * @param list<ButtonShape>|null $buttons
+     * @param list<Button|ButtonShape>|null $buttons
      * @param Status|value-of<Status>|null $status
      * @param list<string>|null $variables
      * @param Whatsapp|WhatsappShape|null $whatsapp
@@ -158,7 +172,9 @@ final class Template implements BaseModel
         WhatsappCategory|string $category,
         string $language,
         string $name,
+        ?bool $addSecurityRecommendation = null,
         ?array $buttons = null,
+        ?int $codeExpirationMinutes = null,
         ?\DateTimeInterface $createdAt = null,
         ?string $footer = null,
         ?string $headerContent = null,
@@ -176,7 +192,9 @@ final class Template implements BaseModel
         $self['language'] = $language;
         $self['name'] = $name;
 
+        null !== $addSecurityRecommendation && $self['addSecurityRecommendation'] = $addSecurityRecommendation;
         null !== $buttons && $self['buttons'] = $buttons;
+        null !== $codeExpirationMinutes && $self['codeExpirationMinutes'] = $codeExpirationMinutes;
         null !== $createdAt && $self['createdAt'] = $createdAt;
         null !== $footer && $self['footer'] = $footer;
         null !== $headerContent && $self['headerContent'] = $headerContent;
@@ -244,14 +262,37 @@ final class Template implements BaseModel
     }
 
     /**
+     * Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
+     */
+    public function withAddSecurityRecommendation(
+        bool $addSecurityRecommendation
+    ): self {
+        $self = clone $this;
+        $self['addSecurityRecommendation'] = $addSecurityRecommendation;
+
+        return $self;
+    }
+
+    /**
      * Template buttons.
      *
-     * @param list<ButtonShape> $buttons
+     * @param list<Button|ButtonShape> $buttons
      */
     public function withButtons(array $buttons): self
     {
         $self = clone $this;
         $self['buttons'] = $buttons;
+
+        return $self;
+    }
+
+    /**
+     * Code expiration time in minutes. Only for AUTHENTICATION templates.
+     */
+    public function withCodeExpirationMinutes(int $codeExpirationMinutes): self
+    {
+        $self = clone $this;
+        $self['codeExpirationMinutes'] = $codeExpirationMinutes;
 
         return $self;
     }

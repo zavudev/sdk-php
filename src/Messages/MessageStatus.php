@@ -10,9 +10,13 @@ enum MessageStatus: string
 
     case SENDING = 'sending';
 
+    case SENT = 'sent';
+
     case DELIVERED = 'delivered';
 
     case FAILED = 'failed';
 
     case RECEIVED = 'received';
+
+    case PENDING_URL_VERIFICATION = 'pending_url_verification';
 }

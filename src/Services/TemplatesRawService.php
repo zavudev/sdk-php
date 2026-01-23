@@ -12,10 +12,15 @@ use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\TemplatesRawContract;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams;
+use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
 use Zavudev\Templates\WhatsappCategory;
 
+/**
+ * @phpstan-import-type ButtonShape from \Zavudev\Templates\TemplateCreateParams\Button
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class TemplatesRawService implements TemplatesRawContract
 {
     // @phpstan-ignore-next-line
@@ -33,9 +38,13 @@ final class TemplatesRawService implements TemplatesRawContract
      *   body: string,
      *   language: string,
      *   name: string,
+     *   addSecurityRecommendation?: bool,
+     *   buttons?: list<Button|ButtonShape>,
+     *   codeExpirationMinutes?: int,
      *   variables?: list<string>,
-     *   whatsappCategory?: 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory,
+     *   whatsappCategory?: WhatsappCategory|value-of<WhatsappCategory>,
      * }|TemplateCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Template>
      *
@@ -43,7 +52,7 @@ final class TemplatesRawService implements TemplatesRawContract
      */
     public function create(
         array|TemplateCreateParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = TemplateCreateParams::parseRequest(
             $params,
@@ -65,13 +74,15 @@ final class TemplatesRawService implements TemplatesRawContract
      *
      * Get template
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<Template>
      *
      * @throws APIException
      */
     public function retrieve(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -88,6 +99,7 @@ final class TemplatesRawService implements TemplatesRawContract
      * List WhatsApp message templates for this project.
      *
      * @param array{cursor?: string, limit?: int}|TemplateListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Template>>
      *
@@ -95,7 +107,7 @@ final class TemplatesRawService implements TemplatesRawContract
      */
     public function list(
         array|TemplateListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = TemplateListParams::parseRequest(
             $params,
@@ -118,13 +130,15 @@ final class TemplatesRawService implements TemplatesRawContract
      *
      * Delete template
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<mixed>
      *
      * @throws APIException
      */
     public function delete(
         string $templateID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -141,9 +155,9 @@ final class TemplatesRawService implements TemplatesRawContract
      * Submit a WhatsApp template to Meta for approval. The template must be in draft status and associated with a sender that has a WhatsApp Business Account configured.
      *
      * @param array{
-     *   senderID: string,
-     *   category?: 'UTILITY'|'MARKETING'|'AUTHENTICATION'|WhatsappCategory,
+     *   senderID: string, category?: WhatsappCategory|value-of<WhatsappCategory>
      * }|TemplateSubmitParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Template>
      *
@@ -152,7 +166,7 @@ final class TemplatesRawService implements TemplatesRawContract
     public function submit(
         string $templateID,
         array|TemplateSubmitParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = TemplateSubmitParams::parseRequest(
             $params,

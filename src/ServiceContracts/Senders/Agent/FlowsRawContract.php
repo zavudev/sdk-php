@@ -20,12 +20,16 @@ use Zavudev\Senders\Agent\Flows\FlowRetrieveParams;
 use Zavudev\Senders\Agent\Flows\FlowUpdateParams;
 use Zavudev\Senders\Agent\Flows\FlowUpdateResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface FlowsRawContract
 {
     /**
      * @api
      *
      * @param array<string,mixed>|FlowCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowNewResponse>
      *
@@ -34,13 +38,14 @@ interface FlowsRawContract
     public function create(
         string $senderID,
         array|FlowCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|FlowRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowGetResponse>
      *
@@ -49,14 +54,15 @@ interface FlowsRawContract
     public function retrieve(
         string $flowID,
         array|FlowRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array<string,mixed>|FlowUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowUpdateResponse>
      *
@@ -65,13 +71,14 @@ interface FlowsRawContract
     public function update(
         string $flowID,
         array|FlowUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|FlowListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentFlow>>
      *
@@ -80,13 +87,14 @@ interface FlowsRawContract
     public function list(
         string $senderID,
         array|FlowListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|FlowDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -95,14 +103,15 @@ interface FlowsRawContract
     public function delete(
         string $flowID,
         array|FlowDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array<string,mixed>|FlowDuplicateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowDuplicateResponse>
      *
@@ -111,6 +120,6 @@ interface FlowsRawContract
     public function duplicate(
         string $flowID,
         array|FlowDuplicateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

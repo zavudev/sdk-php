@@ -10,12 +10,16 @@ use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentExecution;
 use Zavudev\Senders\Agent\AgentExecutionStatus;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface ExecutionsContract
 {
     /**
      * @api
      *
-     * @param 'success'|'error'|'filtered'|'rate_limited'|'balance_insufficient'|AgentExecutionStatus $status status of an agent execution
+     * @param AgentExecutionStatus|value-of<AgentExecutionStatus> $status status of an agent execution
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<AgentExecution>
      *
@@ -25,7 +29,7 @@ interface ExecutionsContract
         string $senderID,
         ?string $cursor = null,
         int $limit = 50,
-        string|AgentExecutionStatus|null $status = null,
-        ?RequestOptions $requestOptions = null,
+        AgentExecutionStatus|string|null $status = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor;
 }

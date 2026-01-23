@@ -11,7 +11,8 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Flows\AgentFlow;
 use Zavudev\Senders\Agent\Flows\FlowCreateParams;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Step\Type;
+use Zavudev\Senders\Agent\Flows\FlowCreateParams\Step;
+use Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger;
 use Zavudev\Senders\Agent\Flows\FlowDeleteParams;
 use Zavudev\Senders\Agent\Flows\FlowDuplicateParams;
 use Zavudev\Senders\Agent\Flows\FlowDuplicateResponse;
@@ -23,6 +24,13 @@ use Zavudev\Senders\Agent\Flows\FlowUpdateParams;
 use Zavudev\Senders\Agent\Flows\FlowUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\FlowsRawContract;
 
+/**
+ * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Step
+ * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger
+ * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step as StepShape1
+ * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger as TriggerShape1
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class FlowsRawService implements FlowsRawContract
 {
     // @phpstan-ignore-next-line
@@ -38,21 +46,13 @@ final class FlowsRawService implements FlowsRawContract
      *
      * @param array{
      *   name: string,
-     *   steps: list<array{
-     *     id: string,
-     *     config: array<string,mixed>,
-     *     type: 'message'|'collect'|'condition'|'tool'|'llm'|'transfer'|Type,
-     *     nextStepID?: string|null,
-     *   }>,
-     *   trigger: array{
-     *     type: 'keyword'|'intent'|'always'|'manual'|FlowCreateParams\Trigger\Type,
-     *     intent?: string,
-     *     keywords?: list<string>,
-     *   },
+     *   steps: list<Step|StepShape>,
+     *   trigger: Trigger|TriggerShape,
      *   description?: string,
      *   enabled?: bool,
      *   priority?: int,
      * }|FlowCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowNewResponse>
      *
@@ -61,7 +61,7 @@ final class FlowsRawService implements FlowsRawContract
     public function create(
         string $senderID,
         array|FlowCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowCreateParams::parseRequest(
             $params,
@@ -84,6 +84,7 @@ final class FlowsRawService implements FlowsRawContract
      * Get a specific flow.
      *
      * @param array{senderID: string}|FlowRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowGetResponse>
      *
@@ -92,7 +93,7 @@ final class FlowsRawService implements FlowsRawContract
     public function retrieve(
         string $flowID,
         array|FlowRetrieveParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowRetrieveParams::parseRequest(
             $params,
@@ -115,25 +116,17 @@ final class FlowsRawService implements FlowsRawContract
      *
      * Update a flow.
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array{
      *   senderID: string,
      *   description?: string,
      *   enabled?: bool,
      *   name?: string,
      *   priority?: int,
-     *   steps?: list<array{
-     *     id: string,
-     *     config: array<string,mixed>,
-     *     type: 'message'|'collect'|'condition'|'tool'|'llm'|'transfer'|FlowUpdateParams\Step\Type,
-     *     nextStepID?: string|null,
-     *   }>,
-     *   trigger?: array{
-     *     type: 'keyword'|'intent'|'always'|'manual'|FlowUpdateParams\Trigger\Type,
-     *     intent?: string,
-     *     keywords?: list<string>,
-     *   },
+     *   steps?: list<FlowUpdateParams\Step|StepShape1>,
+     *   trigger?: FlowUpdateParams\Trigger|TriggerShape1,
      * }|FlowUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowUpdateResponse>
      *
@@ -142,7 +135,7 @@ final class FlowsRawService implements FlowsRawContract
     public function update(
         string $flowID,
         array|FlowUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowUpdateParams::parseRequest(
             $params,
@@ -169,6 +162,7 @@ final class FlowsRawService implements FlowsRawContract
      * @param array{
      *   cursor?: string, enabled?: bool, limit?: int
      * }|FlowListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentFlow>>
      *
@@ -177,7 +171,7 @@ final class FlowsRawService implements FlowsRawContract
     public function list(
         string $senderID,
         array|FlowListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowListParams::parseRequest(
             $params,
@@ -201,6 +195,7 @@ final class FlowsRawService implements FlowsRawContract
      * Delete a flow. Cannot delete flows with active sessions.
      *
      * @param array{senderID: string}|FlowDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -209,7 +204,7 @@ final class FlowsRawService implements FlowsRawContract
     public function delete(
         string $flowID,
         array|FlowDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowDeleteParams::parseRequest(
             $params,
@@ -232,8 +227,9 @@ final class FlowsRawService implements FlowsRawContract
      *
      * Create a copy of an existing flow with a new name.
      *
-     * @param string $flowID Path param:
+     * @param string $flowID Path param
      * @param array{senderID: string, newName: string}|FlowDuplicateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<FlowDuplicateResponse>
      *
@@ -242,7 +238,7 @@ final class FlowsRawService implements FlowsRawContract
     public function duplicate(
         string $flowID,
         array|FlowDuplicateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = FlowDuplicateParams::parseRequest(
             $params,

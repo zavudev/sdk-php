@@ -13,6 +13,9 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\ContactsContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ContactsService implements ContactsContract
 {
     /**
@@ -33,11 +36,13 @@ final class ContactsService implements ContactsContract
      *
      * Get contact
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @throws APIException
      */
     public function retrieve(
         string $contactID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): Contact {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieve($contactID, requestOptions: $requestOptions);
@@ -50,16 +55,17 @@ final class ContactsService implements ContactsContract
      *
      * Update contact
      *
-     * @param 'sms'|'whatsapp'|'email'|DefaultChannel|null $defaultChannel Preferred channel for this contact. Set to null to clear.
+     * @param DefaultChannel|value-of<DefaultChannel>|null $defaultChannel Preferred channel for this contact. Set to null to clear.
      * @param array<string,string> $metadata
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function update(
         string $contactID,
-        string|DefaultChannel|null $defaultChannel = null,
+        DefaultChannel|string|null $defaultChannel = null,
         ?array $metadata = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Contact {
         $params = Util::removeNulls(
             ['defaultChannel' => $defaultChannel, 'metadata' => $metadata]
@@ -74,7 +80,9 @@ final class ContactsService implements ContactsContract
     /**
      * @api
      *
-     * List contacts
+     * List contacts with their communication channels.
+     *
+     * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<Contact>
      *
@@ -84,7 +92,7 @@ final class ContactsService implements ContactsContract
         ?string $cursor = null,
         int $limit = 50,
         ?string $phoneNumber = null,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(
             ['cursor' => $cursor, 'limit' => $limit, 'phoneNumber' => $phoneNumber]
@@ -102,12 +110,13 @@ final class ContactsService implements ContactsContract
      * Get contact by phone number
      *
      * @param string $phoneNumber E.164 phone number.
+     * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function retrieveByPhone(
         string $phoneNumber,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): Contact {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->retrieveByPhone($phoneNumber, requestOptions: $requestOptions);

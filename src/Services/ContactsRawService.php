@@ -15,6 +15,9 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\ContactsRawContract;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 final class ContactsRawService implements ContactsRawContract
 {
     // @phpstan-ignore-next-line
@@ -28,13 +31,15 @@ final class ContactsRawService implements ContactsRawContract
      *
      * Get contact
      *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<Contact>
      *
      * @throws APIException
      */
     public function retrieve(
         string $contactID,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(
@@ -51,9 +56,10 @@ final class ContactsRawService implements ContactsRawContract
      * Update contact
      *
      * @param array{
-     *   defaultChannel?: 'sms'|'whatsapp'|'email'|DefaultChannel|null,
+     *   defaultChannel?: DefaultChannel|value-of<DefaultChannel>|null,
      *   metadata?: array<string,string>,
      * }|ContactUpdateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Contact>
      *
@@ -62,7 +68,7 @@ final class ContactsRawService implements ContactsRawContract
     public function update(
         string $contactID,
         array|ContactUpdateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ContactUpdateParams::parseRequest(
             $params,
@@ -82,11 +88,12 @@ final class ContactsRawService implements ContactsRawContract
     /**
      * @api
      *
-     * List contacts
+     * List contacts with their communication channels.
      *
      * @param array{
      *   cursor?: string, limit?: int, phoneNumber?: string
      * }|ContactListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<Contact>>
      *
@@ -94,7 +101,7 @@ final class ContactsRawService implements ContactsRawContract
      */
     public function list(
         array|ContactListParams $params,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse {
         [$parsed, $options] = ContactListParams::parseRequest(
             $params,
@@ -118,6 +125,7 @@ final class ContactsRawService implements ContactsRawContract
      * Get contact by phone number
      *
      * @param string $phoneNumber E.164 phone number.
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Contact>
      *
@@ -125,7 +133,7 @@ final class ContactsRawService implements ContactsRawContract
      */
     public function retrieveByPhone(
         string $phoneNumber,
-        ?RequestOptions $requestOptions = null
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse {
         // @phpstan-ignore-next-line return.type
         return $this->client->request(

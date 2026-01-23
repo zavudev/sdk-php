@@ -14,13 +14,17 @@ use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentDeleteParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentListParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
 
+/**
+ * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
+ */
 interface DocumentsRawContract
 {
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|DocumentCreateParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<DocumentNewResponse>
      *
@@ -29,14 +33,15 @@ interface DocumentsRawContract
     public function create(
         string $kbID,
         array|DocumentCreateParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
-     * @param string $kbID Path param:
+     * @param string $kbID Path param
      * @param array<string,mixed>|DocumentListParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<Cursor<AgentDocument>>
      *
@@ -45,13 +50,14 @@ interface DocumentsRawContract
     public function list(
         string $kbID,
         array|DocumentListParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**
      * @api
      *
      * @param array<string,mixed>|DocumentDeleteParams $params
+     * @param RequestOpts|null $requestOptions
      *
      * @return BaseResponse<mixed>
      *
@@ -60,6 +66,6 @@ interface DocumentsRawContract
     public function delete(
         string $docID,
         array|DocumentDeleteParams $params,
-        ?RequestOptions $requestOptions = null,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }
