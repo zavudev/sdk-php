@@ -16,4 +16,6 @@ enum DefaultChannel: string
     case TELEGRAM = 'telegram';
 
     case EMAIL = 'email';
+
+    case INSTAGRAM = 'instagram';
 }
