@@ -16,4 +16,6 @@ enum Channel: string
     case EMAIL = 'email';
 
     case TELEGRAM = 'telegram';
+
+    case VOICE = 'voice';
 }
