@@ -18,4 +18,6 @@ enum DefaultChannel: string
     case EMAIL = 'email';
 
     case INSTAGRAM = 'instagram';
+
+    case VOICE = 'voice';
 }

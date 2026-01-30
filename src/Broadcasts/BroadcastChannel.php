@@ -20,4 +20,6 @@ enum BroadcastChannel: string
     case EMAIL = 'email';
 
     case INSTAGRAM = 'instagram';
+
+    case VOICE = 'voice';
 }
