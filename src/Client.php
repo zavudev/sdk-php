@@ -79,9 +79,9 @@ class Client extends BaseClient
         ?string $baseUrl = null,
         RequestOptions|array|null $requestOptions = null,
     ) {
-        $this->apiKey = (string) ($apiKey ?? getenv('ZAVUDEV_API_KEY'));
+        $this->apiKey = (string) ($apiKey ?? Util::getenv('ZAVUDEV_API_KEY'));
 
-        $baseUrl ??= getenv('ZAVUDEV_BASE_URL') ?: 'https://api.zavu.dev';
+        $baseUrl ??= Util::getenv('ZAVUDEV_BASE_URL') ?: 'https://api.zavu.dev';
 
         $options = RequestOptions::parse(
             RequestOptions::with(
