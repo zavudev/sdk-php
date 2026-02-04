@@ -22,6 +22,9 @@ use Zavudev\Core\Contracts\BaseModel;
  * - Window opens when the user messages you first
  * - Use template messages to initiate conversations outside the window
  *
+ * **Email requirements:**
+ * - Email channel requires KYC verification. Complete identity verification in the dashboard before sending emails.
+ *
  * @see Zavudev\Services\MessagesService::send()
  *
  * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent

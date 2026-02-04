@@ -134,6 +134,9 @@ final class MessagesService implements MessagesContract
      * - Window opens when the user messages you first
      * - Use template messages to initiate conversations outside the window
      *
+     * **Email requirements:**
+     * - Email channel requires KYC verification. Complete identity verification in the dashboard before sending emails.
+     *
      * @param string $to Body param: Recipient phone number in E.164 format or email address.
      * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
