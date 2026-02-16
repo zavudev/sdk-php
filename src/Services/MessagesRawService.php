@@ -165,6 +165,7 @@ final class MessagesRawService implements MessagesRawContract
      *   replyTo?: string,
      *   subject?: string,
      *   text?: string,
+     *   voiceLanguage?: string,
      *   zavuSender?: string,
      * }|MessageSendParams $params
      * @param RequestOpts|null $requestOptions

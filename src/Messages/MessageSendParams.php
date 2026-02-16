@@ -41,6 +41,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   replyTo?: string|null,
  *   subject?: string|null,
  *   text?: string|null,
+ *   voiceLanguage?: string|null,
  *   zavuSender?: string|null,
  * }
  */
@@ -122,6 +123,12 @@ final class MessageSendParams implements BaseModel
     #[Optional]
     public ?string $text;
 
+    /**
+     * Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
+     */
+    #[Optional]
+    public ?string $voiceLanguage;
+
     #[Optional]
     public ?string $zavuSender;
 
@@ -166,6 +173,7 @@ final class MessageSendParams implements BaseModel
         ?string $replyTo = null,
         ?string $subject = null,
         ?string $text = null,
+        ?string $voiceLanguage = null,
         ?string $zavuSender = null,
     ): self {
         $self = new self;
@@ -182,6 +190,7 @@ final class MessageSendParams implements BaseModel
         null !== $replyTo && $self['replyTo'] = $replyTo;
         null !== $subject && $self['subject'] = $subject;
         null !== $text && $self['text'] = $text;
+        null !== $voiceLanguage && $self['voiceLanguage'] = $voiceLanguage;
         null !== $zavuSender && $self['zavuSender'] = $zavuSender;
 
         return $self;
@@ -312,6 +321,17 @@ final class MessageSendParams implements BaseModel
     {
         $self = clone $this;
         $self['text'] = $text;
+
+        return $self;
+    }
+
+    /**
+     * Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
+     */
+    public function withVoiceLanguage(string $voiceLanguage): self
+    {
+        $self = clone $this;
+        $self['voiceLanguage'] = $voiceLanguage;
 
         return $self;
     }

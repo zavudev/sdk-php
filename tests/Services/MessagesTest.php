@@ -149,6 +149,7 @@ final class MessagesTest extends TestCase
             replyTo: 'support@example.com',
             subject: 'Your order confirmation',
             text: 'Your verification code is 123456',
+            voiceLanguage: 'es-ES',
             zavuSender: 'sender_12345',
         );
 
