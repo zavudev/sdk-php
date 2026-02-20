@@ -34,7 +34,7 @@ final class DocumentsTest extends TestCase
     public function testCreate(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->senders->agent->knowledgeBases->documents->create(
@@ -52,7 +52,7 @@ final class DocumentsTest extends TestCase
     public function testCreateWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->senders->agent->knowledgeBases->documents->create(
@@ -70,7 +70,7 @@ final class DocumentsTest extends TestCase
     public function testList(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->senders->agent->knowledgeBases->documents->list(
@@ -91,7 +91,7 @@ final class DocumentsTest extends TestCase
     public function testListWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->senders->agent->knowledgeBases->documents->list(
@@ -114,7 +114,7 @@ final class DocumentsTest extends TestCase
     public function testDelete(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->senders->agent->knowledgeBases->documents->delete(
@@ -131,7 +131,7 @@ final class DocumentsTest extends TestCase
     public function testDeleteWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->senders->agent->knowledgeBases->documents->delete(

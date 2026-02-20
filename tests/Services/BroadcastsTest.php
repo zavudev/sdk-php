@@ -42,7 +42,7 @@ final class BroadcastsTest extends TestCase
     public function testCreate(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->create(
@@ -58,7 +58,7 @@ final class BroadcastsTest extends TestCase
     public function testCreateWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->create(
@@ -90,7 +90,7 @@ final class BroadcastsTest extends TestCase
     public function testRetrieve(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->retrieve('broadcastId');
@@ -103,7 +103,7 @@ final class BroadcastsTest extends TestCase
     public function testUpdate(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->update('broadcastId');
@@ -116,7 +116,7 @@ final class BroadcastsTest extends TestCase
     public function testList(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->broadcasts->list();
@@ -134,7 +134,7 @@ final class BroadcastsTest extends TestCase
     public function testDelete(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->delete('broadcastId');
@@ -147,7 +147,7 @@ final class BroadcastsTest extends TestCase
     public function testCancel(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->cancel('broadcastId');
@@ -160,7 +160,7 @@ final class BroadcastsTest extends TestCase
     public function testProgress(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->progress('broadcastId');
@@ -173,7 +173,7 @@ final class BroadcastsTest extends TestCase
     public function testReschedule(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->reschedule(
@@ -189,7 +189,7 @@ final class BroadcastsTest extends TestCase
     public function testRescheduleWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->reschedule(
@@ -205,7 +205,7 @@ final class BroadcastsTest extends TestCase
     public function testSend(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->send('broadcastId');
