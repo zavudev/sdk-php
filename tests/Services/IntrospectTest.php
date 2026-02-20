@@ -32,7 +32,7 @@ final class IntrospectTest extends TestCase
     public function testValidatePhone(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->introspect->validatePhone(
@@ -47,7 +47,7 @@ final class IntrospectTest extends TestCase
     public function testValidatePhoneWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->introspect->validatePhone(
