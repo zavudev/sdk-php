@@ -13,6 +13,8 @@ enum BroadcastChannel: string
 
     case SMS = 'sms';
 
+    case SMS_ONEWAY = 'sms_oneway';
+
     case WHATSAPP = 'whatsapp';
 
     case TELEGRAM = 'telegram';
