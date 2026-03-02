@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.3.0 (2026-03-01)
+
+Full Changelog: [v0.2.0...v0.3.0](https://github.com/zavudev/sdk-php/compare/v0.2.0...v0.3.0)
+
+### Features
+
+* **api:** api update ([8e91258](https://github.com/zavudev/sdk-php/commit/8e91258473a1c98a6e3fd32c14c6eee515b6433b))
+* **api:** api update ([1e0fe01](https://github.com/zavudev/sdk-php/commit/1e0fe01b7d60900a40cae6ee3e7b99acf48bdcf0))
+* **api:** api update ([2d4db00](https://github.com/zavudev/sdk-php/commit/2d4db00d40315059012d555a1ad9fd57e384ad06))
+* **api:** api update ([e419088](https://github.com/zavudev/sdk-php/commit/e419088848d4b1af234f96a0d6a337a36c311d98))
+* **api:** api update ([575b64c](https://github.com/zavudev/sdk-php/commit/575b64c685b19f4c902d53c1ca609f7f956d6847))
+* use `$_ENV` aware getenv helper ([e75a602](https://github.com/zavudev/sdk-php/commit/e75a602f9251acd4bede5cf75789e7d0dbb2d59d))
+
+
+### Bug Fixes
+
+* used redirect count instead of retry count in base client ([2e4677a](https://github.com/zavudev/sdk-php/commit/2e4677ac3685110227176234bb8e349bda31df6d))
+
+
+### Chores
+
+* **internal:** ignore stainless-internal artifacts ([7e6850d](https://github.com/zavudev/sdk-php/commit/7e6850dda7010f9074639d858816553d1327a540))
+* **internal:** php cs fixer should not be memory limited ([3a6539b](https://github.com/zavudev/sdk-php/commit/3a6539b35ff0a4b47b5ba722b8ddfa3d94f324e7))
+* **internal:** remove mock server code ([819061e](https://github.com/zavudev/sdk-php/commit/819061ecc9041dcd06620b46540911b755ac5c1c))
+* **internal:** upgrade phpunit ([178ada2](https://github.com/zavudev/sdk-php/commit/178ada2f3ebe4d044edccf5e997e5000dfec0134))
+* update mock server docs ([d0435e4](https://github.com/zavudev/sdk-php/commit/d0435e4903a4d4db6aa5af8536283a86987a3281))
+
 ## 0.2.0 (2026-01-21)
 
 Full Changelog: [v0.1.0...v0.2.0](https://github.com/zavudev/sdk-php/compare/v0.1.0...v0.2.0)

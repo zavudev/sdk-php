@@ -7,6 +7,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Tests\UnsupportedMockTests;
 use Zavudev\Client;
+use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
@@ -25,7 +26,7 @@ final class MessagesTest extends TestCase
     {
         parent::setUp();
 
-        $testUrl = getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
+        $testUrl = Util::getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
@@ -35,7 +36,7 @@ final class MessagesTest extends TestCase
     public function testRetrieve(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->messages->retrieve('messageId');
@@ -48,7 +49,7 @@ final class MessagesTest extends TestCase
     public function testList(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->messages->list();
@@ -66,7 +67,7 @@ final class MessagesTest extends TestCase
     public function testReact(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->messages->react('messageId', emoji: '👍');
@@ -79,7 +80,7 @@ final class MessagesTest extends TestCase
     public function testReactWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->messages->react(
@@ -96,7 +97,7 @@ final class MessagesTest extends TestCase
     public function testSend(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->messages->send(to: '+56912345678');
@@ -109,7 +110,7 @@ final class MessagesTest extends TestCase
     public function testSendWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->messages->send(
@@ -148,6 +149,7 @@ final class MessagesTest extends TestCase
             replyTo: 'support@example.com',
             subject: 'Your order confirmation',
             text: 'Your verification code is 123456',
+            voiceLanguage: 'es-ES',
             zavuSender: 'sender_12345',
         );
 

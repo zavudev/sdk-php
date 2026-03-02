@@ -134,6 +134,9 @@ final class MessagesService implements MessagesContract
      * - Window opens when the user messages you first
      * - Use template messages to initiate conversations outside the window
      *
+     * **Email requirements:**
+     * - Email channel requires KYC verification. Complete identity verification in the dashboard before sending emails.
+     *
      * @param string $to Body param: Recipient phone number in E.164 format or email address.
      * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
@@ -145,6 +148,7 @@ final class MessagesService implements MessagesContract
      * @param string $replyTo body param: Reply-To email address for email messages
      * @param string $subject Body param: Email subject line. Required when channel is 'email' or recipient is an email address.
      * @param string $text body param: Text body for text messages or caption for media messages
+     * @param string $voiceLanguage Body param: Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
      * @param string $zavuSender Header param: Optional sender profile ID. If omitted, the project's default sender will be used.
      * @param RequestOpts|null $requestOptions
      *
@@ -162,6 +166,7 @@ final class MessagesService implements MessagesContract
         ?string $replyTo = null,
         ?string $subject = null,
         ?string $text = null,
+        ?string $voiceLanguage = null,
         ?string $zavuSender = null,
         RequestOptions|array|null $requestOptions = null,
     ): MessageResponse {
@@ -178,6 +183,7 @@ final class MessagesService implements MessagesContract
                 'replyTo' => $replyTo,
                 'subject' => $subject,
                 'text' => $text,
+                'voiceLanguage' => $voiceLanguage,
                 'zavuSender' => $zavuSender,
             ],
         );

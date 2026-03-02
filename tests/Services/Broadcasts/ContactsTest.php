@@ -9,6 +9,7 @@ use Tests\UnsupportedMockTests;
 use Zavudev\Broadcasts\BroadcastContact;
 use Zavudev\Broadcasts\Contacts\ContactAddResponse;
 use Zavudev\Client;
+use Zavudev\Core\Util;
 use Zavudev\Cursor;
 
 /**
@@ -23,7 +24,7 @@ final class ContactsTest extends TestCase
     {
         parent::setUp();
 
-        $testUrl = getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
+        $testUrl = Util::getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
@@ -33,7 +34,7 @@ final class ContactsTest extends TestCase
     public function testList(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->broadcasts->contacts->list('broadcastId');
@@ -51,7 +52,7 @@ final class ContactsTest extends TestCase
     public function testAdd(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->contacts->add(
@@ -69,7 +70,7 @@ final class ContactsTest extends TestCase
     public function testAddWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->contacts->add(
@@ -94,7 +95,7 @@ final class ContactsTest extends TestCase
     public function testRemove(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->contacts->remove(
@@ -110,7 +111,7 @@ final class ContactsTest extends TestCase
     public function testRemoveWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->broadcasts->contacts->remove(

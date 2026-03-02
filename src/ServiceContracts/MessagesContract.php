@@ -83,6 +83,7 @@ interface MessagesContract
      * @param string $replyTo body param: Reply-To email address for email messages
      * @param string $subject Body param: Email subject line. Required when channel is 'email' or recipient is an email address.
      * @param string $text body param: Text body for text messages or caption for media messages
+     * @param string $voiceLanguage Body param: Language code for voice text-to-speech (e.g., 'en-US', 'es-ES', 'pt-BR'). If omitted, language is auto-detected from recipient's country code.
      * @param string $zavuSender Header param: Optional sender profile ID. If omitted, the project's default sender will be used.
      * @param RequestOpts|null $requestOptions
      *
@@ -100,6 +101,7 @@ interface MessagesContract
         ?string $replyTo = null,
         ?string $subject = null,
         ?string $text = null,
+        ?string $voiceLanguage = null,
         ?string $zavuSender = null,
         RequestOptions|array|null $requestOptions = null,
     ): MessageResponse;

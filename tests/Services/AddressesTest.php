@@ -10,6 +10,7 @@ use Zavudev\Addresses\Address;
 use Zavudev\Addresses\AddressGetResponse;
 use Zavudev\Addresses\AddressNewResponse;
 use Zavudev\Client;
+use Zavudev\Core\Util;
 use Zavudev\Cursor;
 
 /**
@@ -24,7 +25,7 @@ final class AddressesTest extends TestCase
     {
         parent::setUp();
 
-        $testUrl = getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
+        $testUrl = Util::getenv('TEST_API_BASE_URL') ?: 'http://127.0.0.1:4010';
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
@@ -34,7 +35,7 @@ final class AddressesTest extends TestCase
     public function testCreate(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->addresses->create(
@@ -52,7 +53,7 @@ final class AddressesTest extends TestCase
     public function testCreateWithOptionalParams(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->addresses->create(
@@ -75,7 +76,7 @@ final class AddressesTest extends TestCase
     public function testRetrieve(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->addresses->retrieve('addressId');
@@ -88,7 +89,7 @@ final class AddressesTest extends TestCase
     public function testList(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $page = $this->client->addresses->list();
@@ -106,7 +107,7 @@ final class AddressesTest extends TestCase
     public function testDelete(): void
     {
         if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Prism tests are disabled');
+            $this->markTestSkipped('Mock server tests are disabled');
         }
 
         $result = $this->client->addresses->delete('addressId');
