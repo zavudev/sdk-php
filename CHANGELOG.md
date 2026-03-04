@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 (2026-03-04)
+
+Full Changelog: [v0.3.0...v0.3.1](https://github.com/zavudev/sdk-php/compare/v0.3.0...v0.3.1)
+
+### Chores
+
+* **internal:** codegen related update ([64aaa2c](https://github.com/zavudev/sdk-php/commit/64aaa2c21b200205cc1b5e9f27a18176fe9e821a))
+
 ## 0.3.0 (2026-03-01)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/zavudev/sdk-php/compare/v0.2.0...v0.3.0)
