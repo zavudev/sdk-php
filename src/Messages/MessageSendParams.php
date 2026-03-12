@@ -53,7 +53,7 @@ final class MessageSendParams implements BaseModel
     use SdkParams;
 
     /**
-     * Recipient phone number in E.164 format or email address.
+     * Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
      */
     #[Required]
     public string $to;
@@ -198,7 +198,7 @@ final class MessageSendParams implements BaseModel
     }
 
     /**
-     * Recipient phone number in E.164 format or email address.
+     * Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
      */
     public function withTo(string $to): self
     {

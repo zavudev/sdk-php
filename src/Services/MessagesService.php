@@ -138,7 +138,7 @@ final class MessagesService implements MessagesContract
      * - Unverified accounts: 200 messages per channel per day
      * - Complete KYC verification to increase limits to 10,000/day
      *
-     * @param string $to Body param: Recipient phone number in E.164 format or email address.
+     * @param string $to Body param: Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
      * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
      * @param bool $fallbackEnabled Body param: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
