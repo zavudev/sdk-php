@@ -11,6 +11,7 @@ namespace Zavudev\Senders;
  * - `message.queued`: Message created and queued for sending. `data.status` = `queued`
  * - `message.sent`: Message accepted by the provider. `data.status` = `sent`
  * - `message.delivered`: Message delivered to recipient. `data.status` = `delivered`
+ * - `message.read`: Message was read by the recipient (WhatsApp only). `data.status` = `read`
  * - `message.failed`: Message failed to send. `data.status` = `failed`
  *
  * **Inbound events:**
@@ -28,6 +29,8 @@ enum WebhookEvent: string
     case MESSAGE_SENT = 'message.sent';
 
     case MESSAGE_DELIVERED = 'message.delivered';
+
+    case MESSAGE_READ = 'message.read';
 
     case MESSAGE_FAILED = 'message.failed';
 
