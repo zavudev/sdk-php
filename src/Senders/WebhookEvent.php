@@ -18,6 +18,9 @@ namespace Zavudev\Senders;
  * - `message.inbound`: New message received from a contact. Reactions are delivered as `message.inbound` with `messageType='reaction'`
  * - `message.unsupported`: Received a message type that is not supported
  *
+ * **Broadcast events:**
+ * - `broadcast.status_changed`: Broadcast status changed (pending_review, approved, rejected, sending, completed, cancelled)
+ *
  * **Other events:**
  * - `conversation.new`: New conversation started with a contact
  * - `template.status_changed`: WhatsApp template approval status changed
@@ -37,6 +40,8 @@ enum WebhookEvent: string
     case MESSAGE_INBOUND = 'message.inbound';
 
     case MESSAGE_UNSUPPORTED = 'message.unsupported';
+
+    case BROADCAST_STATUS_CHANGED = 'broadcast.status_changed';
 
     case CONVERSATION_NEW = 'conversation.new';
 
