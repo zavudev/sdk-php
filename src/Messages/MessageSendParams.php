@@ -22,8 +22,9 @@ use Zavudev\Core\Contracts\BaseModel;
  * - Window opens when the user messages you first
  * - Use template messages to initiate conversations outside the window
  *
- * **Email requirements:**
- * - Email channel requires KYC verification. Complete identity verification in the dashboard before sending emails.
+ * **Daily limits:**
+ * - Unverified accounts: 200 messages per channel per day
+ * - Complete KYC verification to increase limits to 10,000/day
  *
  * @see Zavudev\Services\MessagesService::send()
  *
@@ -52,7 +53,7 @@ final class MessageSendParams implements BaseModel
     use SdkParams;
 
     /**
-     * Recipient phone number in E.164 format or email address.
+     * Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
      */
     #[Required]
     public string $to;
@@ -197,7 +198,7 @@ final class MessageSendParams implements BaseModel
     }
 
     /**
-     * Recipient phone number in E.164 format or email address.
+     * Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
      */
     public function withTo(string $to): self
     {
