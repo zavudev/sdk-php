@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.0 (2026-03-27)
+
+Full Changelog: [v0.3.0...v0.4.0](https://github.com/zavudev/sdk-php/compare/v0.3.0...v0.4.0)
+
+### Features
+
+* **api:** api update ([3f8b368](https://github.com/zavudev/sdk-php/commit/3f8b368b6198c71f7a334178719156d5c5447306))
+* **api:** api update ([3eb85ff](https://github.com/zavudev/sdk-php/commit/3eb85ffe7c9fa0976be73d26ddb86e20282447da))
+* **api:** api update ([425bb2e](https://github.com/zavudev/sdk-php/commit/425bb2e148efa0873aef62f74cad22637d0fa19a))
+* **api:** api update ([e41bed3](https://github.com/zavudev/sdk-php/commit/e41bed3af6d89908c0e1e56e2738c7d1bb828629))
+
+
+### Chores
+
+* **internal:** codegen related update ([64aaa2c](https://github.com/zavudev/sdk-php/commit/64aaa2c21b200205cc1b5e9f27a18176fe9e821a))
+* **internal:** tweak CI branches ([ad27f0d](https://github.com/zavudev/sdk-php/commit/ad27f0d01dde6831ad7c7074373a3e74ab4cc87e))
+
 ## 0.3.0 (2026-03-01)
 
 Full Changelog: [v0.2.0...v0.3.0](https://github.com/zavudev/sdk-php/compare/v0.2.0...v0.3.0)
