@@ -10,11 +10,13 @@ use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
 use Zavudev\Messages\MessageResponse;
+use Zavudev\Messages\MessageSendParams\Attachment;
 use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
 
 /**
+ * @phpstan-import-type AttachmentShape from \Zavudev\Messages\MessageSendParams\Attachment
  * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
@@ -73,6 +75,7 @@ interface MessagesContract
      * @api
      *
      * @param string $to Body param: Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
+     * @param list<Attachment|AttachmentShape> $attachments Body param: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
      * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
      * @param bool $fallbackEnabled Body param: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
@@ -91,6 +94,7 @@ interface MessagesContract
      */
     public function send(
         string $to,
+        ?array $attachments = null,
         Channel|string|null $channel = null,
         MessageContent|array|null $content = null,
         bool $fallbackEnabled = true,

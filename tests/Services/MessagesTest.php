@@ -115,6 +115,15 @@ final class MessagesTest extends TestCase
 
         $result = $this->client->messages->send(
             to: '+56912345678',
+            attachments: [
+                [
+                    'filename' => 'invoice.pdf',
+                    'content' => 'content',
+                    'contentID' => 'logo',
+                    'contentType' => 'application/pdf',
+                    'path' => 'https://example.com',
+                ],
+            ],
             channel: Channel::AUTO,
             content: [
                 'buttons' => [['id' => 'id', 'title' => 'title']],

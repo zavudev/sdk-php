@@ -9,6 +9,7 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Messages\MessageSendParams\Attachment;
 
 /**
  * Send a message to a recipient via SMS or WhatsApp.
@@ -28,10 +29,12 @@ use Zavudev\Core\Contracts\BaseModel;
  *
  * @see Zavudev\Services\MessagesService::send()
  *
+ * @phpstan-import-type AttachmentShape from \Zavudev\Messages\MessageSendParams\Attachment
  * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent
  *
  * @phpstan-type MessageSendParamsShape = array{
  *   to: string,
+ *   attachments?: list<Attachment|AttachmentShape>|null,
  *   channel?: null|Channel|value-of<Channel>,
  *   content?: null|MessageContent|MessageContentShape,
  *   fallbackEnabled?: bool|null,
@@ -57,6 +60,14 @@ final class MessageSendParams implements BaseModel
      */
     #[Required]
     public string $to;
+
+    /**
+     * Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
+     *
+     * @var list<Attachment>|null $attachments
+     */
+    #[Optional(list: Attachment::class)]
+    public ?array $attachments;
 
     /**
      * Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
@@ -157,6 +168,7 @@ final class MessageSendParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<Attachment|AttachmentShape>|null $attachments
      * @param Channel|value-of<Channel>|null $channel
      * @param MessageContent|MessageContentShape|null $content
      * @param MessageType|value-of<MessageType>|null $messageType
@@ -164,6 +176,7 @@ final class MessageSendParams implements BaseModel
      */
     public static function with(
         string $to,
+        ?array $attachments = null,
         Channel|string|null $channel = null,
         MessageContent|array|null $content = null,
         ?bool $fallbackEnabled = null,
@@ -181,6 +194,7 @@ final class MessageSendParams implements BaseModel
 
         $self['to'] = $to;
 
+        null !== $attachments && $self['attachments'] = $attachments;
         null !== $channel && $self['channel'] = $channel;
         null !== $content && $self['content'] = $content;
         null !== $fallbackEnabled && $self['fallbackEnabled'] = $fallbackEnabled;
@@ -204,6 +218,19 @@ final class MessageSendParams implements BaseModel
     {
         $self = clone $this;
         $self['to'] = $to;
+
+        return $self;
+    }
+
+    /**
+     * Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
+     *
+     * @param list<Attachment|AttachmentShape> $attachments
+     */
+    public function withAttachments(array $attachments): self
+    {
+        $self = clone $this;
+        $self['attachments'] = $attachments;
 
         return $self;
     }
