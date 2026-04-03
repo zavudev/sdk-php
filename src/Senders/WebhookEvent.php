@@ -24,6 +24,9 @@ namespace Zavudev\Senders;
  * **Other events:**
  * - `conversation.new`: New conversation started with a contact
  * - `template.status_changed`: WhatsApp template approval status changed
+ *
+ * **Partner events:**
+ * - `invitation.status_changed`: A partner invitation status changed (pending, in_progress, completed, cancelled)
  */
 enum WebhookEvent: string
 {
@@ -46,4 +49,6 @@ enum WebhookEvent: string
     case CONVERSATION_NEW = 'conversation.new';
 
     case TEMPLATE_STATUS_CHANGED = 'template.status_changed';
+
+    case INVITATION_STATUS_CHANGED = 'invitation.status_changed';
 }
