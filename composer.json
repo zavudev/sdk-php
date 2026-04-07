@@ -27,7 +27,7 @@
     "sort-packages": true
   },
   "description": "Zavudev PHP SDK",
-  "name": "org-placeholder/zavudev",
+  "name": "zavudev/sdk",
   "require": {
     "php": "^8.1",
     "php-http/discovery": "^1",
