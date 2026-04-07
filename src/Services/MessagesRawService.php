@@ -16,12 +16,14 @@ use Zavudev\Messages\MessageListParams;
 use Zavudev\Messages\MessageReactParams;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams;
+use Zavudev\Messages\MessageSendParams\Attachment;
 use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\MessagesRawContract;
 
 /**
+ * @phpstan-import-type AttachmentShape from \Zavudev\Messages\MessageSendParams\Attachment
  * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
@@ -156,6 +158,7 @@ final class MessagesRawService implements MessagesRawContract
      *
      * @param array{
      *   to: string,
+     *   attachments?: list<Attachment|AttachmentShape>,
      *   channel?: Channel|value-of<Channel>,
      *   content?: MessageContent|MessageContentShape,
      *   fallbackEnabled?: bool,
