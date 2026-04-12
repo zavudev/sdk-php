@@ -11,11 +11,11 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
 use Zavudev\Senders\Agent\Tools\ToolCreateParams;
-use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters;
 use Zavudev\Senders\Agent\Tools\ToolDeleteParams;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolListParams;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
+use Zavudev\Senders\Agent\Tools\ToolParameters;
 use Zavudev\Senders\Agent\Tools\ToolRetrieveParams;
 use Zavudev\Senders\Agent\Tools\ToolTestParams;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
@@ -24,8 +24,7 @@ use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\ToolsRawContract;
 
 /**
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters as ParametersShape1
+ * @phpstan-import-type ToolParametersShape from \Zavudev\Senders\Agent\Tools\ToolParameters
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class ToolsRawService implements ToolsRawContract
@@ -44,7 +43,7 @@ final class ToolsRawService implements ToolsRawContract
      * @param array{
      *   description: string,
      *   name: string,
-     *   parameters: Parameters|ParametersShape,
+     *   parameters: ToolParameters|ToolParametersShape,
      *   webhookURL: string,
      *   enabled?: bool,
      *   webhookSecret?: string,
@@ -119,7 +118,7 @@ final class ToolsRawService implements ToolsRawContract
      *   description?: string,
      *   enabled?: bool,
      *   name?: string,
-     *   parameters?: ToolUpdateParams\Parameters|ParametersShape1,
+     *   parameters?: ToolParameters|ToolParametersShape,
      *   webhookSecret?: string|null,
      *   webhookURL?: string,
      * }|ToolUpdateParams $params

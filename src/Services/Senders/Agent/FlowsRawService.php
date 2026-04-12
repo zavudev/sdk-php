@@ -11,8 +11,6 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Flows\AgentFlow;
 use Zavudev\Senders\Agent\Flows\FlowCreateParams;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Step;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger;
 use Zavudev\Senders\Agent\Flows\FlowDeleteParams;
 use Zavudev\Senders\Agent\Flows\FlowDuplicateParams;
 use Zavudev\Senders\Agent\Flows\FlowDuplicateResponse;
@@ -20,15 +18,15 @@ use Zavudev\Senders\Agent\Flows\FlowGetResponse;
 use Zavudev\Senders\Agent\Flows\FlowListParams;
 use Zavudev\Senders\Agent\Flows\FlowNewResponse;
 use Zavudev\Senders\Agent\Flows\FlowRetrieveParams;
+use Zavudev\Senders\Agent\Flows\FlowStep;
+use Zavudev\Senders\Agent\Flows\FlowTrigger;
 use Zavudev\Senders\Agent\Flows\FlowUpdateParams;
 use Zavudev\Senders\Agent\Flows\FlowUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\FlowsRawContract;
 
 /**
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Step
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step as StepShape1
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger as TriggerShape1
+ * @phpstan-import-type FlowStepShape from \Zavudev\Senders\Agent\Flows\FlowStep
+ * @phpstan-import-type FlowTriggerShape from \Zavudev\Senders\Agent\Flows\FlowTrigger
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class FlowsRawService implements FlowsRawContract
@@ -46,8 +44,8 @@ final class FlowsRawService implements FlowsRawContract
      *
      * @param array{
      *   name: string,
-     *   steps: list<Step|StepShape>,
-     *   trigger: Trigger|TriggerShape,
+     *   steps: list<FlowStep|FlowStepShape>,
+     *   trigger: FlowTrigger|FlowTriggerShape,
      *   description?: string,
      *   enabled?: bool,
      *   priority?: int,
@@ -123,8 +121,8 @@ final class FlowsRawService implements FlowsRawContract
      *   enabled?: bool,
      *   name?: string,
      *   priority?: int,
-     *   steps?: list<FlowUpdateParams\Step|StepShape1>,
-     *   trigger?: FlowUpdateParams\Trigger|TriggerShape1,
+     *   steps?: list<FlowStep|FlowStepShape>,
+     *   trigger?: FlowTrigger|FlowTriggerShape,
      * }|FlowUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *

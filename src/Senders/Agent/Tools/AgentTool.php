@@ -7,10 +7,9 @@ namespace Zavudev\Senders\Agent\Tools;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Tools\AgentTool\Parameters;
 
 /**
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\AgentTool\Parameters
+ * @phpstan-import-type ToolParametersShape from \Zavudev\Senders\Agent\Tools\ToolParameters
  *
  * @phpstan-type AgentToolShape = array{
  *   id: string,
@@ -19,7 +18,7 @@ use Zavudev\Senders\Agent\Tools\AgentTool\Parameters;
  *   description: string,
  *   enabled: bool,
  *   name: string,
- *   parameters: Parameters|ParametersShape,
+ *   parameters: ToolParameters|ToolParametersShape,
  *   updatedAt: \DateTimeInterface,
  *   webhookURL: string,
  * }
@@ -51,7 +50,7 @@ final class AgentTool implements BaseModel
     public string $name;
 
     #[Required]
-    public Parameters $parameters;
+    public ToolParameters $parameters;
 
     #[Required]
     public \DateTimeInterface $updatedAt;
@@ -105,7 +104,7 @@ final class AgentTool implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param Parameters|ParametersShape $parameters
+     * @param ToolParameters|ToolParametersShape $parameters
      */
     public static function with(
         string $id,
@@ -114,7 +113,7 @@ final class AgentTool implements BaseModel
         string $description,
         bool $enabled,
         string $name,
-        Parameters|array $parameters,
+        ToolParameters|array $parameters,
         \DateTimeInterface $updatedAt,
         string $webhookURL,
     ): self {
@@ -185,9 +184,9 @@ final class AgentTool implements BaseModel
     }
 
     /**
-     * @param Parameters|ParametersShape $parameters
+     * @param ToolParameters|ToolParametersShape $parameters
      */
-    public function withParameters(Parameters|array $parameters): self
+    public function withParameters(ToolParameters|array $parameters): self
     {
         $self = clone $this;
         $self['parameters'] = $parameters;

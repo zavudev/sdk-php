@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Contacts\Contact;
+namespace Zavudev\Contacts;
 
-use Zavudev\Contacts\Contact\Channel1\Channel;
-use Zavudev\Contacts\Contact\Channel1\Metrics;
+use Zavudev\Contacts\ContactChannel\Channel;
+use Zavudev\Contacts\ContactChannel\Metrics;
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
@@ -14,9 +14,9 @@ use Zavudev\Core\Contracts\BaseModel;
 /**
  * A communication channel for a contact.
  *
- * @phpstan-import-type MetricsShape from \Zavudev\Contacts\Contact\Channel1\Metrics
+ * @phpstan-import-type MetricsShape from \Zavudev\Contacts\ContactChannel\Metrics
  *
- * @phpstan-type Channel1Shape = array{
+ * @phpstan-type ContactChannelShape = array{
  *   id: string,
  *   channel: Channel|value-of<Channel>,
  *   createdAt: \DateTimeInterface,
@@ -31,9 +31,9 @@ use Zavudev\Core\Contracts\BaseModel;
  *   updatedAt?: \DateTimeInterface|null,
  * }
  */
-final class Channel1 implements BaseModel
+final class ContactChannel implements BaseModel
 {
-    /** @use SdkModel<Channel1Shape> */
+    /** @use SdkModel<ContactChannelShape> */
     use SdkModel;
 
     #[Required]
@@ -100,11 +100,11 @@ final class Channel1 implements BaseModel
     public ?\DateTimeInterface $updatedAt;
 
     /**
-     * `new Channel1()` is missing required properties by the API.
+     * `new ContactChannel()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Channel1::with(
+     * ContactChannel::with(
      *   id: ...,
      *   channel: ...,
      *   createdAt: ...,
@@ -117,7 +117,7 @@ final class Channel1 implements BaseModel
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Channel1)
+     * (new ContactChannel)
      *   ->withID(...)
      *   ->withChannel(...)
      *   ->withCreatedAt(...)

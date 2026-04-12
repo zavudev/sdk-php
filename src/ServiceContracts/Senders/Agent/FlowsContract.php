@@ -8,18 +8,16 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Flows\AgentFlow;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Step;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger;
 use Zavudev\Senders\Agent\Flows\FlowDuplicateResponse;
 use Zavudev\Senders\Agent\Flows\FlowGetResponse;
 use Zavudev\Senders\Agent\Flows\FlowNewResponse;
+use Zavudev\Senders\Agent\Flows\FlowStep;
+use Zavudev\Senders\Agent\Flows\FlowTrigger;
 use Zavudev\Senders\Agent\Flows\FlowUpdateResponse;
 
 /**
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Step
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step as StepShape1
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger as TriggerShape1
+ * @phpstan-import-type FlowStepShape from \Zavudev\Senders\Agent\Flows\FlowStep
+ * @phpstan-import-type FlowTriggerShape from \Zavudev\Senders\Agent\Flows\FlowTrigger
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 interface FlowsContract
@@ -27,8 +25,8 @@ interface FlowsContract
     /**
      * @api
      *
-     * @param list<Step|StepShape> $steps
-     * @param Trigger|TriggerShape $trigger
+     * @param list<FlowStep|FlowStepShape> $steps
+     * @param FlowTrigger|FlowTriggerShape $trigger
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -37,7 +35,7 @@ interface FlowsContract
         string $senderID,
         string $name,
         array $steps,
-        Trigger|array $trigger,
+        FlowTrigger|array $trigger,
         ?string $description = null,
         bool $enabled = false,
         int $priority = 0,
@@ -66,8 +64,8 @@ interface FlowsContract
      * @param bool $enabled Body param
      * @param string $name Body param
      * @param int $priority Body param
-     * @param list<\Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step|StepShape1> $steps Body param
-     * @param \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger|TriggerShape1 $trigger Body param
+     * @param list<FlowStep|FlowStepShape> $steps Body param
+     * @param FlowTrigger|FlowTriggerShape $trigger Body param
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -80,7 +78,7 @@ interface FlowsContract
         ?string $name = null,
         ?int $priority = null,
         ?array $steps = null,
-        \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger|array|null $trigger = null,
+        FlowTrigger|array|null $trigger = null,
         RequestOptions|array|null $requestOptions = null,
     ): FlowUpdateResponse;
 

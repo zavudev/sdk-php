@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters;
+namespace Zavudev\Senders\Agent\Tools\ToolParameters;
 
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Concerns\SdkModel;

@@ -2,26 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Tools\AgentTool;
+namespace Zavudev\Senders\Agent\Tools;
 
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Tools\AgentTool\Parameters\Property;
-use Zavudev\Senders\Agent\Tools\AgentTool\Parameters\Type;
+use Zavudev\Senders\Agent\Tools\ToolParameters\Property;
+use Zavudev\Senders\Agent\Tools\ToolParameters\Type;
 
 /**
- * @phpstan-import-type PropertyShape from \Zavudev\Senders\Agent\Tools\AgentTool\Parameters\Property
+ * @phpstan-import-type PropertyShape from \Zavudev\Senders\Agent\Tools\ToolParameters\Property
  *
- * @phpstan-type ParametersShape = array{
+ * @phpstan-type ToolParametersShape = array{
  *   properties: array<string,Property|PropertyShape>,
  *   required: list<string>,
  *   type: Type|value-of<Type>,
  * }
  */
-final class Parameters implements BaseModel
+final class ToolParameters implements BaseModel
 {
-    /** @use SdkModel<ParametersShape> */
+    /** @use SdkModel<ToolParametersShape> */
     use SdkModel;
 
     /** @var array<string,Property> $properties */
@@ -37,17 +37,17 @@ final class Parameters implements BaseModel
     public string $type;
 
     /**
-     * `new Parameters()` is missing required properties by the API.
+     * `new ToolParameters()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Parameters::with(properties: ..., required: ..., type: ...)
+     * ToolParameters::with(properties: ..., required: ..., type: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Parameters)->withProperties(...)->withRequired(...)->withType(...)
+     * (new ToolParameters)->withProperties(...)->withRequired(...)->withType(...)
      * ```
      */
     public function __construct()

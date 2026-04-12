@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Contacts\Contact\Channel1;
+namespace Zavudev\Contacts\ContactChannel;
 
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Concerns\SdkModel;
