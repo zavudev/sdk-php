@@ -9,21 +9,20 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters;
 
 /**
  * Update a tool.
  *
  * @see Zavudev\Services\Senders\Agent\ToolsService::update()
  *
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters
+ * @phpstan-import-type ToolParametersShape from \Zavudev\Senders\Agent\Tools\ToolParameters
  *
  * @phpstan-type ToolUpdateParamsShape = array{
  *   senderID: string,
  *   description?: string|null,
  *   enabled?: bool|null,
  *   name?: string|null,
- *   parameters?: null|Parameters|ParametersShape,
+ *   parameters?: null|ToolParameters|ToolParametersShape,
  *   webhookSecret?: string|null,
  *   webhookURL?: string|null,
  * }
@@ -47,7 +46,7 @@ final class ToolUpdateParams implements BaseModel
     public ?string $name;
 
     #[Optional]
-    public ?Parameters $parameters;
+    public ?ToolParameters $parameters;
 
     #[Optional(nullable: true)]
     public ?string $webhookSecret;
@@ -79,14 +78,14 @@ final class ToolUpdateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param Parameters|ParametersShape|null $parameters
+     * @param ToolParameters|ToolParametersShape|null $parameters
      */
     public static function with(
         string $senderID,
         ?string $description = null,
         ?bool $enabled = null,
         ?string $name = null,
-        Parameters|array|null $parameters = null,
+        ToolParameters|array|null $parameters = null,
         ?string $webhookSecret = null,
         ?string $webhookURL = null,
     ): self {
@@ -137,9 +136,9 @@ final class ToolUpdateParams implements BaseModel
     }
 
     /**
-     * @param Parameters|ParametersShape $parameters
+     * @param ToolParameters|ToolParametersShape $parameters
      */
-    public function withParameters(Parameters|array $parameters): self
+    public function withParameters(ToolParameters|array $parameters): self
     {
         $self = clone $this;
         $self['parameters'] = $parameters;

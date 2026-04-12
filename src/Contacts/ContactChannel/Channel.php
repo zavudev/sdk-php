@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Contacts\Contact\Channel1;
+namespace Zavudev\Contacts\ContactChannel;
 
 /**
  * Channel type.

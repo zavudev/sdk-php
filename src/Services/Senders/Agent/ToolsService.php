@@ -10,16 +10,15 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
-use Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
+use Zavudev\Senders\Agent\Tools\ToolParameters;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\ToolsContract;
 
 /**
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolCreateParams\Parameters
- * @phpstan-import-type ParametersShape from \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters as ParametersShape1
+ * @phpstan-import-type ToolParametersShape from \Zavudev\Senders\Agent\Tools\ToolParameters
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class ToolsService implements ToolsContract
@@ -42,7 +41,7 @@ final class ToolsService implements ToolsContract
      *
      * Create a new tool for an agent. Tools allow the agent to call external webhooks.
      *
-     * @param Parameters|ParametersShape $parameters
+     * @param ToolParameters|ToolParametersShape $parameters
      * @param string $webhookURL must be HTTPS
      * @param string $webhookSecret optional secret for webhook signature verification
      * @param RequestOpts|null $requestOptions
@@ -53,7 +52,7 @@ final class ToolsService implements ToolsContract
         string $senderID,
         string $description,
         string $name,
-        Parameters|array $parameters,
+        ToolParameters|array $parameters,
         string $webhookURL,
         bool $enabled = true,
         ?string $webhookSecret = null,
@@ -108,7 +107,7 @@ final class ToolsService implements ToolsContract
      * @param string $description Body param
      * @param bool $enabled Body param
      * @param string $name Body param
-     * @param \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|ParametersShape1 $parameters Body param
+     * @param ToolParameters|ToolParametersShape $parameters Body param
      * @param string|null $webhookSecret Body param
      * @param string $webhookURL Body param
      * @param RequestOpts|null $requestOptions
@@ -121,7 +120,7 @@ final class ToolsService implements ToolsContract
         ?string $description = null,
         ?bool $enabled = null,
         ?string $name = null,
-        \Zavudev\Senders\Agent\Tools\ToolUpdateParams\Parameters|array|null $parameters = null,
+        ToolParameters|array|null $parameters = null,
         ?string $webhookSecret = null,
         ?string $webhookURL = null,
         RequestOptions|array|null $requestOptions = null,

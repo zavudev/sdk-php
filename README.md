@@ -51,10 +51,10 @@ var_dump($messageResponse->message);
 
 ### Value Objects
 
-It is recommended to use the static `with` constructor `Dog::with(name: "Joey")`
+It is recommended to use the static `with` constructor `FlowStep::with(id: 'id', ...)`
 and named parameters to initialize value objects.
 
-However, builders are also provided `(new Dog)->withName("Joey")`.
+However, builders are also provided `(new FlowStep)->withID('id')`.
 
 ### Pagination
 

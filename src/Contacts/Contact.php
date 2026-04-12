@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Zavudev\Contacts;
 
-use Zavudev\Contacts\Contact\Channel1 as Channel;
 use Zavudev\Contacts\Contact\DefaultChannel;
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
@@ -12,7 +11,7 @@ use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * @phpstan-import-type Channel1Shape from \Zavudev\Contacts\Contact\Channel1
+ * @phpstan-import-type ContactChannelShape from \Zavudev\Contacts\ContactChannel
  *
  * @phpstan-type ContactShape = array{
  *   id: string,
@@ -20,7 +19,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   createdAt: \DateTimeInterface,
  *   metadata: array<string,string>,
  *   verified: bool,
- *   channels?: list<Channel|Channel1Shape>|null,
+ *   channels?: list<ContactChannel|ContactChannelShape>|null,
  *   countryCode?: string|null,
  *   defaultChannel?: null|DefaultChannel|value-of<DefaultChannel>,
  *   displayName?: string|null,
@@ -64,9 +63,9 @@ final class Contact implements BaseModel
     /**
      * All communication channels for this contact.
      *
-     * @var list<Channel>|null $channels
+     * @var list<ContactChannel>|null $channels
      */
-    #[Optional(list: Channel::class)]
+    #[Optional(list: ContactChannel::class)]
     public ?array $channels;
 
     #[Optional]
@@ -152,7 +151,7 @@ final class Contact implements BaseModel
      *
      * @param list<string> $availableChannels
      * @param array<string,string> $metadata
-     * @param list<Channel|Channel1Shape>|null $channels
+     * @param list<ContactChannel|ContactChannelShape>|null $channels
      * @param DefaultChannel|value-of<DefaultChannel>|null $defaultChannel
      */
     public static function with(
@@ -248,7 +247,7 @@ final class Contact implements BaseModel
     /**
      * All communication channels for this contact.
      *
-     * @param list<Channel|Channel1Shape> $channels
+     * @param list<ContactChannel|ContactChannelShape> $channels
      */
     public function withChannels(array $channels): self
     {
