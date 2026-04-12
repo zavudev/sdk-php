@@ -71,6 +71,9 @@ final class TemplatesTest extends TestCase
                 ],
             ],
             codeExpirationMinutes: 1,
+            instagramBody: 'instagramBody',
+            smsBody: 'smsBody',
+            telegramBody: 'telegramBody',
             variables: ['customer_name', 'order_id'],
             whatsappCategory: WhatsappCategory::UTILITY,
         );

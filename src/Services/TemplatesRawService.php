@@ -41,6 +41,9 @@ final class TemplatesRawService implements TemplatesRawContract
      *   addSecurityRecommendation?: bool,
      *   buttons?: list<Button|ButtonShape>,
      *   codeExpirationMinutes?: int,
+     *   instagramBody?: string,
+     *   smsBody?: string,
+     *   telegramBody?: string,
      *   variables?: list<string>,
      *   whatsappCategory?: WhatsappCategory|value-of<WhatsappCategory>,
      * }|TemplateCreateParams $params
