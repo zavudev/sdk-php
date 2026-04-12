@@ -70,7 +70,7 @@ final class MessageSendParams implements BaseModel
     public ?array $attachments;
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
+     * Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
      *
      * @var value-of<Channel>|null $channel
      */
@@ -236,7 +236,7 @@ final class MessageSendParams implements BaseModel
     }
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. If omitted with non-text messageType, WhatsApp is used. For email recipients, defaults to 'email'.
+     * Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
      *
      * @param Channel|value-of<Channel> $channel
      */

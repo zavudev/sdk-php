@@ -29,7 +29,10 @@ use Zavudev\Templates\Template\Whatsapp;
  *   footer?: string|null,
  *   headerContent?: string|null,
  *   headerType?: string|null,
+ *   instagramBody?: string|null,
+ *   smsBody?: string|null,
  *   status?: null|Status|value-of<Status>,
+ *   telegramBody?: string|null,
  *   updatedAt?: \DateTimeInterface|null,
  *   variables?: list<string>|null,
  *   whatsapp?: null|Whatsapp|WhatsappShape,
@@ -44,7 +47,7 @@ final class Template implements BaseModel
     public string $id;
 
     /**
-     * Template body with variables: {{1}}, {{2}}, etc.
+     * Default template body with variables: {{1}}, {{2}}, or named variables like {{contact.first_name}}. Used when no channel-specific body is set.
      */
     #[Required]
     public string $body;
@@ -64,7 +67,7 @@ final class Template implements BaseModel
     public string $language;
 
     /**
-     * Template name (must match WhatsApp template name).
+     * Template name. For WhatsApp, must match the approved template name in Meta.
      */
     #[Required]
     public string $name;
@@ -110,9 +113,27 @@ final class Template implements BaseModel
     #[Optional]
     public ?string $headerType;
 
+    /**
+     * Channel-specific body for Instagram messages. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $instagramBody;
+
+    /**
+     * Channel-specific body for SMS messages. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $smsBody;
+
     /** @var value-of<Status>|null $status */
     #[Optional(enum: Status::class)]
     public ?string $status;
+
+    /**
+     * Channel-specific body for Telegram messages. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $telegramBody;
 
     #[Optional]
     public ?\DateTimeInterface $updatedAt;
@@ -179,7 +200,10 @@ final class Template implements BaseModel
         ?string $footer = null,
         ?string $headerContent = null,
         ?string $headerType = null,
+        ?string $instagramBody = null,
+        ?string $smsBody = null,
         Status|string|null $status = null,
+        ?string $telegramBody = null,
         ?\DateTimeInterface $updatedAt = null,
         ?array $variables = null,
         Whatsapp|array|null $whatsapp = null,
@@ -199,7 +223,10 @@ final class Template implements BaseModel
         null !== $footer && $self['footer'] = $footer;
         null !== $headerContent && $self['headerContent'] = $headerContent;
         null !== $headerType && $self['headerType'] = $headerType;
+        null !== $instagramBody && $self['instagramBody'] = $instagramBody;
+        null !== $smsBody && $self['smsBody'] = $smsBody;
         null !== $status && $self['status'] = $status;
+        null !== $telegramBody && $self['telegramBody'] = $telegramBody;
         null !== $updatedAt && $self['updatedAt'] = $updatedAt;
         null !== $variables && $self['variables'] = $variables;
         null !== $whatsapp && $self['whatsapp'] = $whatsapp;
@@ -216,7 +243,7 @@ final class Template implements BaseModel
     }
 
     /**
-     * Template body with variables: {{1}}, {{2}}, etc.
+     * Default template body with variables: {{1}}, {{2}}, or named variables like {{contact.first_name}}. Used when no channel-specific body is set.
      */
     public function withBody(string $body): self
     {
@@ -251,7 +278,7 @@ final class Template implements BaseModel
     }
 
     /**
-     * Template name (must match WhatsApp template name).
+     * Template name. For WhatsApp, must match the approved template name in Meta.
      */
     public function withName(string $name): self
     {
@@ -339,12 +366,45 @@ final class Template implements BaseModel
     }
 
     /**
+     * Channel-specific body for Instagram messages. Falls back to `body` if not set.
+     */
+    public function withInstagramBody(string $instagramBody): self
+    {
+        $self = clone $this;
+        $self['instagramBody'] = $instagramBody;
+
+        return $self;
+    }
+
+    /**
+     * Channel-specific body for SMS messages. Falls back to `body` if not set.
+     */
+    public function withSMSBody(string $smsBody): self
+    {
+        $self = clone $this;
+        $self['smsBody'] = $smsBody;
+
+        return $self;
+    }
+
+    /**
      * @param Status|value-of<Status> $status
      */
     public function withStatus(Status|string $status): self
     {
         $self = clone $this;
         $self['status'] = $status;
+
+        return $self;
+    }
+
+    /**
+     * Channel-specific body for Telegram messages. Falls back to `body` if not set.
+     */
+    public function withTelegramBody(string $telegramBody): self
+    {
+        $self = clone $this;
+        $self['telegramBody'] = $telegramBody;
 
         return $self;
     }

@@ -25,6 +25,9 @@ use Zavudev\Templates\TemplateCreateParams\Button;
  *   addSecurityRecommendation?: bool|null,
  *   buttons?: list<Button|ButtonShape>|null,
  *   codeExpirationMinutes?: int|null,
+ *   instagramBody?: string|null,
+ *   smsBody?: string|null,
+ *   telegramBody?: string|null,
  *   variables?: list<string>|null,
  *   whatsappCategory?: null|WhatsappCategory|value-of<WhatsappCategory>,
  * }
@@ -35,6 +38,9 @@ final class TemplateCreateParams implements BaseModel
     use SdkModel;
     use SdkParams;
 
+    /**
+     * Default template body. Used when no channel-specific body is set.
+     */
     #[Required]
     public string $body;
 
@@ -63,6 +69,24 @@ final class TemplateCreateParams implements BaseModel
      */
     #[Optional]
     public ?int $codeExpirationMinutes;
+
+    /**
+     * Channel-specific body for Instagram. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $instagramBody;
+
+    /**
+     * Channel-specific body for SMS. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $smsBody;
+
+    /**
+     * Channel-specific body for Telegram. Falls back to `body` if not set.
+     */
+    #[Optional]
+    public ?string $telegramBody;
 
     /** @var list<string>|null $variables */
     #[Optional(list: 'string')]
@@ -111,6 +135,9 @@ final class TemplateCreateParams implements BaseModel
         ?bool $addSecurityRecommendation = null,
         ?array $buttons = null,
         ?int $codeExpirationMinutes = null,
+        ?string $instagramBody = null,
+        ?string $smsBody = null,
+        ?string $telegramBody = null,
         ?array $variables = null,
         WhatsappCategory|string|null $whatsappCategory = null,
     ): self {
@@ -123,12 +150,18 @@ final class TemplateCreateParams implements BaseModel
         null !== $addSecurityRecommendation && $self['addSecurityRecommendation'] = $addSecurityRecommendation;
         null !== $buttons && $self['buttons'] = $buttons;
         null !== $codeExpirationMinutes && $self['codeExpirationMinutes'] = $codeExpirationMinutes;
+        null !== $instagramBody && $self['instagramBody'] = $instagramBody;
+        null !== $smsBody && $self['smsBody'] = $smsBody;
+        null !== $telegramBody && $self['telegramBody'] = $telegramBody;
         null !== $variables && $self['variables'] = $variables;
         null !== $whatsappCategory && $self['whatsappCategory'] = $whatsappCategory;
 
         return $self;
     }
 
+    /**
+     * Default template body. Used when no channel-specific body is set.
+     */
     public function withBody(string $body): self
     {
         $self = clone $this;
@@ -185,6 +218,39 @@ final class TemplateCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['codeExpirationMinutes'] = $codeExpirationMinutes;
+
+        return $self;
+    }
+
+    /**
+     * Channel-specific body for Instagram. Falls back to `body` if not set.
+     */
+    public function withInstagramBody(string $instagramBody): self
+    {
+        $self = clone $this;
+        $self['instagramBody'] = $instagramBody;
+
+        return $self;
+    }
+
+    /**
+     * Channel-specific body for SMS. Falls back to `body` if not set.
+     */
+    public function withSMSBody(string $smsBody): self
+    {
+        $self = clone $this;
+        $self['smsBody'] = $smsBody;
+
+        return $self;
+    }
+
+    /**
+     * Channel-specific body for Telegram. Falls back to `body` if not set.
+     */
+    public function withTelegramBody(string $telegramBody): self
+    {
+        $self = clone $this;
+        $self['telegramBody'] = $telegramBody;
 
         return $self;
     }

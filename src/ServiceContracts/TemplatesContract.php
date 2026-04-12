@@ -20,9 +20,13 @@ interface TemplatesContract
     /**
      * @api
      *
+     * @param string $body Default template body. Used when no channel-specific body is set.
      * @param bool $addSecurityRecommendation Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
      * @param list<Button|ButtonShape> $buttons template buttons (max 3)
      * @param int $codeExpirationMinutes Code expiration time in minutes. Only for AUTHENTICATION templates.
+     * @param string $instagramBody Channel-specific body for Instagram. Falls back to `body` if not set.
+     * @param string $smsBody Channel-specific body for SMS. Falls back to `body` if not set.
+     * @param string $telegramBody Channel-specific body for Telegram. Falls back to `body` if not set.
      * @param list<string> $variables
      * @param WhatsappCategory|value-of<WhatsappCategory> $whatsappCategory whatsApp template category
      * @param RequestOpts|null $requestOptions
@@ -36,6 +40,9 @@ interface TemplatesContract
         ?bool $addSecurityRecommendation = null,
         ?array $buttons = null,
         ?int $codeExpirationMinutes = null,
+        ?string $instagramBody = null,
+        ?string $smsBody = null,
+        ?string $telegramBody = null,
         ?array $variables = null,
         WhatsappCategory|string|null $whatsappCategory = null,
         RequestOptions|array|null $requestOptions = null,
