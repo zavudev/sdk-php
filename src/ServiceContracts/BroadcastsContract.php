@@ -8,11 +8,13 @@ use Zavudev\Broadcasts\Broadcast;
 use Zavudev\Broadcasts\BroadcastCancelResponse;
 use Zavudev\Broadcasts\BroadcastChannel;
 use Zavudev\Broadcasts\BroadcastContent;
+use Zavudev\Broadcasts\BroadcastEscalateReviewResponse;
 use Zavudev\Broadcasts\BroadcastGetResponse;
 use Zavudev\Broadcasts\BroadcastMessageType;
 use Zavudev\Broadcasts\BroadcastNewResponse;
 use Zavudev\Broadcasts\BroadcastProgress;
 use Zavudev\Broadcasts\BroadcastRescheduleResponse;
+use Zavudev\Broadcasts\BroadcastRetryReviewResponse;
 use Zavudev\Broadcasts\BroadcastSendResponse;
 use Zavudev\Broadcasts\BroadcastStatus;
 use Zavudev\Broadcasts\BroadcastUpdateResponse;
@@ -139,6 +141,18 @@ interface BroadcastsContract
      *
      * @throws APIException
      */
+    public function escalateReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BroadcastEscalateReviewResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
     public function progress(
         string $broadcastID,
         RequestOptions|array|null $requestOptions = null
@@ -157,6 +171,18 @@ interface BroadcastsContract
         \DateTimeInterface $scheduledAt,
         RequestOptions|array|null $requestOptions = null,
     ): BroadcastRescheduleResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function retryReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BroadcastRetryReviewResponse;
 
     /**
      * @api

@@ -9,6 +9,7 @@ use Zavudev\Broadcasts\BroadcastCancelResponse;
 use Zavudev\Broadcasts\BroadcastChannel;
 use Zavudev\Broadcasts\BroadcastContent;
 use Zavudev\Broadcasts\BroadcastCreateParams;
+use Zavudev\Broadcasts\BroadcastEscalateReviewResponse;
 use Zavudev\Broadcasts\BroadcastGetResponse;
 use Zavudev\Broadcasts\BroadcastListParams;
 use Zavudev\Broadcasts\BroadcastMessageType;
@@ -16,6 +17,7 @@ use Zavudev\Broadcasts\BroadcastNewResponse;
 use Zavudev\Broadcasts\BroadcastProgress;
 use Zavudev\Broadcasts\BroadcastRescheduleParams;
 use Zavudev\Broadcasts\BroadcastRescheduleResponse;
+use Zavudev\Broadcasts\BroadcastRetryReviewResponse;
 use Zavudev\Broadcasts\BroadcastSendParams;
 use Zavudev\Broadcasts\BroadcastSendResponse;
 use Zavudev\Broadcasts\BroadcastStatus;
@@ -231,6 +233,30 @@ final class BroadcastsRawService implements BroadcastsRawContract
     /**
      * @api
      *
+     * Request manual review by the Zavu team for a rejected broadcast. Use this after automated review rejection if you believe the content is legitimate.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BroadcastEscalateReviewResponse>
+     *
+     * @throws APIException
+     */
+    public function escalateReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse {
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/broadcasts/%1$s/escalate', $broadcastID],
+            options: $requestOptions,
+            convert: BroadcastEscalateReviewResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
      * Get real-time progress of a broadcast including delivery counts and estimated completion time.
      *
      * @param RequestOpts|null $requestOptions
@@ -281,6 +307,30 @@ final class BroadcastsRawService implements BroadcastsRawContract
             body: (object) $parsed,
             options: $options,
             convert: BroadcastRescheduleResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Resubmit a rejected broadcast for AI review after editing content. Maximum 3 review attempts allowed per broadcast.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BroadcastRetryReviewResponse>
+     *
+     * @throws APIException
+     */
+    public function retryReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse {
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/broadcasts/%1$s/retry-review', $broadcastID],
+            options: $requestOptions,
+            convert: BroadcastRetryReviewResponse::class,
         );
     }
 
