@@ -9,14 +9,22 @@ use Http\Discovery\Psr18ClientDiscovery;
 use Zavudev\Core\BaseClient;
 use Zavudev\Core\Util;
 use Zavudev\Services\AddressesService;
+use Zavudev\Services\BalanceService;
 use Zavudev\Services\BroadcastsService;
 use Zavudev\Services\ContactsService;
+use Zavudev\Services\ExportsService;
 use Zavudev\Services\IntrospectService;
+use Zavudev\Services\InvitationsService;
 use Zavudev\Services\MessagesService;
+use Zavudev\Services\Number10dlcService;
 use Zavudev\Services\PhoneNumbersService;
+use Zavudev\Services\PlanService;
 use Zavudev\Services\RegulatoryDocumentsService;
 use Zavudev\Services\SendersService;
+use Zavudev\Services\SubAccountsService;
 use Zavudev\Services\TemplatesService;
+use Zavudev\Services\URLsService;
+use Zavudev\Services\UsageService;
 
 /**
  * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
@@ -72,6 +80,46 @@ class Client extends BaseClient
     public RegulatoryDocumentsService $regulatoryDocuments;
 
     /**
+     * @api
+     */
+    public InvitationsService $invitations;
+
+    /**
+     * @api
+     */
+    public ExportsService $exports;
+
+    /**
+     * @api
+     */
+    public URLsService $urls;
+
+    /**
+     * @api
+     */
+    public BalanceService $balance;
+
+    /**
+     * @api
+     */
+    public PlanService $plan;
+
+    /**
+     * @api
+     */
+    public UsageService $usage;
+
+    /**
+     * @api
+     */
+    public SubAccountsService $subAccounts;
+
+    /**
+     * @api
+     */
+    public Number10dlcService $number10dlc;
+
+    /**
      * @param RequestOpts|null $requestOptions
      */
     public function __construct(
@@ -118,6 +166,14 @@ class Client extends BaseClient
         $this->phoneNumbers = new PhoneNumbersService($this);
         $this->addresses = new AddressesService($this);
         $this->regulatoryDocuments = new RegulatoryDocumentsService($this);
+        $this->invitations = new InvitationsService($this);
+        $this->exports = new ExportsService($this);
+        $this->urls = new URLsService($this);
+        $this->balance = new BalanceService($this);
+        $this->plan = new PlanService($this);
+        $this->usage = new UsageService($this);
+        $this->subAccounts = new SubAccountsService($this);
+        $this->number10dlc = new Number10dlcService($this);
     }
 
     /** @return array<string,string> */

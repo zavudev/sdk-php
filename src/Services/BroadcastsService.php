@@ -8,11 +8,13 @@ use Zavudev\Broadcasts\Broadcast;
 use Zavudev\Broadcasts\BroadcastCancelResponse;
 use Zavudev\Broadcasts\BroadcastChannel;
 use Zavudev\Broadcasts\BroadcastContent;
+use Zavudev\Broadcasts\BroadcastEscalateReviewResponse;
 use Zavudev\Broadcasts\BroadcastGetResponse;
 use Zavudev\Broadcasts\BroadcastMessageType;
 use Zavudev\Broadcasts\BroadcastNewResponse;
 use Zavudev\Broadcasts\BroadcastProgress;
 use Zavudev\Broadcasts\BroadcastRescheduleResponse;
+use Zavudev\Broadcasts\BroadcastRetryReviewResponse;
 use Zavudev\Broadcasts\BroadcastSendResponse;
 use Zavudev\Broadcasts\BroadcastStatus;
 use Zavudev\Broadcasts\BroadcastUpdateResponse;
@@ -231,6 +233,25 @@ final class BroadcastsService implements BroadcastsContract
     /**
      * @api
      *
+     * Request manual review by the Zavu team for a rejected broadcast. Use this after automated review rejection if you believe the content is legitimate.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function escalateReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BroadcastEscalateReviewResponse {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->escalateReview($broadcastID, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
      * Get real-time progress of a broadcast including delivery counts and estimated completion time.
      *
      * @param RequestOpts|null $requestOptions
@@ -266,6 +287,25 @@ final class BroadcastsService implements BroadcastsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->reschedule($broadcastID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Resubmit a rejected broadcast for AI review after editing content. Maximum 3 review attempts allowed per broadcast.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function retryReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BroadcastRetryReviewResponse {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->retryReview($broadcastID, requestOptions: $requestOptions);
 
         return $response->parse();
     }
