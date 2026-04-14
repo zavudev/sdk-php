@@ -10,6 +10,7 @@ use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\Templates\TemplateCreateParams\Button;
+use Zavudev\Templates\TemplateCreateParams\HeaderType;
 
 /**
  * Create a WhatsApp message template. Note: Templates must be approved by Meta before use.
@@ -25,6 +26,9 @@ use Zavudev\Templates\TemplateCreateParams\Button;
  *   addSecurityRecommendation?: bool|null,
  *   buttons?: list<Button|ButtonShape>|null,
  *   codeExpirationMinutes?: int|null,
+ *   footer?: string|null,
+ *   headerContent?: string|null,
+ *   headerType?: null|HeaderType|value-of<HeaderType>,
  *   instagramBody?: string|null,
  *   smsBody?: string|null,
  *   telegramBody?: string|null,
@@ -69,6 +73,26 @@ final class TemplateCreateParams implements BaseModel
      */
     #[Optional]
     public ?int $codeExpirationMinutes;
+
+    /**
+     * Footer text for the template.
+     */
+    #[Optional]
+    public ?string $footer;
+
+    /**
+     * Header content (text string or media URL).
+     */
+    #[Optional]
+    public ?string $headerContent;
+
+    /**
+     * Type of header for the template.
+     *
+     * @var value-of<HeaderType>|null $headerType
+     */
+    #[Optional(enum: HeaderType::class)]
+    public ?string $headerType;
 
     /**
      * Channel-specific body for Instagram. Falls back to `body` if not set.
@@ -125,6 +149,7 @@ final class TemplateCreateParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param list<Button|ButtonShape>|null $buttons
+     * @param HeaderType|value-of<HeaderType>|null $headerType
      * @param list<string>|null $variables
      * @param WhatsappCategory|value-of<WhatsappCategory>|null $whatsappCategory
      */
@@ -135,6 +160,9 @@ final class TemplateCreateParams implements BaseModel
         ?bool $addSecurityRecommendation = null,
         ?array $buttons = null,
         ?int $codeExpirationMinutes = null,
+        ?string $footer = null,
+        ?string $headerContent = null,
+        HeaderType|string|null $headerType = null,
         ?string $instagramBody = null,
         ?string $smsBody = null,
         ?string $telegramBody = null,
@@ -150,6 +178,9 @@ final class TemplateCreateParams implements BaseModel
         null !== $addSecurityRecommendation && $self['addSecurityRecommendation'] = $addSecurityRecommendation;
         null !== $buttons && $self['buttons'] = $buttons;
         null !== $codeExpirationMinutes && $self['codeExpirationMinutes'] = $codeExpirationMinutes;
+        null !== $footer && $self['footer'] = $footer;
+        null !== $headerContent && $self['headerContent'] = $headerContent;
+        null !== $headerType && $self['headerType'] = $headerType;
         null !== $instagramBody && $self['instagramBody'] = $instagramBody;
         null !== $smsBody && $self['smsBody'] = $smsBody;
         null !== $telegramBody && $self['telegramBody'] = $telegramBody;
@@ -218,6 +249,41 @@ final class TemplateCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['codeExpirationMinutes'] = $codeExpirationMinutes;
+
+        return $self;
+    }
+
+    /**
+     * Footer text for the template.
+     */
+    public function withFooter(string $footer): self
+    {
+        $self = clone $this;
+        $self['footer'] = $footer;
+
+        return $self;
+    }
+
+    /**
+     * Header content (text string or media URL).
+     */
+    public function withHeaderContent(string $headerContent): self
+    {
+        $self = clone $this;
+        $self['headerContent'] = $headerContent;
+
+        return $self;
+    }
+
+    /**
+     * Type of header for the template.
+     *
+     * @param HeaderType|value-of<HeaderType> $headerType
+     */
+    public function withHeaderType(HeaderType|string $headerType): self
+    {
+        $self = clone $this;
+        $self['headerType'] = $headerType;
 
         return $self;
     }

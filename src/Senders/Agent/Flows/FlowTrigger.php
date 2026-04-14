@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Flows\FlowUpdateParams;
+namespace Zavudev\Senders\Agent\Flows;
 
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger\Type;
+use Zavudev\Senders\Agent\Flows\FlowTrigger\Type;
 
 /**
- * @phpstan-type TriggerShape = array{
+ * @phpstan-type FlowTriggerShape = array{
  *   type: Type|value-of<Type>, intent?: string|null, keywords?: list<string>|null
  * }
  */
-final class Trigger implements BaseModel
+final class FlowTrigger implements BaseModel
 {
-    /** @use SdkModel<TriggerShape> */
+    /** @use SdkModel<FlowTriggerShape> */
     use SdkModel;
 
     /**
@@ -43,17 +43,17 @@ final class Trigger implements BaseModel
     public ?array $keywords;
 
     /**
-     * `new Trigger()` is missing required properties by the API.
+     * `new FlowTrigger()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Trigger::with(type: ...)
+     * FlowTrigger::with(type: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Trigger)->withType(...)
+     * (new FlowTrigger)->withType(...)
      * ```
      */
     public function __construct()

@@ -12,6 +12,7 @@ use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\TemplatesContract;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams\Button;
+use Zavudev\Templates\TemplateCreateParams\HeaderType;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
@@ -42,6 +43,9 @@ final class TemplatesService implements TemplatesContract
      * @param bool $addSecurityRecommendation Add 'Do not share this code' disclaimer. Only for AUTHENTICATION templates.
      * @param list<Button|ButtonShape> $buttons template buttons (max 3)
      * @param int $codeExpirationMinutes Code expiration time in minutes. Only for AUTHENTICATION templates.
+     * @param string $footer footer text for the template
+     * @param string $headerContent header content (text string or media URL)
+     * @param HeaderType|value-of<HeaderType> $headerType type of header for the template
      * @param string $instagramBody Channel-specific body for Instagram. Falls back to `body` if not set.
      * @param string $smsBody Channel-specific body for SMS. Falls back to `body` if not set.
      * @param string $telegramBody Channel-specific body for Telegram. Falls back to `body` if not set.
@@ -58,6 +62,9 @@ final class TemplatesService implements TemplatesContract
         ?bool $addSecurityRecommendation = null,
         ?array $buttons = null,
         ?int $codeExpirationMinutes = null,
+        ?string $footer = null,
+        ?string $headerContent = null,
+        HeaderType|string|null $headerType = null,
         ?string $instagramBody = null,
         ?string $smsBody = null,
         ?string $telegramBody = null,
@@ -73,6 +80,9 @@ final class TemplatesService implements TemplatesContract
                 'addSecurityRecommendation' => $addSecurityRecommendation,
                 'buttons' => $buttons,
                 'codeExpirationMinutes' => $codeExpirationMinutes,
+                'footer' => $footer,
+                'headerContent' => $headerContent,
+                'headerType' => $headerType,
                 'instagramBody' => $instagramBody,
                 'smsBody' => $smsBody,
                 'telegramBody' => $telegramBody,

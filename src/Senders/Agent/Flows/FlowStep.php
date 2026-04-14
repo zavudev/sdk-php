@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Flows\FlowUpdateParams;
+namespace Zavudev\Senders\Agent\Flows;
 
 use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step\Type;
+use Zavudev\Senders\Agent\Flows\FlowStep\Type;
 
 /**
- * @phpstan-type StepShape = array{
+ * @phpstan-type FlowStepShape = array{
  *   id: string,
  *   config: array<string,mixed>,
  *   type: Type|value-of<Type>,
  *   nextStepID?: string|null,
  * }
  */
-final class Step implements BaseModel
+final class FlowStep implements BaseModel
 {
-    /** @use SdkModel<StepShape> */
+    /** @use SdkModel<FlowStepShape> */
     use SdkModel;
 
     /**
@@ -52,17 +52,17 @@ final class Step implements BaseModel
     public ?string $nextStepID;
 
     /**
-     * `new Step()` is missing required properties by the API.
+     * `new FlowStep()` is missing required properties by the API.
      *
      * To enforce required parameters use
      * ```
-     * Step::with(id: ..., config: ..., type: ...)
+     * FlowStep::with(id: ..., config: ..., type: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Step)->withID(...)->withConfig(...)->withType(...)
+     * (new FlowStep)->withID(...)->withConfig(...)->withType(...)
      * ```
      */
     public function __construct()

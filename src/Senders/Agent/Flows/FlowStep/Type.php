@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step;
+namespace Zavudev\Senders\Agent\Flows\FlowStep;
 
 /**
  * Type of flow step.

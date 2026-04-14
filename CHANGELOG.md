@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.7.0 (2026-04-14)
+
+Full Changelog: [v0.6.0...v0.7.0](https://github.com/zavudev/sdk-php/compare/v0.6.0...v0.7.0)
+
+### Features
+
+* **api:** api update ([e06d185](https://github.com/zavudev/sdk-php/commit/e06d185bac7b492ad64c649b9264ff4f3e9ccf99))
+* **api:** manual updates ([13f5d6f](https://github.com/zavudev/sdk-php/commit/13f5d6f9c3dc91b96dbdeb67366d133b899ede32))
+
 ## 0.6.0 (2026-04-12)
 
 Full Changelog: [v0.5.1...v0.6.0](https://github.com/zavudev/sdk-php/compare/v0.5.1...v0.6.0)

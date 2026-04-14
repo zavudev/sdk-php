@@ -9,21 +9,19 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Step;
-use Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger;
 
 /**
  * Create a new flow for an agent.
  *
  * @see Zavudev\Services\Senders\Agent\FlowsService::create()
  *
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Step
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowCreateParams\Trigger
+ * @phpstan-import-type FlowStepShape from \Zavudev\Senders\Agent\Flows\FlowStep
+ * @phpstan-import-type FlowTriggerShape from \Zavudev\Senders\Agent\Flows\FlowTrigger
  *
  * @phpstan-type FlowCreateParamsShape = array{
  *   name: string,
- *   steps: list<Step|StepShape>,
- *   trigger: Trigger|TriggerShape,
+ *   steps: list<FlowStep|FlowStepShape>,
+ *   trigger: FlowTrigger|FlowTriggerShape,
  *   description?: string|null,
  *   enabled?: bool|null,
  *   priority?: int|null,
@@ -38,12 +36,12 @@ final class FlowCreateParams implements BaseModel
     #[Required]
     public string $name;
 
-    /** @var list<Step> $steps */
-    #[Required(list: Step::class)]
+    /** @var list<FlowStep> $steps */
+    #[Required(list: FlowStep::class)]
     public array $steps;
 
     #[Required]
-    public Trigger $trigger;
+    public FlowTrigger $trigger;
 
     #[Optional]
     public ?string $description;
@@ -78,13 +76,13 @@ final class FlowCreateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<Step|StepShape> $steps
-     * @param Trigger|TriggerShape $trigger
+     * @param list<FlowStep|FlowStepShape> $steps
+     * @param FlowTrigger|FlowTriggerShape $trigger
      */
     public static function with(
         string $name,
         array $steps,
-        Trigger|array $trigger,
+        FlowTrigger|array $trigger,
         ?string $description = null,
         ?bool $enabled = null,
         ?int $priority = null,
@@ -111,7 +109,7 @@ final class FlowCreateParams implements BaseModel
     }
 
     /**
-     * @param list<Step|StepShape> $steps
+     * @param list<FlowStep|FlowStepShape> $steps
      */
     public function withSteps(array $steps): self
     {
@@ -122,9 +120,9 @@ final class FlowCreateParams implements BaseModel
     }
 
     /**
-     * @param Trigger|TriggerShape $trigger
+     * @param FlowTrigger|FlowTriggerShape $trigger
      */
-    public function withTrigger(Trigger|array $trigger): self
+    public function withTrigger(FlowTrigger|array $trigger): self
     {
         $self = clone $this;
         $self['trigger'] = $trigger;

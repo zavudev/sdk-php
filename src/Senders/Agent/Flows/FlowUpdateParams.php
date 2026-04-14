@@ -9,16 +9,14 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step;
-use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger;
 
 /**
  * Update a flow.
  *
  * @see Zavudev\Services\Senders\Agent\FlowsService::update()
  *
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Step
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger
+ * @phpstan-import-type FlowStepShape from \Zavudev\Senders\Agent\Flows\FlowStep
+ * @phpstan-import-type FlowTriggerShape from \Zavudev\Senders\Agent\Flows\FlowTrigger
  *
  * @phpstan-type FlowUpdateParamsShape = array{
  *   senderID: string,
@@ -26,8 +24,8 @@ use Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger;
  *   enabled?: bool|null,
  *   name?: string|null,
  *   priority?: int|null,
- *   steps?: list<Step|StepShape>|null,
- *   trigger?: null|Trigger|TriggerShape,
+ *   steps?: list<FlowStep|FlowStepShape>|null,
+ *   trigger?: null|FlowTrigger|FlowTriggerShape,
  * }
  */
 final class FlowUpdateParams implements BaseModel
@@ -51,12 +49,12 @@ final class FlowUpdateParams implements BaseModel
     #[Optional]
     public ?int $priority;
 
-    /** @var list<Step>|null $steps */
-    #[Optional(list: Step::class)]
+    /** @var list<FlowStep>|null $steps */
+    #[Optional(list: FlowStep::class)]
     public ?array $steps;
 
     #[Optional]
-    public ?Trigger $trigger;
+    public ?FlowTrigger $trigger;
 
     /**
      * `new FlowUpdateParams()` is missing required properties by the API.
@@ -82,8 +80,8 @@ final class FlowUpdateParams implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<Step|StepShape>|null $steps
-     * @param Trigger|TriggerShape|null $trigger
+     * @param list<FlowStep|FlowStepShape>|null $steps
+     * @param FlowTrigger|FlowTriggerShape|null $trigger
      */
     public static function with(
         string $senderID,
@@ -92,7 +90,7 @@ final class FlowUpdateParams implements BaseModel
         ?string $name = null,
         ?int $priority = null,
         ?array $steps = null,
-        Trigger|array|null $trigger = null,
+        FlowTrigger|array|null $trigger = null,
     ): self {
         $self = new self;
 
@@ -149,7 +147,7 @@ final class FlowUpdateParams implements BaseModel
     }
 
     /**
-     * @param list<Step|StepShape> $steps
+     * @param list<FlowStep|FlowStepShape> $steps
      */
     public function withSteps(array $steps): self
     {
@@ -160,9 +158,9 @@ final class FlowUpdateParams implements BaseModel
     }
 
     /**
-     * @param Trigger|TriggerShape $trigger
+     * @param FlowTrigger|FlowTriggerShape $trigger
      */
-    public function withTrigger(Trigger|array $trigger): self
+    public function withTrigger(FlowTrigger|array $trigger): self
     {
         $self = clone $this;
         $self['trigger'] = $trigger;

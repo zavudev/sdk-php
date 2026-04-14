@@ -8,12 +8,10 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
-use Zavudev\Senders\Agent\Flows\AgentFlow\Step;
-use Zavudev\Senders\Agent\Flows\AgentFlow\Trigger;
 
 /**
- * @phpstan-import-type StepShape from \Zavudev\Senders\Agent\Flows\AgentFlow\Step
- * @phpstan-import-type TriggerShape from \Zavudev\Senders\Agent\Flows\AgentFlow\Trigger
+ * @phpstan-import-type FlowStepShape from \Zavudev\Senders\Agent\Flows\FlowStep
+ * @phpstan-import-type FlowTriggerShape from \Zavudev\Senders\Agent\Flows\FlowTrigger
  *
  * @phpstan-type AgentFlowShape = array{
  *   id: string,
@@ -22,8 +20,8 @@ use Zavudev\Senders\Agent\Flows\AgentFlow\Trigger;
  *   enabled: bool,
  *   name: string,
  *   priority: int,
- *   steps: list<Step|StepShape>,
- *   trigger: Trigger|TriggerShape,
+ *   steps: list<FlowStep|FlowStepShape>,
+ *   trigger: FlowTrigger|FlowTriggerShape,
  *   updatedAt: \DateTimeInterface,
  *   description?: string|null,
  * }
@@ -54,12 +52,12 @@ final class AgentFlow implements BaseModel
     #[Required]
     public int $priority;
 
-    /** @var list<Step> $steps */
-    #[Required(list: Step::class)]
+    /** @var list<FlowStep> $steps */
+    #[Required(list: FlowStep::class)]
     public array $steps;
 
     #[Required]
-    public Trigger $trigger;
+    public FlowTrigger $trigger;
 
     #[Required]
     public \DateTimeInterface $updatedAt;
@@ -110,8 +108,8 @@ final class AgentFlow implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
-     * @param list<Step|StepShape> $steps
-     * @param Trigger|TriggerShape $trigger
+     * @param list<FlowStep|FlowStepShape> $steps
+     * @param FlowTrigger|FlowTriggerShape $trigger
      */
     public static function with(
         string $id,
@@ -121,7 +119,7 @@ final class AgentFlow implements BaseModel
         string $name,
         int $priority,
         array $steps,
-        Trigger|array $trigger,
+        FlowTrigger|array $trigger,
         \DateTimeInterface $updatedAt,
         ?string $description = null,
     ): self {
@@ -194,7 +192,7 @@ final class AgentFlow implements BaseModel
     }
 
     /**
-     * @param list<Step|StepShape> $steps
+     * @param list<FlowStep|FlowStepShape> $steps
      */
     public function withSteps(array $steps): self
     {
@@ -205,9 +203,9 @@ final class AgentFlow implements BaseModel
     }
 
     /**
-     * @param Trigger|TriggerShape $trigger
+     * @param FlowTrigger|FlowTriggerShape $trigger
      */
-    public function withTrigger(Trigger|array $trigger): self
+    public function withTrigger(FlowTrigger|array $trigger): self
     {
         $self = clone $this;
         $self['trigger'] = $trigger;

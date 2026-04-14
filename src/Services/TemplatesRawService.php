@@ -13,6 +13,7 @@ use Zavudev\ServiceContracts\TemplatesRawContract;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams;
 use Zavudev\Templates\TemplateCreateParams\Button;
+use Zavudev\Templates\TemplateCreateParams\HeaderType;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
 use Zavudev\Templates\WhatsappCategory;
@@ -41,6 +42,9 @@ final class TemplatesRawService implements TemplatesRawContract
      *   addSecurityRecommendation?: bool,
      *   buttons?: list<Button|ButtonShape>,
      *   codeExpirationMinutes?: int,
+     *   footer?: string,
+     *   headerContent?: string,
+     *   headerType?: HeaderType|value-of<HeaderType>,
      *   instagramBody?: string,
      *   smsBody?: string,
      *   telegramBody?: string,

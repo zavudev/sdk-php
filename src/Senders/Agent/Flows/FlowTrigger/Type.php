@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Senders\Agent\Flows\FlowUpdateParams\Trigger;
+namespace Zavudev\Senders\Agent\Flows\FlowTrigger;
 
 /**
  * Type of trigger for a flow.
