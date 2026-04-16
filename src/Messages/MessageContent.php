@@ -9,6 +9,7 @@ use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\Messages\MessageContent\Button;
 use Zavudev\Messages\MessageContent\Contact;
+use Zavudev\Messages\MessageContent\CtaHeaderType;
 use Zavudev\Messages\MessageContent\Section;
 
 /**
@@ -21,8 +22,14 @@ use Zavudev\Messages\MessageContent\Section;
  * @phpstan-type MessageContentShape = array{
  *   buttons?: list<Button|ButtonShape>|null,
  *   contacts?: list<Contact|ContactShape>|null,
+ *   ctaDisplayText?: string|null,
+ *   ctaHeaderMediaURL?: string|null,
+ *   ctaHeaderText?: string|null,
+ *   ctaHeaderType?: null|CtaHeaderType|value-of<CtaHeaderType>,
+ *   ctaURL?: string|null,
  *   emoji?: string|null,
  *   filename?: string|null,
+ *   footerText?: string|null,
  *   latitude?: float|null,
  *   listButton?: string|null,
  *   locationAddress?: string|null,
@@ -59,6 +66,38 @@ final class MessageContent implements BaseModel
     public ?array $contacts;
 
     /**
+     * Button label for cta_url messages.
+     */
+    #[Optional]
+    public ?string $ctaDisplayText;
+
+    /**
+     * Public URL of the header media when ctaHeaderType is 'image', 'video', or 'document'.
+     */
+    #[Optional('ctaHeaderMediaUrl')]
+    public ?string $ctaHeaderMediaURL;
+
+    /**
+     * Header text when ctaHeaderType is 'text'.
+     */
+    #[Optional]
+    public ?string $ctaHeaderText;
+
+    /**
+     * Optional header type for cta_url messages.
+     *
+     * @var value-of<CtaHeaderType>|null $ctaHeaderType
+     */
+    #[Optional(enum: CtaHeaderType::class)]
+    public ?string $ctaHeaderType;
+
+    /**
+     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url.
+     */
+    #[Optional('ctaUrl')]
+    public ?string $ctaURL;
+
+    /**
      * Emoji for reaction messages.
      */
     #[Optional]
@@ -69,6 +108,12 @@ final class MessageContent implements BaseModel
      */
     #[Optional]
     public ?string $filename;
+
+    /**
+     * Optional footer text for cta_url messages.
+     */
+    #[Optional]
+    public ?string $footerText;
 
     /**
      * Latitude for location messages.
@@ -158,14 +203,21 @@ final class MessageContent implements BaseModel
      *
      * @param list<Button|ButtonShape>|null $buttons
      * @param list<Contact|ContactShape>|null $contacts
+     * @param CtaHeaderType|value-of<CtaHeaderType>|null $ctaHeaderType
      * @param list<Section|SectionShape>|null $sections
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
         ?array $buttons = null,
         ?array $contacts = null,
+        ?string $ctaDisplayText = null,
+        ?string $ctaHeaderMediaURL = null,
+        ?string $ctaHeaderText = null,
+        CtaHeaderType|string|null $ctaHeaderType = null,
+        ?string $ctaURL = null,
         ?string $emoji = null,
         ?string $filename = null,
+        ?string $footerText = null,
         ?float $latitude = null,
         ?string $listButton = null,
         ?string $locationAddress = null,
@@ -183,8 +235,14 @@ final class MessageContent implements BaseModel
 
         null !== $buttons && $self['buttons'] = $buttons;
         null !== $contacts && $self['contacts'] = $contacts;
+        null !== $ctaDisplayText && $self['ctaDisplayText'] = $ctaDisplayText;
+        null !== $ctaHeaderMediaURL && $self['ctaHeaderMediaURL'] = $ctaHeaderMediaURL;
+        null !== $ctaHeaderText && $self['ctaHeaderText'] = $ctaHeaderText;
+        null !== $ctaHeaderType && $self['ctaHeaderType'] = $ctaHeaderType;
+        null !== $ctaURL && $self['ctaURL'] = $ctaURL;
         null !== $emoji && $self['emoji'] = $emoji;
         null !== $filename && $self['filename'] = $filename;
+        null !== $footerText && $self['footerText'] = $footerText;
         null !== $latitude && $self['latitude'] = $latitude;
         null !== $listButton && $self['listButton'] = $listButton;
         null !== $locationAddress && $self['locationAddress'] = $locationAddress;
@@ -228,6 +286,63 @@ final class MessageContent implements BaseModel
     }
 
     /**
+     * Button label for cta_url messages.
+     */
+    public function withCtaDisplayText(string $ctaDisplayText): self
+    {
+        $self = clone $this;
+        $self['ctaDisplayText'] = $ctaDisplayText;
+
+        return $self;
+    }
+
+    /**
+     * Public URL of the header media when ctaHeaderType is 'image', 'video', or 'document'.
+     */
+    public function withCtaHeaderMediaURL(string $ctaHeaderMediaURL): self
+    {
+        $self = clone $this;
+        $self['ctaHeaderMediaURL'] = $ctaHeaderMediaURL;
+
+        return $self;
+    }
+
+    /**
+     * Header text when ctaHeaderType is 'text'.
+     */
+    public function withCtaHeaderText(string $ctaHeaderText): self
+    {
+        $self = clone $this;
+        $self['ctaHeaderText'] = $ctaHeaderText;
+
+        return $self;
+    }
+
+    /**
+     * Optional header type for cta_url messages.
+     *
+     * @param CtaHeaderType|value-of<CtaHeaderType> $ctaHeaderType
+     */
+    public function withCtaHeaderType(CtaHeaderType|string $ctaHeaderType): self
+    {
+        $self = clone $this;
+        $self['ctaHeaderType'] = $ctaHeaderType;
+
+        return $self;
+    }
+
+    /**
+     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url.
+     */
+    public function withCtaURL(string $ctaURL): self
+    {
+        $self = clone $this;
+        $self['ctaURL'] = $ctaURL;
+
+        return $self;
+    }
+
+    /**
      * Emoji for reaction messages.
      */
     public function withEmoji(string $emoji): self
@@ -245,6 +360,17 @@ final class MessageContent implements BaseModel
     {
         $self = clone $this;
         $self['filename'] = $filename;
+
+        return $self;
+    }
+
+    /**
+     * Optional footer text for cta_url messages.
+     */
+    public function withFooterText(string $footerText): self
+    {
+        $self = clone $this;
+        $self['footerText'] = $footerText;
 
         return $self;
     }
