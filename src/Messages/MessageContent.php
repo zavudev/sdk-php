@@ -72,7 +72,7 @@ final class MessageContent implements BaseModel
     public ?string $ctaDisplayText;
 
     /**
-     * Public URL of the header media when ctaHeaderType is 'image', 'video', or 'document'.
+     * Public HTTPS URL of the header media when ctaHeaderType is 'image', 'video', or 'document'. WhatsApp fetches this URL — it must be publicly reachable and return the declared content type.
      */
     #[Optional('ctaHeaderMediaUrl')]
     public ?string $ctaHeaderMediaURL;
@@ -92,7 +92,7 @@ final class MessageContent implements BaseModel
     public ?string $ctaHeaderType;
 
     /**
-     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url.
+     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url. WhatsApp requires HTTPS in production.
      */
     #[Optional('ctaUrl')]
     public ?string $ctaURL;
@@ -297,7 +297,7 @@ final class MessageContent implements BaseModel
     }
 
     /**
-     * Public URL of the header media when ctaHeaderType is 'image', 'video', or 'document'.
+     * Public HTTPS URL of the header media when ctaHeaderType is 'image', 'video', or 'document'. WhatsApp fetches this URL — it must be publicly reachable and return the declared content type.
      */
     public function withCtaHeaderMediaURL(string $ctaHeaderMediaURL): self
     {
@@ -332,7 +332,7 @@ final class MessageContent implements BaseModel
     }
 
     /**
-     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url.
+     * Destination URL opened in the device's default browser when the button is tapped. Used with messageType=cta_url. WhatsApp requires HTTPS in production.
      */
     public function withCtaURL(string $ctaURL): self
     {
