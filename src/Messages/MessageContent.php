@@ -40,6 +40,7 @@ use Zavudev\Messages\MessageContent\Section;
  *   mimeType?: string|null,
  *   reactToMessageID?: string|null,
  *   sections?: list<Section|SectionShape>|null,
+ *   templateButtonVariables?: array<string,string>|null,
  *   templateID?: string|null,
  *   templateVariables?: array<string,string>|null,
  * }
@@ -178,13 +179,26 @@ final class MessageContent implements BaseModel
     public ?array $sections;
 
     /**
+     * Variables for dynamic button placeholders (URL buttons and OTP buttons). Keys are the button index (0, 1, 2) in the template's `buttons` array. Values substitute the single placeholder allowed inside that button's URL.
+     *
+     * **WhatsApp constraints:**
+     * - Each URL button supports at most one placeholder, numeric (`{{1}}`) or named (`{{order_id}}`).
+     * - A template may have at most three buttons.
+     * - Static URL buttons (no placeholder) are not included here.
+     *
+     * @var array<string,string>|null $templateButtonVariables
+     */
+    #[Optional(map: 'string')]
+    public ?array $templateButtonVariables;
+
+    /**
      * Template ID for template messages.
      */
     #[Optional('templateId')]
     public ?string $templateID;
 
     /**
-     * Variables for template rendering. Keys are variable positions (1, 2, 3...).
+     * Variables for body placeholders. Keys are positions (1, 2, 3, ...) matching the order placeholders appear in the template body.
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -205,6 +219,7 @@ final class MessageContent implements BaseModel
      * @param list<Contact|ContactShape>|null $contacts
      * @param CtaHeaderType|value-of<CtaHeaderType>|null $ctaHeaderType
      * @param list<Section|SectionShape>|null $sections
+     * @param array<string,string>|null $templateButtonVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -228,6 +243,7 @@ final class MessageContent implements BaseModel
         ?string $mimeType = null,
         ?string $reactToMessageID = null,
         ?array $sections = null,
+        ?array $templateButtonVariables = null,
         ?string $templateID = null,
         ?array $templateVariables = null,
     ): self {
@@ -253,6 +269,7 @@ final class MessageContent implements BaseModel
         null !== $mimeType && $self['mimeType'] = $mimeType;
         null !== $reactToMessageID && $self['reactToMessageID'] = $reactToMessageID;
         null !== $sections && $self['sections'] = $sections;
+        null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
         null !== $templateID && $self['templateID'] = $templateID;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
@@ -488,6 +505,25 @@ final class MessageContent implements BaseModel
     }
 
     /**
+     * Variables for dynamic button placeholders (URL buttons and OTP buttons). Keys are the button index (0, 1, 2) in the template's `buttons` array. Values substitute the single placeholder allowed inside that button's URL.
+     *
+     * **WhatsApp constraints:**
+     * - Each URL button supports at most one placeholder, numeric (`{{1}}`) or named (`{{order_id}}`).
+     * - A template may have at most three buttons.
+     * - Static URL buttons (no placeholder) are not included here.
+     *
+     * @param array<string,string> $templateButtonVariables
+     */
+    public function withTemplateButtonVariables(
+        array $templateButtonVariables
+    ): self {
+        $self = clone $this;
+        $self['templateButtonVariables'] = $templateButtonVariables;
+
+        return $self;
+    }
+
+    /**
      * Template ID for template messages.
      */
     public function withTemplateID(string $templateID): self
@@ -499,7 +535,7 @@ final class MessageContent implements BaseModel
     }
 
     /**
-     * Variables for template rendering. Keys are variable positions (1, 2, 3...).
+     * Variables for body placeholders. Keys are positions (1, 2, 3, ...) matching the order placeholders appear in the template body.
      *
      * @param array<string,string> $templateVariables
      */

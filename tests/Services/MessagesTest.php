@@ -153,6 +153,7 @@ final class MessagesTest extends TestCase
                         'title' => 'title',
                     ],
                 ],
+                'templateButtonVariables' => ['0' => 'abc-report-token'],
                 'templateID' => 'templateId',
                 'templateVariables' => ['1' => 'John', '2' => 'ORD-12345'],
             ],
