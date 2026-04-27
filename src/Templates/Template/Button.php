@@ -12,6 +12,7 @@ use Zavudev\Templates\Template\Button\Type;
 
 /**
  * @phpstan-type ButtonShape = array{
+ *   example?: string|null,
  *   otpType?: null|OtpType|value-of<OtpType>,
  *   packageName?: string|null,
  *   phoneNumber?: string|null,
@@ -25,6 +26,12 @@ final class Button implements BaseModel
 {
     /** @use SdkModel<ButtonShape> */
     use SdkModel;
+
+    /**
+     * Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.
+     */
+    #[Optional]
+    public ?string $example;
 
     /**
      * OTP button type. Required when type is 'otp'.
@@ -73,6 +80,7 @@ final class Button implements BaseModel
      * @param Type|value-of<Type>|null $type
      */
     public static function with(
+        ?string $example = null,
         OtpType|string|null $otpType = null,
         ?string $packageName = null,
         ?string $phoneNumber = null,
@@ -83,6 +91,7 @@ final class Button implements BaseModel
     ): self {
         $self = new self;
 
+        null !== $example && $self['example'] = $example;
         null !== $otpType && $self['otpType'] = $otpType;
         null !== $packageName && $self['packageName'] = $packageName;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
@@ -90,6 +99,17 @@ final class Button implements BaseModel
         null !== $text && $self['text'] = $text;
         null !== $type && $self['type'] = $type;
         null !== $url && $self['url'] = $url;
+
+        return $self;
+    }
+
+    /**
+     * Sample value used to substitute `{{1}}` in the URL when submitting the template to Meta for review. Only present for dynamic URL buttons.
+     */
+    public function withExample(string $example): self
+    {
+        $self = clone $this;
+        $self['example'] = $example;
 
         return $self;
     }

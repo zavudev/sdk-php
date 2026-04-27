@@ -63,6 +63,7 @@ final class TemplatesTest extends TestCase
                 [
                     'text' => 'text',
                     'type' => 'quick_reply',
+                    'example' => 'ORD-12345',
                     'otpType' => 'COPY_CODE',
                     'packageName' => 'packageName',
                     'phoneNumber' => 'phoneNumber',
