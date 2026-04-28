@@ -12,7 +12,7 @@ use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\SubAccounts\APIKeys\APIKeyCreateParams\Environment;
 
 /**
- * Create sub-account API key.
+ * Create sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
  *
  * @see Zavudev\Services\SubAccounts\APIKeysService::create()
  *

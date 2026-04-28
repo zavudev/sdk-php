@@ -10,7 +10,7 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * Revoke sub-account API key.
+ * Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
  *
  * @see Zavudev\Services\SubAccounts\APIKeysService::revoke()
  *

@@ -35,7 +35,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response.
+     * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param array{
      *   name: string,
@@ -71,7 +71,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * Get sub-account
+     * Get sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions
@@ -96,7 +96,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * Update sub-account
+     * Update sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param array{
@@ -135,7 +135,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * List sub-accounts for this team.
+     * List sub-accounts for this team. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param array{cursor?: string, limit?: int}|SubAccountListParams $params
      * @param RequestOpts|null $requestOptions
@@ -167,7 +167,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked.
+     * Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions
@@ -192,7 +192,7 @@ final class SubAccountsRawService implements SubAccountsRawContract
     /**
      * @api
      *
-     * Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap).
+     * Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap). Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions

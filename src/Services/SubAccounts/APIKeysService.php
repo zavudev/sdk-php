@@ -34,7 +34,7 @@ final class APIKeysService implements APIKeysContract
     /**
      * @api
      *
-     * Create sub-account API key
+     * Create sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param Environment|value-of<Environment> $environment
@@ -67,7 +67,7 @@ final class APIKeysService implements APIKeysContract
     /**
      * @api
      *
-     * List sub-account API keys
+     * List sub-account API keys. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions
@@ -87,7 +87,7 @@ final class APIKeysService implements APIKeysContract
     /**
      * @api
      *
-     * Revoke sub-account API key
+     * Revoke sub-account API key. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $keyID API key ID
      * @param string $id sub-account ID
