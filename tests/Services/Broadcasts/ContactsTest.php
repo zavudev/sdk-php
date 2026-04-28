@@ -78,10 +78,12 @@ final class ContactsTest extends TestCase
             contacts: [
                 [
                     'recipient' => '+14155551234',
+                    'templateButtonVariables' => ['0' => 'abc-report-token'],
                     'templateVariables' => ['name' => 'John', 'order_id' => 'ORD-001'],
                 ],
                 [
                     'recipient' => '+14155555678',
+                    'templateButtonVariables' => ['0' => 'abc-report-token'],
                     'templateVariables' => ['name' => 'Jane', 'order_id' => 'ORD-002'],
                 ],
             ],

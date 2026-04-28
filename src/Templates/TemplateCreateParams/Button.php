@@ -15,6 +15,7 @@ use Zavudev\Templates\TemplateCreateParams\Button\Type;
  * @phpstan-type ButtonShape = array{
  *   text: string,
  *   type: Type|value-of<Type>,
+ *   example?: string|null,
  *   otpType?: null|OtpType|value-of<OtpType>,
  *   packageName?: string|null,
  *   phoneNumber?: string|null,
@@ -33,6 +34,12 @@ final class Button implements BaseModel
     /** @var value-of<Type> $type */
     #[Required(enum: Type::class)]
     public string $type;
+
+    /**
+     * Sample value Meta uses to review templates with a dynamic URL button. Substituted into `{{1}}` of the URL when the template is submitted to Meta. Only meaningful when `url` contains `{{1}}`; ignored for static URLs.
+     */
+    #[Optional]
+    public ?string $example;
 
     /**
      * Required when type is 'otp'. COPY_CODE shows copy button, ONE_TAP enables Android autofill.
@@ -57,6 +64,9 @@ final class Button implements BaseModel
     #[Optional]
     public ?string $signatureHash;
 
+    /**
+     * Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
+     */
     #[Optional]
     public ?string $url;
 
@@ -90,6 +100,7 @@ final class Button implements BaseModel
     public static function with(
         string $text,
         Type|string $type,
+        ?string $example = null,
         OtpType|string|null $otpType = null,
         ?string $packageName = null,
         ?string $phoneNumber = null,
@@ -101,6 +112,7 @@ final class Button implements BaseModel
         $self['text'] = $text;
         $self['type'] = $type;
 
+        null !== $example && $self['example'] = $example;
         null !== $otpType && $self['otpType'] = $otpType;
         null !== $packageName && $self['packageName'] = $packageName;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
@@ -125,6 +137,17 @@ final class Button implements BaseModel
     {
         $self = clone $this;
         $self['type'] = $type;
+
+        return $self;
+    }
+
+    /**
+     * Sample value Meta uses to review templates with a dynamic URL button. Substituted into `{{1}}` of the URL when the template is submitted to Meta. Only meaningful when `url` contains `{{1}}`; ignored for static URLs.
+     */
+    public function withExample(string $example): self
+    {
+        $self = clone $this;
+        $self['example'] = $example;
 
         return $self;
     }
@@ -172,6 +195,9 @@ final class Button implements BaseModel
         return $self;
     }
 
+    /**
+     * Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
+     */
     public function withURL(string $url): self
     {
         $self = clone $this;

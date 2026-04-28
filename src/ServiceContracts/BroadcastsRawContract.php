@@ -7,12 +7,14 @@ namespace Zavudev\ServiceContracts;
 use Zavudev\Broadcasts\Broadcast;
 use Zavudev\Broadcasts\BroadcastCancelResponse;
 use Zavudev\Broadcasts\BroadcastCreateParams;
+use Zavudev\Broadcasts\BroadcastEscalateReviewResponse;
 use Zavudev\Broadcasts\BroadcastGetResponse;
 use Zavudev\Broadcasts\BroadcastListParams;
 use Zavudev\Broadcasts\BroadcastNewResponse;
 use Zavudev\Broadcasts\BroadcastProgress;
 use Zavudev\Broadcasts\BroadcastRescheduleParams;
 use Zavudev\Broadcasts\BroadcastRescheduleResponse;
+use Zavudev\Broadcasts\BroadcastRetryReviewResponse;
 use Zavudev\Broadcasts\BroadcastSendParams;
 use Zavudev\Broadcasts\BroadcastSendResponse;
 use Zavudev\Broadcasts\BroadcastUpdateParams;
@@ -120,6 +122,20 @@ interface BroadcastsRawContract
      *
      * @param RequestOpts|null $requestOptions
      *
+     * @return BaseResponse<BroadcastEscalateReviewResponse>
+     *
+     * @throws APIException
+     */
+    public function escalateReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
      * @return BaseResponse<BroadcastProgress>
      *
      * @throws APIException
@@ -143,6 +159,20 @@ interface BroadcastsRawContract
         string $broadcastID,
         array|BroadcastRescheduleParams $params,
         RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<BroadcastRetryReviewResponse>
+     *
+     * @throws APIException
+     */
+    public function retryReview(
+        string $broadcastID,
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**

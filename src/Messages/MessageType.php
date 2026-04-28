@@ -29,6 +29,8 @@ enum MessageType: string
 
     case LIST = 'list';
 
+    case CTA_URL = 'cta_url';
+
     case REACTION = 'reaction';
 
     case TEMPLATE = 'template';

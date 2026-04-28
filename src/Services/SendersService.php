@@ -19,6 +19,7 @@ use Zavudev\Senders\WhatsappBusinessProfileResponse;
 use Zavudev\Senders\WhatsappBusinessProfileVertical;
 use Zavudev\ServiceContracts\SendersContract;
 use Zavudev\Services\Senders\AgentService;
+use Zavudev\Services\Senders\WhatsappSyncService;
 
 /**
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
@@ -36,12 +37,18 @@ final class SendersService implements SendersContract
     public AgentService $agent;
 
     /**
+     * @api
+     */
+    public WhatsappSyncService $whatsappSync;
+
+    /**
      * @internal
      */
     public function __construct(private Client $client)
     {
         $this->raw = new SendersRawService($client);
         $this->agent = new AgentService($client);
+        $this->whatsappSync = new WhatsappSyncService($client);
     }
 
     /**

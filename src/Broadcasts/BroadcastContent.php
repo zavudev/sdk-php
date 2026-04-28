@@ -16,6 +16,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   mediaID?: string|null,
  *   mediaURL?: string|null,
  *   mimeType?: string|null,
+ *   templateButtonVariables?: array<string,string>|null,
  *   templateID?: string|null,
  *   templateVariables?: array<string,string>|null,
  * }
@@ -50,13 +51,21 @@ final class BroadcastContent implements BaseModel
     public ?string $mimeType;
 
     /**
+     * Default button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2). Per-contact values override these.
+     *
+     * @var array<string,string>|null $templateButtonVariables
+     */
+    #[Optional(map: 'string')]
+    public ?array $templateButtonVariables;
+
+    /**
      * Template ID for template messages.
      */
     #[Optional('templateId')]
     public ?string $templateID;
 
     /**
-     * Default template variables (can be overridden per contact).
+     * Default body variables (can be overridden per contact). Keys are positions (1, 2, ...).
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -73,6 +82,7 @@ final class BroadcastContent implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param array<string,string>|null $templateButtonVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -80,6 +90,7 @@ final class BroadcastContent implements BaseModel
         ?string $mediaID = null,
         ?string $mediaURL = null,
         ?string $mimeType = null,
+        ?array $templateButtonVariables = null,
         ?string $templateID = null,
         ?array $templateVariables = null,
     ): self {
@@ -89,6 +100,7 @@ final class BroadcastContent implements BaseModel
         null !== $mediaID && $self['mediaID'] = $mediaID;
         null !== $mediaURL && $self['mediaURL'] = $mediaURL;
         null !== $mimeType && $self['mimeType'] = $mimeType;
+        null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
         null !== $templateID && $self['templateID'] = $templateID;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
@@ -140,6 +152,20 @@ final class BroadcastContent implements BaseModel
     }
 
     /**
+     * Default button variables for dynamic URL/OTP buttons. Keys are the button index (0, 1, 2). Per-contact values override these.
+     *
+     * @param array<string,string> $templateButtonVariables
+     */
+    public function withTemplateButtonVariables(
+        array $templateButtonVariables
+    ): self {
+        $self = clone $this;
+        $self['templateButtonVariables'] = $templateButtonVariables;
+
+        return $self;
+    }
+
+    /**
      * Template ID for template messages.
      */
     public function withTemplateID(string $templateID): self
@@ -151,7 +177,7 @@ final class BroadcastContent implements BaseModel
     }
 
     /**
-     * Default template variables (can be overridden per contact).
+     * Default body variables (can be overridden per contact). Keys are positions (1, 2, ...).
      *
      * @param array<string,string> $templateVariables
      */

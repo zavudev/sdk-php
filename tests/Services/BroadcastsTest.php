@@ -9,11 +9,13 @@ use Tests\UnsupportedMockTests;
 use Zavudev\Broadcasts\Broadcast;
 use Zavudev\Broadcasts\BroadcastCancelResponse;
 use Zavudev\Broadcasts\BroadcastChannel;
+use Zavudev\Broadcasts\BroadcastEscalateReviewResponse;
 use Zavudev\Broadcasts\BroadcastGetResponse;
 use Zavudev\Broadcasts\BroadcastMessageType;
 use Zavudev\Broadcasts\BroadcastNewResponse;
 use Zavudev\Broadcasts\BroadcastProgress;
 use Zavudev\Broadcasts\BroadcastRescheduleResponse;
+use Zavudev\Broadcasts\BroadcastRetryReviewResponse;
 use Zavudev\Broadcasts\BroadcastSendResponse;
 use Zavudev\Broadcasts\BroadcastUpdateResponse;
 use Zavudev\Client;
@@ -69,6 +71,7 @@ final class BroadcastsTest extends TestCase
                 'mediaID' => 'mediaId',
                 'mediaURL' => 'mediaUrl',
                 'mimeType' => 'mimeType',
+                'templateButtonVariables' => ['foo' => 'string'],
                 'templateID' => 'templateId',
                 'templateVariables' => ['foo' => 'string'],
             ],
@@ -157,6 +160,19 @@ final class BroadcastsTest extends TestCase
     }
 
     #[Test]
+    public function testEscalateReview(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->broadcasts->escalateReview('broadcastId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(BroadcastEscalateReviewResponse::class, $result);
+    }
+
+    #[Test]
     public function testProgress(): void
     {
         if (UnsupportedMockTests::$skip) {
@@ -199,6 +215,19 @@ final class BroadcastsTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(BroadcastRescheduleResponse::class, $result);
+    }
+
+    #[Test]
+    public function testRetryReview(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->broadcasts->retryReview('broadcastId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(BroadcastRetryReviewResponse::class, $result);
     }
 
     #[Test]

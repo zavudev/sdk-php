@@ -30,6 +30,46 @@ final class ContactsTest extends TestCase
     }
 
     #[Test]
+    public function testCreate(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->contacts->create(
+            channels: [['channel' => 'sms', 'identifier' => '+14155551234']]
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(Contact::class, $result);
+    }
+
+    #[Test]
+    public function testCreateWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->contacts->create(
+            channels: [
+                [
+                    'channel' => 'sms',
+                    'identifier' => '+14155551234',
+                    'countryCode' => 'US',
+                    'isPrimary' => true,
+                    'label' => 'work',
+                ],
+            ],
+            displayName: 'John Doe',
+            metadata: ['foo' => 'string'],
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(Contact::class, $result);
+    }
+
+    #[Test]
     public function testRetrieve(): void
     {
         if (UnsupportedMockTests::$skip) {
@@ -71,6 +111,51 @@ final class ContactsTest extends TestCase
             // @phpstan-ignore-next-line method.alreadyNarrowedType
             $this->assertInstanceOf(Contact::class, $item);
         }
+    }
+
+    #[Test]
+    public function testDismissMergeSuggestion(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->contacts->dismissMergeSuggestion('contactId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertNull($result);
+    }
+
+    #[Test]
+    public function testMerge(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->contacts->merge(
+            'contactId',
+            sourceContactID: 'jx7xyz789'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(Contact::class, $result);
+    }
+
+    #[Test]
+    public function testMergeWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->contacts->merge(
+            'contactId',
+            sourceContactID: 'jx7xyz789'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(Contact::class, $result);
     }
 
     #[Test]

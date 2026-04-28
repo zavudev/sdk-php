@@ -22,6 +22,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   errorMessage?: string|null,
  *   messageID?: string|null,
  *   processedAt?: \DateTimeInterface|null,
+ *   templateButtonVariables?: array<string,string>|null,
  *   templateVariables?: array<string,string>|null,
  * }
  */
@@ -69,6 +70,10 @@ final class BroadcastContact implements BaseModel
     #[Optional]
     public ?\DateTimeInterface $processedAt;
 
+    /** @var array<string,string>|null $templateButtonVariables */
+    #[Optional(map: 'string')]
+    public ?array $templateButtonVariables;
+
     /** @var array<string,string>|null $templateVariables */
     #[Optional(map: 'string')]
     public ?array $templateVariables;
@@ -106,6 +111,7 @@ final class BroadcastContact implements BaseModel
      *
      * @param RecipientType|value-of<RecipientType> $recipientType
      * @param BroadcastContactStatus|value-of<BroadcastContactStatus> $status
+     * @param array<string,string>|null $templateButtonVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -119,6 +125,7 @@ final class BroadcastContact implements BaseModel
         ?string $errorMessage = null,
         ?string $messageID = null,
         ?\DateTimeInterface $processedAt = null,
+        ?array $templateButtonVariables = null,
         ?array $templateVariables = null,
     ): self {
         $self = new self;
@@ -134,6 +141,7 @@ final class BroadcastContact implements BaseModel
         null !== $errorMessage && $self['errorMessage'] = $errorMessage;
         null !== $messageID && $self['messageID'] = $messageID;
         null !== $processedAt && $self['processedAt'] = $processedAt;
+        null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
         return $self;
@@ -226,6 +234,18 @@ final class BroadcastContact implements BaseModel
     {
         $self = clone $this;
         $self['processedAt'] = $processedAt;
+
+        return $self;
+    }
+
+    /**
+     * @param array<string,string> $templateButtonVariables
+     */
+    public function withTemplateButtonVariables(
+        array $templateButtonVariables
+    ): self {
+        $self = clone $this;
+        $self['templateButtonVariables'] = $templateButtonVariables;
 
         return $self;
     }
