@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.8.0 (2026-04-28)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/zavudev/sdk-php/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* **api:** api update ([d0c5123](https://github.com/zavudev/sdk-php/commit/d0c5123b8267fefac5956b82b713bb5a0f5462de))
+* **api:** api update ([808bd81](https://github.com/zavudev/sdk-php/commit/808bd812e9eaa946fa56a19611efa8c76f410cb7))
+* **api:** api update ([4eb815e](https://github.com/zavudev/sdk-php/commit/4eb815e9b0b43449c32e234f9412d943561fa9f1))
+* **api:** api update ([fcb8c55](https://github.com/zavudev/sdk-php/commit/fcb8c557a21f6400fef4ca2b7c334ae69769d35b))
+* **api:** api update ([ba76c2d](https://github.com/zavudev/sdk-php/commit/ba76c2dc26ee2da1c46fcb506f18d6981216c0be))
+* **api:** api update ([7722e7c](https://github.com/zavudev/sdk-php/commit/7722e7c02702cc6d81e96d0a30aad73366cca343))
+* **api:** manual updates ([17eb562](https://github.com/zavudev/sdk-php/commit/17eb56286fe646c46e0f403a08be4412bd32b61b))
+
+
+### Bug Fixes
+
+* **client:** resolve serialization issue with unions and enums ([9dd15a4](https://github.com/zavudev/sdk-php/commit/9dd15a4da36f4b3ed629e120aebf31de677361dc))
+* populate enum-typed properties with enum instances ([30f86a8](https://github.com/zavudev/sdk-php/commit/30f86a82d26eba9c82c0c18c3f9cf2bd4abc23f1))
+
 ## 0.7.0 (2026-04-14)
 
 Full Changelog: [v0.6.0...v0.7.0](https://github.com/zavudev/sdk-php/compare/v0.6.0...v0.7.0)
