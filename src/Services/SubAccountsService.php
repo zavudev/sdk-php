@@ -46,7 +46,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response.
+     * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $name name of the sub-account
      * @param int $creditLimit Spending cap in cents. When reached, messages from this sub-account will be blocked. Omit or set to 0 for no limit.
@@ -81,7 +81,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * Get sub-account
+     * Get sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions
@@ -101,7 +101,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * Update sub-account
+     * Update sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param array<string,mixed> $metadata
@@ -138,7 +138,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * List sub-accounts for this team.
+     * List sub-accounts for this team. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param RequestOpts|null $requestOptions
      *
@@ -162,7 +162,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked.
+     * Deactivate a sub-account. Remaining balance is returned to the parent team and all API keys are revoked. Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions
@@ -182,7 +182,7 @@ final class SubAccountsService implements SubAccountsContract
     /**
      * @api
      *
-     * Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap).
+     * Get spending information for a sub-account. Returns the parent team's balance, the sub-account's total spending, and its credit limit (spending cap). Requires a parent project API key; sub-account API keys receive HTTP 403.
      *
      * @param string $id sub-account ID
      * @param RequestOpts|null $requestOptions

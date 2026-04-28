@@ -10,7 +10,7 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * List sub-accounts for this team.
+ * List sub-accounts for this team. Requires a parent project API key; sub-account API keys receive HTTP 403.
  *
  * @see Zavudev\Services\SubAccountsService::list()
  *

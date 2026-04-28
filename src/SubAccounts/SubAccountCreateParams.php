@@ -11,7 +11,7 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response.
+ * Create a new sub-account (project) with its own API key. All charges are billed to the parent team's balance. Use creditLimit to set a spending cap. The sub-account's API key is returned only in the creation response. Requires a parent project API key; sub-account API keys receive HTTP 403.
  *
  * @see Zavudev\Services\SubAccountsService::create()
  *

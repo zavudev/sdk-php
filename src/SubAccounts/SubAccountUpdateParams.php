@@ -11,7 +11,7 @@ use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\SubAccounts\SubAccountUpdateParams\Status;
 
 /**
- * Update sub-account.
+ * Update sub-account. Requires a parent project API key; sub-account API keys receive HTTP 403.
  *
  * @see Zavudev\Services\SubAccountsService::update()
  *
