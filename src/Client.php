@@ -7,6 +7,7 @@ namespace Zavudev;
 use Http\Discovery\Psr17FactoryDiscovery;
 use Http\Discovery\Psr18ClientDiscovery;
 use Zavudev\Core\BaseClient;
+use Zavudev\Core\Implementation\StreamingHttpClient;
 use Zavudev\Core\Util;
 use Zavudev\Services\AddressesService;
 use Zavudev\Services\BalanceService;
@@ -140,6 +141,11 @@ class Client extends BaseClient
             ),
             $requestOptions,
         );
+
+        if (is_null($options->streamingTransporter)) {
+            assert(!is_null($options->transporter));
+            $options->streamingTransporter = new StreamingHttpClient($options->transporter);
+        }
 
         /** @var array<string, string|null> $headers */
         $headers = [
