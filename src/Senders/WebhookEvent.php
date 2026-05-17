@@ -27,6 +27,10 @@ namespace Zavudev\Senders;
  *
  * **Partner events:**
  * - `invitation.status_changed`: A partner invitation status changed (pending, in_progress, completed, cancelled)
+ *
+ * **Custom domain events:**
+ * - `domain.verified`: A custom email domain passed verification (DKIM, and SPF/DMARC/MAIL FROM if enhanced records are enabled)
+ * - `domain.failed`: A custom email domain failed verification or is partially verified
  */
 enum WebhookEvent: string
 {
@@ -51,4 +55,8 @@ enum WebhookEvent: string
     case TEMPLATE_STATUS_CHANGED = 'template.status_changed';
 
     case INVITATION_STATUS_CHANGED = 'invitation.status_changed';
+
+    case DOMAIN_VERIFIED = 'domain.verified';
+
+    case DOMAIN_FAILED = 'domain.failed';
 }
