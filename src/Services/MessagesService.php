@@ -13,6 +13,7 @@ use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams\Attachment;
+use Zavudev\Messages\MessageShowTypingResponse;
 use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
@@ -196,6 +197,29 @@ final class MessagesService implements MessagesContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->send(params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Mark an inbound WhatsApp message as read and display a typing indicator to the user while you prepare a response. The indicator is automatically dismissed when you send a reply, or after 25 seconds — whichever comes first. Only valid for inbound WhatsApp messages. Use this when a reply will take more than a couple of seconds (LLM agent, tool call, lookup) to improve the recipient's experience.
+     *
+     * @param string $zavuSender Optional sender profile ID. If omitted, the project's default sender will be used.
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function showTyping(
+        string $messageID,
+        ?string $zavuSender = null,
+        RequestOptions|array|null $requestOptions = null,
+    ): MessageShowTypingResponse {
+        $params = Util::removeNulls(['zavuSender' => $zavuSender]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->showTyping($messageID, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

@@ -14,8 +14,10 @@ use Zavudev\Services\BalanceService;
 use Zavudev\Services\BroadcastsService;
 use Zavudev\Services\ContactsService;
 use Zavudev\Services\ExportsService;
+use Zavudev\Services\FunctionsService;
 use Zavudev\Services\IntrospectService;
 use Zavudev\Services\InvitationsService;
+use Zavudev\Services\MeService;
 use Zavudev\Services\MessagesService;
 use Zavudev\Services\Number10dlcService;
 use Zavudev\Services\PhoneNumbersService;
@@ -121,6 +123,16 @@ class Client extends BaseClient
     public Number10dlcService $number10dlc;
 
     /**
+     * @api
+     */
+    public MeService $me;
+
+    /**
+     * @api
+     */
+    public FunctionsService $functions;
+
+    /**
      * @param RequestOpts|null $requestOptions
      */
     public function __construct(
@@ -193,6 +205,8 @@ class Client extends BaseClient
         $this->usage = new UsageService($this);
         $this->subAccounts = new SubAccountsService($this);
         $this->number10dlc = new Number10dlcService($this);
+        $this->me = new MeService($this);
+        $this->functions = new FunctionsService($this);
     }
 
     /** @return array<string,string> */

@@ -9,12 +9,26 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentExecution;
 use Zavudev\Senders\Agent\AgentExecutionStatus;
+use Zavudev\Senders\Agent\Executions\ExecutionGetResponse;
 
 /**
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 interface ExecutionsContract
 {
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function retrieve(
+        string $executionID,
+        string $senderID,
+        RequestOptions|array|null $requestOptions = null,
+    ): ExecutionGetResponse;
+
     /**
      * @api
      *

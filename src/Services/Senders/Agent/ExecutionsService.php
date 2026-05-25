@@ -11,6 +11,7 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentExecution;
 use Zavudev\Senders\Agent\AgentExecutionStatus;
+use Zavudev\Senders\Agent\Executions\ExecutionGetResponse;
 use Zavudev\ServiceContracts\Senders\Agent\ExecutionsContract;
 
 /**
@@ -29,6 +30,28 @@ final class ExecutionsService implements ExecutionsContract
     public function __construct(private Client $client)
     {
         $this->raw = new ExecutionsRawService($client);
+    }
+
+    /**
+     * @api
+     *
+     * Fetch full details for one execution — including `errorMessage`, `errorCode`, and `responseText`. Use this to debug failures surfaced by the list endpoint.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function retrieve(
+        string $executionID,
+        string $senderID,
+        RequestOptions|array|null $requestOptions = null,
+    ): ExecutionGetResponse {
+        $params = Util::removeNulls(['senderID' => $senderID]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->retrieve($executionID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
     }
 
     /**

@@ -148,6 +148,25 @@ final class ContactsService implements ContactsContract
     /**
      * @api
      *
+     * Permanently delete a contact and its communication channels. Implements right-to-erasure obligations under GDPR Art. 17, Ley 19.628 (Chile) Art. 12, CCPA § 1798.105, and LGPD Art. 18.VI. The contact, its channels, and any associated agent flow sessions and conversation threads are removed. Past message records and broadcast delivery logs are retained for billing/audit but no longer reference the deleted contact.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function delete(
+        string $contactID,
+        RequestOptions|array|null $requestOptions = null
+    ): mixed {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->delete($contactID, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
      * Dismiss the merge suggestion for a contact.
      *
      * @param RequestOpts|null $requestOptions

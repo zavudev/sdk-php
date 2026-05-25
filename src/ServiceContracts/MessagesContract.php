@@ -11,6 +11,7 @@ use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams\Attachment;
+use Zavudev\Messages\MessageShowTypingResponse;
 use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
@@ -109,4 +110,18 @@ interface MessagesContract
         ?string $zavuSender = null,
         RequestOptions|array|null $requestOptions = null,
     ): MessageResponse;
+
+    /**
+     * @api
+     *
+     * @param string $zavuSender Optional sender profile ID. If omitted, the project's default sender will be used.
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function showTyping(
+        string $messageID,
+        ?string $zavuSender = null,
+        RequestOptions|array|null $requestOptions = null,
+    ): MessageShowTypingResponse;
 }

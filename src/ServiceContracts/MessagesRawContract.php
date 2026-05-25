@@ -12,6 +12,8 @@ use Zavudev\Messages\MessageListParams;
 use Zavudev\Messages\MessageReactParams;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams;
+use Zavudev\Messages\MessageShowTypingParams;
+use Zavudev\Messages\MessageShowTypingResponse;
 use Zavudev\RequestOptions;
 
 /**
@@ -77,6 +79,22 @@ interface MessagesRawContract
      */
     public function send(
         array|MessageSendParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param array<string,mixed>|MessageShowTypingParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<MessageShowTypingResponse>
+     *
+     * @throws APIException
+     */
+    public function showTyping(
+        string $messageID,
+        array|MessageShowTypingParams $params,
         RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

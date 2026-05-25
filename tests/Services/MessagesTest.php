@@ -12,6 +12,7 @@ use Zavudev\Cursor;
 use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageResponse;
+use Zavudev\Messages\MessageShowTypingResponse;
 use Zavudev\Messages\MessageType;
 
 /**
@@ -171,5 +172,18 @@ final class MessagesTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(MessageResponse::class, $result);
+    }
+
+    #[Test]
+    public function testShowTyping(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->messages->showTyping('messageId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(MessageShowTypingResponse::class, $result);
     }
 }

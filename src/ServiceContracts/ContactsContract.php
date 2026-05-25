@@ -85,6 +85,18 @@ interface ContactsContract
      *
      * @throws APIException
      */
+    public function delete(
+        string $contactID,
+        RequestOptions|array|null $requestOptions = null
+    ): mixed;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
     public function dismissMergeSuggestion(
         string $contactID,
         RequestOptions|array|null $requestOptions = null

@@ -11,7 +11,9 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentExecution;
 use Zavudev\Senders\Agent\AgentExecutionStatus;
+use Zavudev\Senders\Agent\Executions\ExecutionGetResponse;
 use Zavudev\Senders\Agent\Executions\ExecutionListParams;
+use Zavudev\Senders\Agent\Executions\ExecutionRetrieveParams;
 use Zavudev\ServiceContracts\Senders\Agent\ExecutionsRawContract;
 
 /**
@@ -24,6 +26,39 @@ final class ExecutionsRawService implements ExecutionsRawContract
      * @internal
      */
     public function __construct(private Client $client) {}
+
+    /**
+     * @api
+     *
+     * Fetch full details for one execution — including `errorMessage`, `errorCode`, and `responseText`. Use this to debug failures surfaced by the list endpoint.
+     *
+     * @param array{senderID: string}|ExecutionRetrieveParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<ExecutionGetResponse>
+     *
+     * @throws APIException
+     */
+    public function retrieve(
+        string $executionID,
+        array|ExecutionRetrieveParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = ExecutionRetrieveParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $senderID = $parsed['senderID'];
+        unset($parsed['senderID']);
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: ['v1/senders/%1$s/agent/executions/%2$s', $senderID, $executionID],
+            options: $options,
+            convert: ExecutionGetResponse::class,
+        );
+    }
 
     /**
      * @api

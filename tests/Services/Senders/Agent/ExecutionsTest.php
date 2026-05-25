@@ -10,6 +10,7 @@ use Zavudev\Client;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Senders\Agent\AgentExecution;
+use Zavudev\Senders\Agent\Executions\ExecutionGetResponse;
 
 /**
  * @internal
@@ -27,6 +28,38 @@ final class ExecutionsTest extends TestCase
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
+    }
+
+    #[Test]
+    public function testRetrieve(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->senders->agent->executions->retrieve(
+            'executionId',
+            senderID: 'senderId'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(ExecutionGetResponse::class, $result);
+    }
+
+    #[Test]
+    public function testRetrieveWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->senders->agent->executions->retrieve(
+            'executionId',
+            senderID: 'senderId'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(ExecutionGetResponse::class, $result);
     }
 
     #[Test]

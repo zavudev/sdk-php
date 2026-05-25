@@ -88,6 +88,20 @@ interface ContactsRawContract
      *
      * @throws APIException
      */
+    public function delete(
+        string $contactID,
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<mixed>
+     *
+     * @throws APIException
+     */
     public function dismissMergeSuggestion(
         string $contactID,
         RequestOptions|array|null $requestOptions = null
