@@ -199,7 +199,7 @@ final class MessageContent implements BaseModel
     public ?string $templateID;
 
     /**
-     * Variables for body placeholders. Keys are positions (1, 2, 3, ...) matching the order placeholders appear in the template body.
+     * Variables for body placeholders. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`). Named keys are matched to placeholders by their order of first appearance in the template body and normalized to positional automatically. Do not mix positional and named keys in the same request.
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -537,7 +537,7 @@ final class MessageContent implements BaseModel
     }
 
     /**
-     * Variables for body placeholders. Keys are positions (1, 2, 3, ...) matching the order placeholders appear in the template body.
+     * Variables for body placeholders. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`). Named keys are matched to placeholders by their order of first appearance in the template body and normalized to positional automatically. Do not mix positional and named keys in the same request.
      *
      * @param array<string,string> $templateVariables
      */
