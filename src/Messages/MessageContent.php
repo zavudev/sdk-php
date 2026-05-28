@@ -41,6 +41,7 @@ use Zavudev\Messages\MessageContent\Section;
  *   reactToMessageID?: string|null,
  *   sections?: list<Section|SectionShape>|null,
  *   templateButtonVariables?: array<string,string>|null,
+ *   templateHeaderVariables?: array<string,string>|null,
  *   templateID?: string|null,
  *   templateVariables?: array<string,string>|null,
  * }
@@ -193,13 +194,21 @@ final class MessageContent implements BaseModel
     public ?array $templateButtonVariables;
 
     /**
+     * Value for a text-header variable, keyed by `1` (WhatsApp text headers allow at most one variable). Optional override. If omitted, Zavu resolves the header from `templateVariables` using the header placeholder's name (e.g. `novios`). Static text headers need no value.
+     *
+     * @var array<string,string>|null $templateHeaderVariables
+     */
+    #[Optional(map: 'string')]
+    public ?array $templateHeaderVariables;
+
+    /**
      * Template ID for template messages.
      */
     #[Optional('templateId')]
     public ?string $templateID;
 
     /**
-     * Variables for body placeholders. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`). Named keys are matched to placeholders by their order of first appearance in the template body and normalized to positional automatically. Do not mix positional and named keys in the same request.
+     * Variables for body placeholders. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Named keys also resolve a named text-header variable. Do not mix positional and named keys in the same request.
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -221,6 +230,7 @@ final class MessageContent implements BaseModel
      * @param CtaHeaderType|value-of<CtaHeaderType>|null $ctaHeaderType
      * @param list<Section|SectionShape>|null $sections
      * @param array<string,string>|null $templateButtonVariables
+     * @param array<string,string>|null $templateHeaderVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -245,6 +255,7 @@ final class MessageContent implements BaseModel
         ?string $reactToMessageID = null,
         ?array $sections = null,
         ?array $templateButtonVariables = null,
+        ?array $templateHeaderVariables = null,
         ?string $templateID = null,
         ?array $templateVariables = null,
     ): self {
@@ -271,6 +282,7 @@ final class MessageContent implements BaseModel
         null !== $reactToMessageID && $self['reactToMessageID'] = $reactToMessageID;
         null !== $sections && $self['sections'] = $sections;
         null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
+        null !== $templateHeaderVariables && $self['templateHeaderVariables'] = $templateHeaderVariables;
         null !== $templateID && $self['templateID'] = $templateID;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
@@ -526,6 +538,20 @@ final class MessageContent implements BaseModel
     }
 
     /**
+     * Value for a text-header variable, keyed by `1` (WhatsApp text headers allow at most one variable). Optional override. If omitted, Zavu resolves the header from `templateVariables` using the header placeholder's name (e.g. `novios`). Static text headers need no value.
+     *
+     * @param array<string,string> $templateHeaderVariables
+     */
+    public function withTemplateHeaderVariables(
+        array $templateHeaderVariables
+    ): self {
+        $self = clone $this;
+        $self['templateHeaderVariables'] = $templateHeaderVariables;
+
+        return $self;
+    }
+
+    /**
      * Template ID for template messages.
      */
     public function withTemplateID(string $templateID): self
@@ -537,7 +563,7 @@ final class MessageContent implements BaseModel
     }
 
     /**
-     * Variables for body placeholders. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`). Named keys are matched to placeholders by their order of first appearance in the template body and normalized to positional automatically. Do not mix positional and named keys in the same request.
+     * Variables for body placeholders. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Named keys also resolve a named text-header variable. Do not mix positional and named keys in the same request.
      *
      * @param array<string,string> $templateVariables
      */

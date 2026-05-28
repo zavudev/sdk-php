@@ -23,6 +23,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   messageID?: string|null,
  *   processedAt?: \DateTimeInterface|null,
  *   templateButtonVariables?: array<string,string>|null,
+ *   templateHeaderVariables?: array<string,string>|null,
  *   templateVariables?: array<string,string>|null,
  * }
  */
@@ -74,6 +75,10 @@ final class BroadcastContact implements BaseModel
     #[Optional(map: 'string')]
     public ?array $templateButtonVariables;
 
+    /** @var array<string,string>|null $templateHeaderVariables */
+    #[Optional(map: 'string')]
+    public ?array $templateHeaderVariables;
+
     /** @var array<string,string>|null $templateVariables */
     #[Optional(map: 'string')]
     public ?array $templateVariables;
@@ -112,6 +117,7 @@ final class BroadcastContact implements BaseModel
      * @param RecipientType|value-of<RecipientType> $recipientType
      * @param BroadcastContactStatus|value-of<BroadcastContactStatus> $status
      * @param array<string,string>|null $templateButtonVariables
+     * @param array<string,string>|null $templateHeaderVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -126,6 +132,7 @@ final class BroadcastContact implements BaseModel
         ?string $messageID = null,
         ?\DateTimeInterface $processedAt = null,
         ?array $templateButtonVariables = null,
+        ?array $templateHeaderVariables = null,
         ?array $templateVariables = null,
     ): self {
         $self = new self;
@@ -142,6 +149,7 @@ final class BroadcastContact implements BaseModel
         null !== $messageID && $self['messageID'] = $messageID;
         null !== $processedAt && $self['processedAt'] = $processedAt;
         null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
+        null !== $templateHeaderVariables && $self['templateHeaderVariables'] = $templateHeaderVariables;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
         return $self;
@@ -246,6 +254,18 @@ final class BroadcastContact implements BaseModel
     ): self {
         $self = clone $this;
         $self['templateButtonVariables'] = $templateButtonVariables;
+
+        return $self;
+    }
+
+    /**
+     * @param array<string,string> $templateHeaderVariables
+     */
+    public function withTemplateHeaderVariables(
+        array $templateHeaderVariables
+    ): self {
+        $self = clone $this;
+        $self['templateHeaderVariables'] = $templateHeaderVariables;
 
         return $self;
     }

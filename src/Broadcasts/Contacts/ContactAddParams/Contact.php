@@ -13,6 +13,7 @@ use Zavudev\Core\Contracts\BaseModel;
  * @phpstan-type ContactShape = array{
  *   recipient: string,
  *   templateButtonVariables?: array<string,string>|null,
+ *   templateHeaderVariables?: array<string,string>|null,
  *   templateVariables?: array<string,string>|null,
  * }
  */
@@ -36,7 +37,15 @@ final class Contact implements BaseModel
     public ?array $templateButtonVariables;
 
     /**
-     * Per-contact body variables. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`), matched to placeholders by order of first appearance and normalized to positional automatically. Do not mix positional and named keys.
+     * Per-contact value for a text-header variable, keyed by `1`. If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+     *
+     * @var array<string,string>|null $templateHeaderVariables
+     */
+    #[Optional(map: 'string')]
+    public ?array $templateHeaderVariables;
+
+    /**
+     * Per-contact body variables. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Do not mix positional and named keys.
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -68,11 +77,13 @@ final class Contact implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param array<string,string>|null $templateButtonVariables
+     * @param array<string,string>|null $templateHeaderVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
         string $recipient,
         ?array $templateButtonVariables = null,
+        ?array $templateHeaderVariables = null,
         ?array $templateVariables = null,
     ): self {
         $self = new self;
@@ -80,6 +91,7 @@ final class Contact implements BaseModel
         $self['recipient'] = $recipient;
 
         null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
+        null !== $templateHeaderVariables && $self['templateHeaderVariables'] = $templateHeaderVariables;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
         return $self;
@@ -111,7 +123,21 @@ final class Contact implements BaseModel
     }
 
     /**
-     * Per-contact body variables. Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`), matched to placeholders by order of first appearance and normalized to positional automatically. Do not mix positional and named keys.
+     * Per-contact value for a text-header variable, keyed by `1`. If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+     *
+     * @param array<string,string> $templateHeaderVariables
+     */
+    public function withTemplateHeaderVariables(
+        array $templateHeaderVariables
+    ): self {
+        $self = clone $this;
+        $self['templateHeaderVariables'] = $templateHeaderVariables;
+
+        return $self;
+    }
+
+    /**
+     * Per-contact body variables. Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Do not mix positional and named keys.
      *
      * @param array<string,string> $templateVariables
      */

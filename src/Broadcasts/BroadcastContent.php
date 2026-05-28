@@ -17,6 +17,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   mediaURL?: string|null,
  *   mimeType?: string|null,
  *   templateButtonVariables?: array<string,string>|null,
+ *   templateHeaderVariables?: array<string,string>|null,
  *   templateID?: string|null,
  *   templateVariables?: array<string,string>|null,
  * }
@@ -59,13 +60,21 @@ final class BroadcastContent implements BaseModel
     public ?array $templateButtonVariables;
 
     /**
+     * Default value for a text-header variable, keyed by `1` (can be overridden per contact). If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+     *
+     * @var array<string,string>|null $templateHeaderVariables
+     */
+    #[Optional(map: 'string')]
+    public ?array $templateHeaderVariables;
+
+    /**
      * Template ID for template messages.
      */
     #[Optional('templateId')]
     public ?string $templateID;
 
     /**
-     * Default body variables (can be overridden per contact). Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`), matched to placeholders by order of first appearance and normalized to positional automatically. Do not mix positional and named keys.
+     * Default body variables (can be overridden per contact). Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Do not mix positional and named keys.
      *
      * @var array<string,string>|null $templateVariables
      */
@@ -83,6 +92,7 @@ final class BroadcastContent implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param array<string,string>|null $templateButtonVariables
+     * @param array<string,string>|null $templateHeaderVariables
      * @param array<string,string>|null $templateVariables
      */
     public static function with(
@@ -91,6 +101,7 @@ final class BroadcastContent implements BaseModel
         ?string $mediaURL = null,
         ?string $mimeType = null,
         ?array $templateButtonVariables = null,
+        ?array $templateHeaderVariables = null,
         ?string $templateID = null,
         ?array $templateVariables = null,
     ): self {
@@ -101,6 +112,7 @@ final class BroadcastContent implements BaseModel
         null !== $mediaURL && $self['mediaURL'] = $mediaURL;
         null !== $mimeType && $self['mimeType'] = $mimeType;
         null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
+        null !== $templateHeaderVariables && $self['templateHeaderVariables'] = $templateHeaderVariables;
         null !== $templateID && $self['templateID'] = $templateID;
         null !== $templateVariables && $self['templateVariables'] = $templateVariables;
 
@@ -166,6 +178,20 @@ final class BroadcastContent implements BaseModel
     }
 
     /**
+     * Default value for a text-header variable, keyed by `1` (can be overridden per contact). If omitted, Zavu resolves the header from `templateVariables` by the header placeholder's name.
+     *
+     * @param array<string,string> $templateHeaderVariables
+     */
+    public function withTemplateHeaderVariables(
+        array $templateHeaderVariables
+    ): self {
+        $self = clone $this;
+        $self['templateHeaderVariables'] = $templateHeaderVariables;
+
+        return $self;
+    }
+
+    /**
      * Template ID for template messages.
      */
     public function withTemplateID(string $templateID): self
@@ -177,7 +203,7 @@ final class BroadcastContent implements BaseModel
     }
 
     /**
-     * Default body variables (can be overridden per contact). Keys are either positions (`1`, `2`, ...) or the template's named variables (e.g. `customer_name`), matched to placeholders by order of first appearance and normalized to positional automatically. Do not mix positional and named keys.
+     * Default body variables (can be overridden per contact). Key them to match the template body: by position (`1`, `2`, ...) for positional templates, or by name (e.g. `customer_name`) for named templates. Zavu detects the template's format and sends the correct payload to Meta. Do not mix positional and named keys.
      *
      * @param array<string,string> $templateVariables
      */

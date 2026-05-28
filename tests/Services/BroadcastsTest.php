@@ -72,6 +72,7 @@ final class BroadcastsTest extends TestCase
                 'mediaURL' => 'mediaUrl',
                 'mimeType' => 'mimeType',
                 'templateButtonVariables' => ['foo' => 'string'],
+                'templateHeaderVariables' => ['foo' => 'string'],
                 'templateID' => 'templateId',
                 'templateVariables' => ['foo' => 'string'],
             ],
