@@ -146,6 +146,11 @@ final class MessagesTest extends TestCase
                 'mediaURL' => 'https://example.com/image.jpg',
                 'mimeType' => 'image/jpeg',
                 'reactToMessageID' => 'reactToMessageId',
+                'replyToFrom' => 'replyToFrom',
+                'replyToMessageID' => 'replyToMessageId',
+                'replyToMessageType' => 'replyToMessageType',
+                'replyToProviderMessageID' => 'replyToProviderMessageId',
+                'replyToText' => 'replyToText',
                 'sections' => [
                     [
                         'rows' => [

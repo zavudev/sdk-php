@@ -39,6 +39,11 @@ use Zavudev\Messages\MessageContent\Section;
  *   mediaURL?: string|null,
  *   mimeType?: string|null,
  *   reactToMessageID?: string|null,
+ *   replyToFrom?: string|null,
+ *   replyToMessageID?: string|null,
+ *   replyToMessageType?: string|null,
+ *   replyToProviderMessageID?: string|null,
+ *   replyToText?: string|null,
  *   sections?: list<Section|SectionShape>|null,
  *   templateButtonVariables?: array<string,string>|null,
  *   templateHeaderVariables?: array<string,string>|null,
@@ -172,6 +177,36 @@ final class MessageContent implements BaseModel
     public ?string $reactToMessageID;
 
     /**
+     * Sender of the quoted message (phone number in E.164 format).
+     */
+    #[Optional]
+    public ?string $replyToFrom;
+
+    /**
+     * Zavu message ID of the quoted message this message replies to. Present on inbound messages that quote an earlier message. Omitted when the quoted message is not found in Zavu (e.g. an old or unknown message) — use replyToProviderMessageId in that case.
+     */
+    #[Optional('replyToMessageId')]
+    public ?string $replyToMessageID;
+
+    /**
+     * Type of the quoted message (text, image, video, etc.).
+     */
+    #[Optional]
+    public ?string $replyToMessageType;
+
+    /**
+     * Provider message ID (WhatsApp WAMID) of the quoted message. Present whenever an inbound message is a reply, even if the quoted message is not stored in Zavu.
+     */
+    #[Optional('replyToProviderMessageId')]
+    public ?string $replyToProviderMessageID;
+
+    /**
+     * Truncated snippet of the quoted message's text, for display. Empty when the quoted message has no text (e.g. media).
+     */
+    #[Optional]
+    public ?string $replyToText;
+
+    /**
      * Sections for list messages.
      *
      * @var list<Section>|null $sections
@@ -253,6 +288,11 @@ final class MessageContent implements BaseModel
         ?string $mediaURL = null,
         ?string $mimeType = null,
         ?string $reactToMessageID = null,
+        ?string $replyToFrom = null,
+        ?string $replyToMessageID = null,
+        ?string $replyToMessageType = null,
+        ?string $replyToProviderMessageID = null,
+        ?string $replyToText = null,
         ?array $sections = null,
         ?array $templateButtonVariables = null,
         ?array $templateHeaderVariables = null,
@@ -280,6 +320,11 @@ final class MessageContent implements BaseModel
         null !== $mediaURL && $self['mediaURL'] = $mediaURL;
         null !== $mimeType && $self['mimeType'] = $mimeType;
         null !== $reactToMessageID && $self['reactToMessageID'] = $reactToMessageID;
+        null !== $replyToFrom && $self['replyToFrom'] = $replyToFrom;
+        null !== $replyToMessageID && $self['replyToMessageID'] = $replyToMessageID;
+        null !== $replyToMessageType && $self['replyToMessageType'] = $replyToMessageType;
+        null !== $replyToProviderMessageID && $self['replyToProviderMessageID'] = $replyToProviderMessageID;
+        null !== $replyToText && $self['replyToText'] = $replyToText;
         null !== $sections && $self['sections'] = $sections;
         null !== $templateButtonVariables && $self['templateButtonVariables'] = $templateButtonVariables;
         null !== $templateHeaderVariables && $self['templateHeaderVariables'] = $templateHeaderVariables;
@@ -500,6 +545,62 @@ final class MessageContent implements BaseModel
     {
         $self = clone $this;
         $self['reactToMessageID'] = $reactToMessageID;
+
+        return $self;
+    }
+
+    /**
+     * Sender of the quoted message (phone number in E.164 format).
+     */
+    public function withReplyToFrom(string $replyToFrom): self
+    {
+        $self = clone $this;
+        $self['replyToFrom'] = $replyToFrom;
+
+        return $self;
+    }
+
+    /**
+     * Zavu message ID of the quoted message this message replies to. Present on inbound messages that quote an earlier message. Omitted when the quoted message is not found in Zavu (e.g. an old or unknown message) — use replyToProviderMessageId in that case.
+     */
+    public function withReplyToMessageID(string $replyToMessageID): self
+    {
+        $self = clone $this;
+        $self['replyToMessageID'] = $replyToMessageID;
+
+        return $self;
+    }
+
+    /**
+     * Type of the quoted message (text, image, video, etc.).
+     */
+    public function withReplyToMessageType(string $replyToMessageType): self
+    {
+        $self = clone $this;
+        $self['replyToMessageType'] = $replyToMessageType;
+
+        return $self;
+    }
+
+    /**
+     * Provider message ID (WhatsApp WAMID) of the quoted message. Present whenever an inbound message is a reply, even if the quoted message is not stored in Zavu.
+     */
+    public function withReplyToProviderMessageID(
+        string $replyToProviderMessageID
+    ): self {
+        $self = clone $this;
+        $self['replyToProviderMessageID'] = $replyToProviderMessageID;
+
+        return $self;
+    }
+
+    /**
+     * Truncated snippet of the quoted message's text, for display. Empty when the quoted message has no text (e.g. media).
+     */
+    public function withReplyToText(string $replyToText): self
+    {
+        $self = clone $this;
+        $self['replyToText'] = $replyToText;
 
         return $self;
     }

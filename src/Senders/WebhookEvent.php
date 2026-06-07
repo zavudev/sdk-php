@@ -15,7 +15,7 @@ namespace Zavudev\Senders;
  * - `message.failed`: Message failed to send. `data.status` = `failed`
  *
  * **Inbound events:**
- * - `message.inbound`: New message received from a contact. Reactions are delivered as `message.inbound` with `messageType='reaction'`
+ * - `message.inbound`: New message received from a contact. Reactions are delivered as `message.inbound` with `messageType='reaction'`. When the contact replied to (quoted) an earlier message, `data.content` carries the reply context: `replyToMessageId`, `replyToProviderMessageId`, `replyToFrom`, `replyToText`, and `replyToMessageType`.
  * - `message.unsupported`: Received a message type that is not supported
  *
  * **Broadcast events:**
