@@ -67,7 +67,7 @@ final class MessagesRawService implements MessagesRawContract
      * List messages previously sent by this project.
      *
      * @param array{
-     *   channel?: Channel|value-of<Channel>,
+     *   channel?: value-of<Channel>,
      *   cursor?: string,
      *   limit?: int,
      *   status?: value-of<MessageStatus>,
@@ -161,7 +161,7 @@ final class MessagesRawService implements MessagesRawContract
      * @param array{
      *   to: string,
      *   attachments?: list<Attachment|AttachmentShape>,
-     *   channel?: Channel|value-of<Channel>,
+     *   channel?: value-of<Channel>,
      *   content?: MessageContent|MessageContentShape,
      *   fallbackEnabled?: bool,
      *   htmlBody?: string,

@@ -75,7 +75,7 @@ interface MessagesContract
     /**
      * @api
      *
-     * @param string $to Body param: Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram).
+     * @param string $to Body param: Recipient phone number in E.164 format, email address, or numeric chat ID (for Telegram/Instagram/Messenger).
      * @param list<Attachment|AttachmentShape> $attachments Body param: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
      * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types

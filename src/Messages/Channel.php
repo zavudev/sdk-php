@@ -23,5 +23,7 @@ enum Channel: string
 
     case INSTAGRAM = 'instagram';
 
+    case MESSENGER = 'messenger';
+
     case VOICE = 'voice';
 }

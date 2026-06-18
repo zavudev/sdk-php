@@ -19,5 +19,7 @@ enum DefaultChannel: string
 
     case INSTAGRAM = 'instagram';
 
+    case MESSENGER = 'messenger';
+
     case VOICE = 'voice';
 }

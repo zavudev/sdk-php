@@ -17,5 +17,7 @@ enum Channel: string
 
     case TELEGRAM = 'telegram';
 
+    case MESSENGER = 'messenger';
+
     case VOICE = 'voice';
 }
