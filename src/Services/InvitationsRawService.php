@@ -11,6 +11,7 @@ use Zavudev\Cursor;
 use Zavudev\Invitations\Invitation;
 use Zavudev\Invitations\InvitationCancelResponse;
 use Zavudev\Invitations\InvitationCreateParams;
+use Zavudev\Invitations\InvitationCreateParams\ConnectionType;
 use Zavudev\Invitations\InvitationGetResponse;
 use Zavudev\Invitations\InvitationListParams;
 use Zavudev\Invitations\InvitationListParams\Status;
@@ -32,13 +33,18 @@ final class InvitationsRawService implements InvitationsRawContract
     /**
      * @api
      *
-     * Create a partner invitation link for a client to connect their WhatsApp Business account. The client will complete Meta's embedded signup flow and the resulting sender will be created in your project.
+     * Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and connects. Set `connectionType` to choose how they connect:
+     * - `whatsapp_waba` (default): the client completes Meta's embedded signup, linking an official WhatsApp Business Account.
+     * - `whatsapp_alt`: the client links their number by scanning a QR code. Requires the WhatsApp Alternative feature to be enabled for your team (otherwise returns 400).
+     *
+     * Either way, the resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.
      *
      * @param array{
      *   allowedPhoneCountries?: list<string>,
      *   clientEmail?: string,
      *   clientName?: string,
      *   clientPhone?: string,
+     *   connectionType?: ConnectionType|value-of<ConnectionType>,
      *   expiresInDays?: int,
      *   phoneNumberID?: string,
      * }|InvitationCreateParams $params

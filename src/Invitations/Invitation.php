@@ -8,6 +8,7 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Invitations\Invitation\ConnectionType;
 use Zavudev\Invitations\Invitation\Status;
 
 /**
@@ -23,6 +24,7 @@ use Zavudev\Invitations\Invitation\Status;
  *   clientName?: string|null,
  *   clientPhone?: string|null,
  *   completedAt?: \DateTimeInterface|null,
+ *   connectionType?: null|ConnectionType|value-of<ConnectionType>,
  *   phoneNumberID?: string|null,
  *   senderID?: string|null,
  *   startedAt?: \DateTimeInterface|null,
@@ -77,6 +79,14 @@ final class Invitation implements BaseModel
 
     #[Optional(nullable: true)]
     public ?\DateTimeInterface $completedAt;
+
+    /**
+     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).
+     *
+     * @var value-of<ConnectionType>|null $connectionType
+     */
+    #[Optional(enum: ConnectionType::class)]
+    public ?string $connectionType;
 
     /**
      * ID of a pre-assigned Zavu phone number for WhatsApp registration.
@@ -136,6 +146,7 @@ final class Invitation implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Status|value-of<Status> $status
+     * @param ConnectionType|value-of<ConnectionType>|null $connectionType
      */
     public static function with(
         string $id,
@@ -149,6 +160,7 @@ final class Invitation implements BaseModel
         ?string $clientName = null,
         ?string $clientPhone = null,
         ?\DateTimeInterface $completedAt = null,
+        ConnectionType|string|null $connectionType = null,
         ?string $phoneNumberID = null,
         ?string $senderID = null,
         ?\DateTimeInterface $startedAt = null,
@@ -168,6 +180,7 @@ final class Invitation implements BaseModel
         null !== $clientName && $self['clientName'] = $clientName;
         null !== $clientPhone && $self['clientPhone'] = $clientPhone;
         null !== $completedAt && $self['completedAt'] = $completedAt;
+        null !== $connectionType && $self['connectionType'] = $connectionType;
         null !== $phoneNumberID && $self['phoneNumberID'] = $phoneNumberID;
         null !== $senderID && $self['senderID'] = $senderID;
         null !== $startedAt && $self['startedAt'] = $startedAt;
@@ -271,6 +284,20 @@ final class Invitation implements BaseModel
     {
         $self = clone $this;
         $self['completedAt'] = $completedAt;
+
+        return $self;
+    }
+
+    /**
+     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).
+     *
+     * @param ConnectionType|value-of<ConnectionType> $connectionType
+     */
+    public function withConnectionType(
+        ConnectionType|string $connectionType
+    ): self {
+        $self = clone $this;
+        $self['connectionType'] = $connectionType;
 
         return $self;
     }

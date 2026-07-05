@@ -8,9 +8,14 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Invitations\InvitationCreateParams\ConnectionType;
 
 /**
- * Create a partner invitation link for a client to connect their WhatsApp Business account. The client will complete Meta's embedded signup flow and the resulting sender will be created in your project.
+ * Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and connects. Set `connectionType` to choose how they connect:
+ * - `whatsapp_waba` (default): the client completes Meta's embedded signup, linking an official WhatsApp Business Account.
+ * - `whatsapp_alt`: the client links their number by scanning a QR code. Requires the WhatsApp Alternative feature to be enabled for your team (otherwise returns 400).
+ *
+ * Either way, the resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.
  *
  * @see Zavudev\Services\InvitationsService::create()
  *
@@ -19,6 +24,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   clientEmail?: string|null,
  *   clientName?: string|null,
  *   clientPhone?: string|null,
+ *   connectionType?: null|ConnectionType|value-of<ConnectionType>,
  *   expiresInDays?: int|null,
  *   phoneNumberID?: string|null,
  * }
@@ -56,6 +62,14 @@ final class InvitationCreateParams implements BaseModel
     public ?string $clientPhone;
 
     /**
+     * How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
+     *
+     * @var value-of<ConnectionType>|null $connectionType
+     */
+    #[Optional(enum: ConnectionType::class)]
+    public ?string $connectionType;
+
+    /**
      * Number of days until the invitation expires.
      */
     #[Optional]
@@ -78,12 +92,14 @@ final class InvitationCreateParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param list<string>|null $allowedPhoneCountries
+     * @param ConnectionType|value-of<ConnectionType>|null $connectionType
      */
     public static function with(
         ?array $allowedPhoneCountries = null,
         ?string $clientEmail = null,
         ?string $clientName = null,
         ?string $clientPhone = null,
+        ConnectionType|string|null $connectionType = null,
         ?int $expiresInDays = null,
         ?string $phoneNumberID = null,
     ): self {
@@ -93,6 +109,7 @@ final class InvitationCreateParams implements BaseModel
         null !== $clientEmail && $self['clientEmail'] = $clientEmail;
         null !== $clientName && $self['clientName'] = $clientName;
         null !== $clientPhone && $self['clientPhone'] = $clientPhone;
+        null !== $connectionType && $self['connectionType'] = $connectionType;
         null !== $expiresInDays && $self['expiresInDays'] = $expiresInDays;
         null !== $phoneNumberID && $self['phoneNumberID'] = $phoneNumberID;
 
@@ -142,6 +159,20 @@ final class InvitationCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['clientPhone'] = $clientPhone;
+
+        return $self;
+    }
+
+    /**
+     * How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
+     *
+     * @param ConnectionType|value-of<ConnectionType> $connectionType
+     */
+    public function withConnectionType(
+        ConnectionType|string $connectionType
+    ): self {
+        $self = clone $this;
+        $self['connectionType'] = $connectionType;
 
         return $self;
     }

@@ -8,6 +8,7 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\Invitations\Invitation;
 use Zavudev\Invitations\InvitationCancelResponse;
+use Zavudev\Invitations\InvitationCreateParams\ConnectionType;
 use Zavudev\Invitations\InvitationGetResponse;
 use Zavudev\Invitations\InvitationListParams\Status;
 use Zavudev\Invitations\InvitationNewResponse;
@@ -25,6 +26,7 @@ interface InvitationsContract
      * @param string $clientEmail email of the client being invited
      * @param string $clientName name of the client being invited
      * @param string $clientPhone Phone number of the client in E.164 format.
+     * @param ConnectionType|value-of<ConnectionType> $connectionType How the client connects WhatsApp. `whatsapp_waba` (default) runs Meta's embedded signup to link an official WhatsApp Business Account. `whatsapp_alt` links the number by scanning a QR code — available only to teams with the WhatsApp Alternative feature enabled.
      * @param int $expiresInDays number of days until the invitation expires
      * @param string $phoneNumberID ID of a Zavu phone number to pre-assign for WhatsApp registration. If provided, the client will use this number instead of their own.
      * @param RequestOpts|null $requestOptions
@@ -36,6 +38,7 @@ interface InvitationsContract
         ?string $clientEmail = null,
         ?string $clientName = null,
         ?string $clientPhone = null,
+        ConnectionType|string $connectionType = 'whatsapp_waba',
         int $expiresInDays = 7,
         ?string $phoneNumberID = null,
         RequestOptions|array|null $requestOptions = null,
