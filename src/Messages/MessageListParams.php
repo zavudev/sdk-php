@@ -29,7 +29,7 @@ final class MessageListParams implements BaseModel
     use SdkParams;
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing.
+     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
      *
      * @var value-of<Channel>|null $channel
      */
@@ -81,7 +81,7 @@ final class MessageListParams implements BaseModel
     }
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing.
+     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
      *
      * @param Channel|value-of<Channel> $channel
      */

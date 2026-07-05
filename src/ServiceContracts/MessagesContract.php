@@ -38,7 +38,7 @@ interface MessagesContract
     /**
      * @api
      *
-     * @param Channel|value-of<Channel> $channel Delivery channel. Use 'auto' for intelligent routing.
+     * @param Channel|value-of<Channel> $channel Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
      * @param MessageStatus|value-of<MessageStatus> $status
      * @param RequestOpts|null $requestOptions
      *
