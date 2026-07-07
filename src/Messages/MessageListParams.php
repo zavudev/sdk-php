@@ -8,6 +8,8 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Messages\MessageListParams\Channel;
+use Zavudev\Messages\MessageListParams\Status;
 
 /**
  * List messages previously sent by this project.
@@ -15,10 +17,10 @@ use Zavudev\Core\Contracts\BaseModel;
  * @see Zavudev\Services\MessagesService::list()
  *
  * @phpstan-type MessageListParamsShape = array{
- *   channel?: null|Channel|value-of<Channel>,
+ *   channel?: null|\Zavudev\Messages\MessageListParams\Channel|value-of<\Zavudev\Messages\MessageListParams\Channel>,
  *   cursor?: string|null,
  *   limit?: int|null,
- *   status?: null|MessageStatus|value-of<MessageStatus>,
+ *   status?: null|Status|value-of<Status>,
  *   to?: string|null,
  * }
  */
@@ -29,7 +31,7 @@ final class MessageListParams implements BaseModel
     use SdkParams;
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+     * Filter by delivery channel.
      *
      * @var value-of<Channel>|null $channel
      */
@@ -42,8 +44,12 @@ final class MessageListParams implements BaseModel
     #[Optional]
     public ?int $limit;
 
-    /** @var value-of<MessageStatus>|null $status */
-    #[Optional(enum: MessageStatus::class)]
+    /**
+     * Filter by status. Not all stored statuses are filterable.
+     *
+     * @var value-of<Status>|null $status
+     */
+    #[Optional(enum: Status::class)]
     public ?string $status;
 
     #[Optional]
@@ -60,13 +66,13 @@ final class MessageListParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Channel|value-of<Channel>|null $channel
-     * @param MessageStatus|value-of<MessageStatus>|null $status
+     * @param Status|value-of<Status>|null $status
      */
     public static function with(
         Channel|string|null $channel = null,
         ?string $cursor = null,
         ?int $limit = null,
-        MessageStatus|string|null $status = null,
+        Status|string|null $status = null,
         ?string $to = null,
     ): self {
         $self = new self;
@@ -81,12 +87,13 @@ final class MessageListParams implements BaseModel
     }
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+     * Filter by delivery channel.
      *
      * @param Channel|value-of<Channel> $channel
      */
-    public function withChannel(Channel|string $channel): self
-    {
+    public function withChannel(
+        Channel|string $channel
+    ): self {
         $self = clone $this;
         $self['channel'] = $channel;
 
@@ -110,9 +117,11 @@ final class MessageListParams implements BaseModel
     }
 
     /**
-     * @param MessageStatus|value-of<MessageStatus> $status
+     * Filter by status. Not all stored statuses are filterable.
+     *
+     * @param Status|value-of<Status> $status
      */
-    public function withStatus(MessageStatus|string $status): self
+    public function withStatus(Status|string $status): self
     {
         $self = clone $this;
         $self['status'] = $status;

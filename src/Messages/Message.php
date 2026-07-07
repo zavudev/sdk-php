@@ -74,19 +74,19 @@ final class Message implements BaseModel
     public ?MessageContent $content;
 
     /**
-     * MAU cost in USD (charged for first contact of the month).
+     * Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
      */
     #[Optional(nullable: true)]
     public ?float $cost;
 
     /**
-     * Provider cost in USD (Telnyx, SES, etc.).
+     * Carrier and delivery cost in USD.
      */
     #[Optional(nullable: true)]
     public ?float $costProvider;
 
     /**
-     * Total cost in USD (MAU + provider cost).
+     * Total cost in USD (platform charge + delivery cost).
      */
     #[Optional(nullable: true)]
     public ?float $costTotal;
@@ -280,7 +280,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * MAU cost in USD (charged for first contact of the month).
+     * Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
      */
     public function withCost(?float $cost): self
     {
@@ -291,7 +291,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * Provider cost in USD (Telnyx, SES, etc.).
+     * Carrier and delivery cost in USD.
      */
     public function withCostProvider(?float $costProvider): self
     {
@@ -302,7 +302,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * Total cost in USD (MAU + provider cost).
+     * Total cost in USD (platform charge + delivery cost).
      */
     public function withCostTotal(?float $costTotal): self
     {

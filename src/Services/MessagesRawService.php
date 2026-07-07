@@ -9,17 +9,17 @@ use Zavudev\Core\Contracts\BaseResponse;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
-use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
 use Zavudev\Messages\MessageListParams;
+use Zavudev\Messages\MessageListParams\Channel;
+use Zavudev\Messages\MessageListParams\Status;
 use Zavudev\Messages\MessageReactParams;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams;
 use Zavudev\Messages\MessageSendParams\Attachment;
 use Zavudev\Messages\MessageShowTypingParams;
 use Zavudev\Messages\MessageShowTypingResponse;
-use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\MessagesRawContract;
@@ -70,7 +70,7 @@ final class MessagesRawService implements MessagesRawContract
      *   channel?: value-of<Channel>,
      *   cursor?: string,
      *   limit?: int,
-     *   status?: value-of<MessageStatus>,
+     *   status?: Status|value-of<Status>,
      *   to?: string,
      * }|MessageListParams $params
      * @param RequestOpts|null $requestOptions
@@ -161,7 +161,7 @@ final class MessagesRawService implements MessagesRawContract
      * @param array{
      *   to: string,
      *   attachments?: list<Attachment|AttachmentShape>,
-     *   channel?: value-of<Channel>,
+     *   channel?: value-of<\Zavudev\Messages\Channel>,
      *   content?: MessageContent|MessageContentShape,
      *   fallbackEnabled?: bool,
      *   htmlBody?: string,

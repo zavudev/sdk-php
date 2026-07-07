@@ -48,7 +48,7 @@ final class BroadcastsRawService implements BroadcastsRawContract
      * Create a new broadcast campaign. Add contacts after creation, then send.
      *
      * @param array{
-     *   channel: value-of<BroadcastChannel>,
+     *   channel: BroadcastChannel|value-of<BroadcastChannel>,
      *   name: string,
      *   content?: BroadcastContent|BroadcastContentShape,
      *   emailHTMLBody?: string,

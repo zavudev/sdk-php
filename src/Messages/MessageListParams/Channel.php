@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Zavudev\Contacts\Channels\ChannelAddParams;
+namespace Zavudev\Messages\MessageListParams;
 
 /**
- * Channel type.
+ * Filter by delivery channel.
  */
 enum Channel: string
 {
     case SMS = 'sms';
+
+    case SMS_ONEWAY = 'sms_oneway';
 
     case WHATSAPP = 'whatsapp';
 

@@ -15,5 +15,7 @@ enum Status: string
 
     case REJECTED = 'rejected';
 
+    case ESCALATED = 'escalated';
+
     case MALICIOUS = 'malicious';
 }

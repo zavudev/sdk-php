@@ -8,7 +8,7 @@ enum PhoneNumberType: string
 {
     case LOCAL = 'local';
 
-    case MOBILE = 'mobile';
+    case NATIONAL = 'national';
 
     case TOLL_FREE = 'tollFree';
 }

@@ -8,13 +8,13 @@ use Zavudev\Client;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
-use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
+use Zavudev\Messages\MessageListParams\Channel;
+use Zavudev\Messages\MessageListParams\Status;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageSendParams\Attachment;
 use Zavudev\Messages\MessageShowTypingResponse;
-use Zavudev\Messages\MessageStatus;
 use Zavudev\Messages\MessageType;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\MessagesContract;
@@ -63,8 +63,8 @@ final class MessagesService implements MessagesContract
      *
      * List messages previously sent by this project.
      *
-     * @param Channel|value-of<Channel> $channel Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
-     * @param MessageStatus|value-of<MessageStatus> $status
+     * @param Channel|value-of<Channel> $channel filter by delivery channel
+     * @param Status|value-of<Status> $status Filter by status. Not all stored statuses are filterable.
      * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<Message>
@@ -75,7 +75,7 @@ final class MessagesService implements MessagesContract
         Channel|string|null $channel = null,
         ?string $cursor = null,
         int $limit = 50,
-        MessageStatus|string|null $status = null,
+        Status|string|null $status = null,
         ?string $to = null,
         RequestOptions|array|null $requestOptions = null,
     ): Cursor {
@@ -143,7 +143,7 @@ final class MessagesService implements MessagesContract
      *
      * @param string $to Body param: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden.
      * @param list<Attachment|AttachmentShape> $attachments Body param: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
-     * @param Channel|value-of<Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
+     * @param \Zavudev\Messages\Channel|value-of<\Zavudev\Messages\Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
      * @param bool $fallbackEnabled Body param: Whether to enable automatic fallback to SMS if WhatsApp fails. Defaults to true.
      * @param string $htmlBody Body param: HTML body for email messages. If provided, email will be sent as multipart with both text and HTML.
@@ -162,7 +162,7 @@ final class MessagesService implements MessagesContract
     public function send(
         string $to,
         ?array $attachments = null,
-        Channel|string|null $channel = null,
+        \Zavudev\Messages\Channel|string|null $channel = null,
         MessageContent|array|null $content = null,
         bool $fallbackEnabled = true,
         ?string $htmlBody = null,
