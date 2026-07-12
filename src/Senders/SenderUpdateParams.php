@@ -15,7 +15,10 @@ use Zavudev\Core\Contracts\BaseModel;
  * @see Zavudev\Services\SendersService::update()
  *
  * @phpstan-type SenderUpdateParamsShape = array{
+ *   emailAddress?: string|null,
  *   emailCatchAllEnabled?: bool|null,
+ *   emailDomainID?: string|null,
+ *   emailFromName?: string|null,
  *   emailReceivingEnabled?: bool|null,
  *   name?: string|null,
  *   setAsDefault?: bool|null,
@@ -31,10 +34,28 @@ final class SenderUpdateParams implements BaseModel
     use SdkParams;
 
     /**
+     * Attach or change the sender's email from-address (e.g. noreply@yourdomain.com). The domain must be a verified email domain in your project.
+     */
+    #[Optional]
+    public ?string $emailAddress;
+
+    /**
      * Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
      */
     #[Optional]
     public ?bool $emailCatchAllEnabled;
+
+    /**
+     * ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+     */
+    #[Optional('emailDomainId')]
+    public ?string $emailDomainID;
+
+    /**
+     * Display name shown in the recipient's inbox for the email channel.
+     */
+    #[Optional]
+    public ?string $emailFromName;
 
     /**
      * Enable or disable inbound email receiving for this sender.
@@ -81,7 +102,10 @@ final class SenderUpdateParams implements BaseModel
      * @param list<WebhookEvent|value-of<WebhookEvent>>|null $webhookEvents
      */
     public static function with(
+        ?string $emailAddress = null,
         ?bool $emailCatchAllEnabled = null,
+        ?string $emailDomainID = null,
+        ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
@@ -91,7 +115,10 @@ final class SenderUpdateParams implements BaseModel
     ): self {
         $self = new self;
 
+        null !== $emailAddress && $self['emailAddress'] = $emailAddress;
         null !== $emailCatchAllEnabled && $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
+        null !== $emailDomainID && $self['emailDomainID'] = $emailDomainID;
+        null !== $emailFromName && $self['emailFromName'] = $emailFromName;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
         null !== $name && $self['name'] = $name;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
@@ -103,12 +130,45 @@ final class SenderUpdateParams implements BaseModel
     }
 
     /**
+     * Attach or change the sender's email from-address (e.g. noreply@yourdomain.com). The domain must be a verified email domain in your project.
+     */
+    public function withEmailAddress(string $emailAddress): self
+    {
+        $self = clone $this;
+        $self['emailAddress'] = $emailAddress;
+
+        return $self;
+    }
+
+    /**
      * Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
      */
     public function withEmailCatchAllEnabled(bool $emailCatchAllEnabled): self
     {
         $self = clone $this;
         $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
+
+        return $self;
+    }
+
+    /**
+     * ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+     */
+    public function withEmailDomainID(string $emailDomainID): self
+    {
+        $self = clone $this;
+        $self['emailDomainID'] = $emailDomainID;
+
+        return $self;
+    }
+
+    /**
+     * Display name shown in the recipient's inbox for the email channel.
+     */
+    public function withEmailFromName(string $emailFromName): self
+    {
+        $self = clone $this;
+        $self['emailFromName'] = $emailFromName;
 
         return $self;
     }

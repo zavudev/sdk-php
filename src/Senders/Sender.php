@@ -19,6 +19,7 @@ use Zavudev\Senders\Sender\Whatsapp;
  *   name: string,
  *   phoneNumber: string,
  *   createdAt?: \DateTimeInterface|null,
+ *   emailAddress?: string|null,
  *   emailCatchAllEnabled?: bool|null,
  *   emailReceivingEnabled?: bool|null,
  *   isDefault?: bool|null,
@@ -46,6 +47,12 @@ final class Sender implements BaseModel
 
     #[Optional]
     public ?\DateTimeInterface $createdAt;
+
+    /**
+     * From-address for the email channel, if configured.
+     */
+    #[Optional]
+    public ?string $emailAddress;
 
     /**
      * Whether catch-all receiving is enabled. When true (and emailReceivingEnabled is true), this sender receives email addressed to any local part at its domain, not just its own address. The original recipient is delivered in the message.inbound webhook's data.to.
@@ -112,6 +119,7 @@ final class Sender implements BaseModel
         string $name,
         string $phoneNumber,
         ?\DateTimeInterface $createdAt = null,
+        ?string $emailAddress = null,
         ?bool $emailCatchAllEnabled = null,
         ?bool $emailReceivingEnabled = null,
         ?bool $isDefault = null,
@@ -126,6 +134,7 @@ final class Sender implements BaseModel
         $self['phoneNumber'] = $phoneNumber;
 
         null !== $createdAt && $self['createdAt'] = $createdAt;
+        null !== $emailAddress && $self['emailAddress'] = $emailAddress;
         null !== $emailCatchAllEnabled && $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
         null !== $isDefault && $self['isDefault'] = $isDefault;
@@ -167,6 +176,17 @@ final class Sender implements BaseModel
     {
         $self = clone $this;
         $self['createdAt'] = $createdAt;
+
+        return $self;
+    }
+
+    /**
+     * From-address for the email channel, if configured.
+     */
+    public function withEmailAddress(string $emailAddress): self
+    {
+        $self = clone $this;
+        $self['emailAddress'] = $emailAddress;
 
         return $self;
     }

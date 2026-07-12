@@ -42,7 +42,11 @@ final class SendersRawService implements SendersRawContract
      *
      * @param array{
      *   name: string,
-     *   phoneNumber: string,
+     *   emailAddress?: string,
+     *   emailDomainID?: string,
+     *   emailFromName?: string,
+     *   emailReceivingEnabled?: bool,
+     *   phoneNumber?: string,
      *   setAsDefault?: bool,
      *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>,
      *   webhookURL?: string,
@@ -102,7 +106,10 @@ final class SendersRawService implements SendersRawContract
      * Update sender
      *
      * @param array{
+     *   emailAddress?: string,
      *   emailCatchAllEnabled?: bool,
+     *   emailDomainID?: string,
+     *   emailFromName?: string,
      *   emailReceivingEnabled?: bool,
      *   name?: string,
      *   setAsDefault?: bool,

@@ -41,10 +41,7 @@ final class SendersTest extends TestCase
             $this->markTestSkipped('Mock server tests are disabled');
         }
 
-        $result = $this->client->senders->create(
-            name: 'name',
-            phoneNumber: 'phoneNumber'
-        );
+        $result = $this->client->senders->create(name: 'name');
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(Sender::class, $result);
@@ -59,6 +56,10 @@ final class SendersTest extends TestCase
 
         $result = $this->client->senders->create(
             name: 'name',
+            emailAddress: 'noreply@yourdomain.com',
+            emailDomainID: 'emailDomainId',
+            emailFromName: 'emailFromName',
+            emailReceivingEnabled: true,
             phoneNumber: 'phoneNumber',
             setAsDefault: true,
             webhookEvents: [WebhookEvent::MESSAGE_QUEUED],

@@ -24,6 +24,11 @@ interface SendersContract
     /**
      * @api
      *
+     * @param string $emailAddress From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
+     * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+     * @param string $emailFromName display name shown in the recipient's inbox for the email channel
+     * @param bool $emailReceivingEnabled Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+     * @param string $phoneNumber Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
      * @param string $webhookURL HTTPS URL for webhook events
      * @param RequestOpts|null $requestOptions
@@ -32,7 +37,11 @@ interface SendersContract
      */
     public function create(
         string $name,
-        string $phoneNumber,
+        ?string $emailAddress = null,
+        ?string $emailDomainID = null,
+        ?string $emailFromName = null,
+        ?bool $emailReceivingEnabled = null,
+        ?string $phoneNumber = null,
         bool $setAsDefault = false,
         ?array $webhookEvents = null,
         ?string $webhookURL = null,
@@ -54,7 +63,10 @@ interface SendersContract
     /**
      * @api
      *
+     * @param string $emailAddress Attach or change the sender's email from-address (e.g. noreply@yourdomain.com). The domain must be a verified email domain in your project.
      * @param bool $emailCatchAllEnabled Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
+     * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
+     * @param string $emailFromName display name shown in the recipient's inbox for the email channel
      * @param bool $emailReceivingEnabled enable or disable inbound email receiving for this sender
      * @param bool $webhookActive whether the webhook is active
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
@@ -65,7 +77,10 @@ interface SendersContract
      */
     public function update(
         string $senderID,
+        ?string $emailAddress = null,
         ?bool $emailCatchAllEnabled = null,
+        ?string $emailDomainID = null,
+        ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
