@@ -13,7 +13,6 @@ use Zavudev\Services\AddressesService;
 use Zavudev\Services\BalanceService;
 use Zavudev\Services\BroadcastsService;
 use Zavudev\Services\ContactsService;
-use Zavudev\Services\ExportsService;
 use Zavudev\Services\FunctionsService;
 use Zavudev\Services\IntrospectService;
 use Zavudev\Services\InvitationsService;
@@ -21,13 +20,11 @@ use Zavudev\Services\MeService;
 use Zavudev\Services\MessagesService;
 use Zavudev\Services\Number10dlcService;
 use Zavudev\Services\PhoneNumbersService;
-use Zavudev\Services\PlanService;
 use Zavudev\Services\RegulatoryDocumentsService;
 use Zavudev\Services\SendersService;
 use Zavudev\Services\SubAccountsService;
 use Zavudev\Services\TemplatesService;
 use Zavudev\Services\URLsService;
-use Zavudev\Services\UsageService;
 
 /**
  * @phpstan-import-type NormalizedRequest from \Zavudev\Core\BaseClient
@@ -90,27 +87,12 @@ class Client extends BaseClient
     /**
      * @api
      */
-    public ExportsService $exports;
-
-    /**
-     * @api
-     */
     public URLsService $urls;
 
     /**
      * @api
      */
     public BalanceService $balance;
-
-    /**
-     * @api
-     */
-    public PlanService $plan;
-
-    /**
-     * @api
-     */
-    public UsageService $usage;
 
     /**
      * @api
@@ -198,11 +180,8 @@ class Client extends BaseClient
         $this->addresses = new AddressesService($this);
         $this->regulatoryDocuments = new RegulatoryDocumentsService($this);
         $this->invitations = new InvitationsService($this);
-        $this->exports = new ExportsService($this);
         $this->urls = new URLsService($this);
         $this->balance = new BalanceService($this);
-        $this->plan = new PlanService($this);
-        $this->usage = new UsageService($this);
         $this->subAccounts = new SubAccountsService($this);
         $this->number10dlc = new Number10dlcService($this);
         $this->me = new MeService($this);
