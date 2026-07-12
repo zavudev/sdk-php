@@ -19,6 +19,7 @@ use Zavudev\Senders\Sender\Whatsapp;
  *   name: string,
  *   phoneNumber: string,
  *   createdAt?: \DateTimeInterface|null,
+ *   emailCatchAllEnabled?: bool|null,
  *   emailReceivingEnabled?: bool|null,
  *   isDefault?: bool|null,
  *   updatedAt?: \DateTimeInterface|null,
@@ -45,6 +46,12 @@ final class Sender implements BaseModel
 
     #[Optional]
     public ?\DateTimeInterface $createdAt;
+
+    /**
+     * Whether catch-all receiving is enabled. When true (and emailReceivingEnabled is true), this sender receives email addressed to any local part at its domain, not just its own address. The original recipient is delivered in the message.inbound webhook's data.to.
+     */
+    #[Optional]
+    public ?bool $emailCatchAllEnabled;
 
     /**
      * Whether inbound email receiving is enabled for this sender.
@@ -105,6 +112,7 @@ final class Sender implements BaseModel
         string $name,
         string $phoneNumber,
         ?\DateTimeInterface $createdAt = null,
+        ?bool $emailCatchAllEnabled = null,
         ?bool $emailReceivingEnabled = null,
         ?bool $isDefault = null,
         ?\DateTimeInterface $updatedAt = null,
@@ -118,6 +126,7 @@ final class Sender implements BaseModel
         $self['phoneNumber'] = $phoneNumber;
 
         null !== $createdAt && $self['createdAt'] = $createdAt;
+        null !== $emailCatchAllEnabled && $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
         null !== $isDefault && $self['isDefault'] = $isDefault;
         null !== $updatedAt && $self['updatedAt'] = $updatedAt;
@@ -158,6 +167,17 @@ final class Sender implements BaseModel
     {
         $self = clone $this;
         $self['createdAt'] = $createdAt;
+
+        return $self;
+    }
+
+    /**
+     * Whether catch-all receiving is enabled. When true (and emailReceivingEnabled is true), this sender receives email addressed to any local part at its domain, not just its own address. The original recipient is delivered in the message.inbound webhook's data.to.
+     */
+    public function withEmailCatchAllEnabled(bool $emailCatchAllEnabled): self
+    {
+        $self = clone $this;
+        $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
 
         return $self;
     }

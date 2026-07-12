@@ -110,6 +110,7 @@ final class SendersService implements SendersContract
      *
      * Update sender
      *
+     * @param bool $emailCatchAllEnabled Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
      * @param bool $emailReceivingEnabled enable or disable inbound email receiving for this sender
      * @param bool $webhookActive whether the webhook is active
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
@@ -120,6 +121,7 @@ final class SendersService implements SendersContract
      */
     public function update(
         string $senderID,
+        ?bool $emailCatchAllEnabled = null,
         ?bool $emailReceivingEnabled = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
@@ -130,6 +132,7 @@ final class SendersService implements SendersContract
     ): Sender {
         $params = Util::removeNulls(
             [
+                'emailCatchAllEnabled' => $emailCatchAllEnabled,
                 'emailReceivingEnabled' => $emailReceivingEnabled,
                 'name' => $name,
                 'setAsDefault' => $setAsDefault,

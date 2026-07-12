@@ -15,6 +15,7 @@ use Zavudev\Core\Contracts\BaseModel;
  * @see Zavudev\Services\SendersService::update()
  *
  * @phpstan-type SenderUpdateParamsShape = array{
+ *   emailCatchAllEnabled?: bool|null,
  *   emailReceivingEnabled?: bool|null,
  *   name?: string|null,
  *   setAsDefault?: bool|null,
@@ -28,6 +29,12 @@ final class SenderUpdateParams implements BaseModel
     /** @use SdkModel<SenderUpdateParamsShape> */
     use SdkModel;
     use SdkParams;
+
+    /**
+     * Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
+     */
+    #[Optional]
+    public ?bool $emailCatchAllEnabled;
 
     /**
      * Enable or disable inbound email receiving for this sender.
@@ -74,6 +81,7 @@ final class SenderUpdateParams implements BaseModel
      * @param list<WebhookEvent|value-of<WebhookEvent>>|null $webhookEvents
      */
     public static function with(
+        ?bool $emailCatchAllEnabled = null,
         ?bool $emailReceivingEnabled = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
@@ -83,12 +91,24 @@ final class SenderUpdateParams implements BaseModel
     ): self {
         $self = new self;
 
+        null !== $emailCatchAllEnabled && $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
         null !== $name && $self['name'] = $name;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
         null !== $webhookActive && $self['webhookActive'] = $webhookActive;
         null !== $webhookEvents && $self['webhookEvents'] = $webhookEvents;
         null !== $webhookURL && $self['webhookURL'] = $webhookURL;
+
+        return $self;
+    }
+
+    /**
+     * Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
+     */
+    public function withEmailCatchAllEnabled(bool $emailCatchAllEnabled): self
+    {
+        $self = clone $this;
+        $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
 
         return $self;
     }

@@ -102,6 +102,7 @@ final class SendersRawService implements SendersRawContract
      * Update sender
      *
      * @param array{
+     *   emailCatchAllEnabled?: bool,
      *   emailReceivingEnabled?: bool,
      *   name?: string,
      *   setAsDefault?: bool,
