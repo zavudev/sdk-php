@@ -75,7 +75,7 @@ interface MessagesContract
     /**
      * @api
      *
-     * @param string $to Body param: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden.
+     * @param string $to Body param: Recipient phone number in E.164 format, email address, WhatsApp business-scoped user ID (BSUID, e.g. `US.13491208655302741918`), WhatsApp group JID (`<id>@g.us`, e.g. `120363000000000000@g.us`), or numeric chat ID (for Telegram/Instagram/Messenger). A BSUID is routed to WhatsApp and sent via the `recipient` field; use it to message a contact who adopted a username and whose phone number is hidden. A group JID is only valid on the `whatsapp_alt` channel and supports text and media (image, video, audio, document, sticker, location, contact).
      * @param list<Attachment|AttachmentShape> $attachments Body param: Email attachments. Only supported when channel is 'email'. Maximum 40MB total size.
      * @param \Zavudev\Messages\Channel|value-of<\Zavudev\Messages\Channel> $channel Body param: Delivery channel. Use 'auto' for intelligent routing. If omitted, channel is auto-selected based on sender capabilities and recipient type. For email recipients, defaults to 'email'.
      * @param MessageContent|MessageContentShape $content body param: Additional content for non-text message types
