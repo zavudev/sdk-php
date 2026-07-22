@@ -20,6 +20,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   status: MessageStatus|value-of<MessageStatus>,
  *   to: string,
  *   content?: null|MessageContent|MessageContentShape,
+ *   conversationID?: string|null,
  *   cost?: float|null,
  *   costProvider?: float|null,
  *   costTotal?: float|null,
@@ -72,6 +73,12 @@ final class Message implements BaseModel
      */
     #[Optional]
     public ?MessageContent $content;
+
+    /**
+     * ID of the conversation (inbox thread) this message belongs to. Use it to build a direct dashboard link: `https://dashboard.zavu.dev/{locale}/inbox?conv={conversationId}`. Omitted only on legacy messages created before conversation threading.
+     */
+    #[Optional('conversationId')]
+    public ?string $conversationID;
 
     /**
      * Zavu platform charge in USD for this message. Messaging is billed against your plan's monthly limits plus usage-based overage.
@@ -168,6 +175,7 @@ final class Message implements BaseModel
         MessageStatus|string $status,
         string $to,
         MessageContent|array|null $content = null,
+        ?string $conversationID = null,
         ?float $cost = null,
         ?float $costProvider = null,
         ?float $costTotal = null,
@@ -190,6 +198,7 @@ final class Message implements BaseModel
         $self['to'] = $to;
 
         null !== $content && $self['content'] = $content;
+        null !== $conversationID && $self['conversationID'] = $conversationID;
         null !== $cost && $self['cost'] = $cost;
         null !== $costProvider && $self['costProvider'] = $costProvider;
         null !== $costTotal && $self['costTotal'] = $costTotal;
@@ -275,6 +284,17 @@ final class Message implements BaseModel
     {
         $self = clone $this;
         $self['content'] = $content;
+
+        return $self;
+    }
+
+    /**
+     * ID of the conversation (inbox thread) this message belongs to. Use it to build a direct dashboard link: `https://dashboard.zavu.dev/{locale}/inbox?conv={conversationId}`. Omitted only on legacy messages created before conversation threading.
+     */
+    public function withConversationID(string $conversationID): self
+    {
+        $self = clone $this;
+        $self['conversationID'] = $conversationID;
 
         return $self;
     }
