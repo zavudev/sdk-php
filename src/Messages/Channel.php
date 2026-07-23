@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Zavudev\Messages;
 
 /**
- * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+ * Delivery channel. Use 'auto' for intelligent routing.
  */
 enum Channel: string
 {
@@ -16,8 +16,6 @@ enum Channel: string
     case SMS_ONEWAY = 'sms_oneway';
 
     case WHATSAPP = 'whatsapp';
-
-    case WHATSAPP_ALT = 'whatsapp_alt';
 
     case TELEGRAM = 'telegram';
 

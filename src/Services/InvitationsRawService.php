@@ -33,11 +33,7 @@ final class InvitationsRawService implements InvitationsRawContract
     /**
      * @api
      *
-     * Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and connects. Set `connectionType` to choose how they connect:
-     * - `whatsapp_waba` (default): the client completes Meta's embedded signup, linking an official WhatsApp Business Account.
-     * - `whatsapp_alt`: the client links their number by scanning a QR code. Requires the WhatsApp Alternative feature to be enabled for your team (otherwise returns 400).
-     *
-     * Either way, the resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.
+     * Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and completes Meta's embedded signup, linking an official WhatsApp Business Account. The resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.
      *
      * @param array{
      *   allowedPhoneCountries?: list<string>,

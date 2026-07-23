@@ -81,7 +81,7 @@ final class Invitation implements BaseModel
     public ?\DateTimeInterface $completedAt;
 
     /**
-     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).
+     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup).
      *
      * @var value-of<ConnectionType>|null $connectionType
      */
@@ -289,7 +289,7 @@ final class Invitation implements BaseModel
     }
 
     /**
-     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup) or `whatsapp_alt` (QR-linked).
+     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup).
      *
      * @param ConnectionType|value-of<ConnectionType> $connectionType
      */

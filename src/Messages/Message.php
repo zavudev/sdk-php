@@ -43,7 +43,7 @@ final class Message implements BaseModel
     public string $id;
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+     * Delivery channel. Use 'auto' for intelligent routing.
      *
      * @var value-of<Channel> $channel
      */
@@ -223,7 +223,7 @@ final class Message implements BaseModel
     }
 
     /**
-     * Delivery channel. Use 'auto' for intelligent routing. `whatsapp_alt` is the QR-linked WhatsApp channel and is only accepted for teams with the WhatsApp Alternative feature enabled; the sender must have a connected whatsapp_alt session.
+     * Delivery channel. Use 'auto' for intelligent routing.
      *
      * @param Channel|value-of<Channel> $channel
      */
