@@ -9,6 +9,7 @@ use Zavudev\Core\Contracts\BaseResponse;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\AgentCreateParams;
+use Zavudev\Senders\Agent\AgentCreateParams\Voice;
 use Zavudev\Senders\Agent\AgentProvider;
 use Zavudev\Senders\Agent\AgentResponse;
 use Zavudev\Senders\Agent\AgentStats;
@@ -16,6 +17,8 @@ use Zavudev\Senders\Agent\AgentUpdateParams;
 use Zavudev\ServiceContracts\Senders\AgentRawContract;
 
 /**
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentCreateParams\Voice
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentUpdateParams\Voice as VoiceShape1
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class AgentRawService implements AgentRawContract
@@ -43,6 +46,7 @@ final class AgentRawService implements AgentRawContract
      *   temperature?: float,
      *   triggerOnChannels?: list<string>,
      *   triggerOnMessageTypes?: list<string>,
+     *   voice?: Voice|VoiceShape,
      * }|AgentCreateParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -112,6 +116,7 @@ final class AgentRawService implements AgentRawContract
      *   temperature?: float|null,
      *   triggerOnChannels?: list<string>,
      *   triggerOnMessageTypes?: list<string>,
+     *   voice?: AgentUpdateParams\Voice|VoiceShape1,
      * }|AgentUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *

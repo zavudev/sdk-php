@@ -9,11 +9,13 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\Senders\Agent\Agent\Stats;
+use Zavudev\Senders\Agent\Agent\Voice;
 
 /**
  * AI Agent configuration for a sender.
  *
  * @phpstan-import-type StatsShape from \Zavudev\Senders\Agent\Agent\Stats
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\Agent\Voice
  *
  * @phpstan-type AgentShape = array{
  *   id: string,
@@ -28,10 +30,12 @@ use Zavudev\Senders\Agent\Agent\Stats;
  *   contextWindowMessages?: int|null,
  *   includeContactMetadata?: bool|null,
  *   maxTokens?: int|null,
+ *   senderIDs?: list<string>|null,
  *   stats?: null|Stats|StatsShape,
  *   temperature?: float|null,
  *   triggerOnChannels?: list<string>|null,
  *   triggerOnMessageTypes?: list<string>|null,
+ *   voice?: null|Voice|VoiceShape,
  * }
  */
 final class Agent implements BaseModel
@@ -98,6 +102,14 @@ final class Agent implements BaseModel
     #[Optional(nullable: true)]
     public ?int $maxTokens;
 
+    /**
+     * Senders this agent answers on. An agent can serve several; `senderId` remains the primary one, for compatibility.
+     *
+     * @var list<string>|null $senderIDs
+     */
+    #[Optional('senderIds', list: 'string')]
+    public ?array $senderIDs;
+
     #[Optional]
     public ?Stats $stats;
 
@@ -122,6 +134,12 @@ final class Agent implements BaseModel
      */
     #[Optional(list: 'string')]
     public ?array $triggerOnMessageTypes;
+
+    /**
+     * Voice Agent configuration. When present and enabled, the agent can answer inbound phone calls and place outbound calls with Zavu's managed voice pipeline. Requires the Voice Agents feature to be enabled for your team.
+     */
+    #[Optional]
+    public ?Voice $voice;
 
     /**
      * `new Agent()` is missing required properties by the API.
@@ -167,9 +185,11 @@ final class Agent implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param AgentProvider|value-of<AgentProvider> $provider
+     * @param list<string>|null $senderIDs
      * @param Stats|StatsShape|null $stats
      * @param list<string>|null $triggerOnChannels
      * @param list<string>|null $triggerOnMessageTypes
+     * @param Voice|VoiceShape|null $voice
      */
     public static function with(
         string $id,
@@ -184,10 +204,12 @@ final class Agent implements BaseModel
         ?int $contextWindowMessages = null,
         ?bool $includeContactMetadata = null,
         ?int $maxTokens = null,
+        ?array $senderIDs = null,
         Stats|array|null $stats = null,
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
+        Voice|array|null $voice = null,
     ): self {
         $self = new self;
 
@@ -204,10 +226,12 @@ final class Agent implements BaseModel
         null !== $contextWindowMessages && $self['contextWindowMessages'] = $contextWindowMessages;
         null !== $includeContactMetadata && $self['includeContactMetadata'] = $includeContactMetadata;
         null !== $maxTokens && $self['maxTokens'] = $maxTokens;
+        null !== $senderIDs && $self['senderIDs'] = $senderIDs;
         null !== $stats && $self['stats'] = $stats;
         null !== $temperature && $self['temperature'] = $temperature;
         null !== $triggerOnChannels && $self['triggerOnChannels'] = $triggerOnChannels;
         null !== $triggerOnMessageTypes && $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+        null !== $voice && $self['voice'] = $voice;
 
         return $self;
     }
@@ -333,6 +357,19 @@ final class Agent implements BaseModel
     }
 
     /**
+     * Senders this agent answers on. An agent can serve several; `senderId` remains the primary one, for compatibility.
+     *
+     * @param list<string> $senderIDs
+     */
+    public function withSenderIDs(array $senderIDs): self
+    {
+        $self = clone $this;
+        $self['senderIDs'] = $senderIDs;
+
+        return $self;
+    }
+
+    /**
      * @param Stats|StatsShape $stats
      */
     public function withStats(Stats|array $stats): self
@@ -377,6 +414,19 @@ final class Agent implements BaseModel
     ): self {
         $self = clone $this;
         $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+
+        return $self;
+    }
+
+    /**
+     * Voice Agent configuration. When present and enabled, the agent can answer inbound phone calls and place outbound calls with Zavu's managed voice pipeline. Requires the Voice Agents feature to be enabled for your team.
+     *
+     * @param Voice|VoiceShape $voice
+     */
+    public function withVoice(Voice|array $voice): self
+    {
+        $self = clone $this;
+        $self['voice'] = $voice;
 
         return $self;
     }

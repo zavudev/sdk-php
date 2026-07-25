@@ -65,7 +65,7 @@ final class FunctionsTest extends TestCase
             httpEnabled: true,
             memoryMB: 128,
             runtime: 'nodejs24',
-            sourceCode: "import { defineFunction } from '@zavu/functions';\n\nexport default defineFunction(async (event, ctx) => {\n  ctx.log('received', event.type);\n});\n",
+            sourceCode: "import { defineFunction } from '@zavudev/functions';\n\nexport default defineFunction(async (event, ctx) => {\n  ctx.log('received', event.type);\n});\n",
             timeoutSec: 1,
         );
 

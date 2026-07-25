@@ -69,6 +69,25 @@ final class AgentTest extends TestCase
             temperature: 0,
             triggerOnChannels: ['string'],
             triggerOnMessageTypes: ['string'],
+            voice: [
+                'enabled' => true,
+                'greeting' => 'Hi, thanks for calling Acme. How can I help you today?',
+                'greetings' => ['es' => 'Hola, soy Atlas. Preguntame lo que quieras.'],
+                'interruptible' => true,
+                'language' => 'en',
+                'maxCallDurationMinutes' => 1,
+                'maxIdleSeconds' => 5,
+                'model' => 'openai/gpt-4o',
+                'recordCalls' => true,
+                'sttModel' => 'sttModel',
+                'sttProvider' => 'sttProvider',
+                'transferPhoneNumber' => '+14155551234',
+                'ttsProvider' => 'ttsProvider',
+                'ttsVoiceID' => 'aria',
+                'voicemailAction' => 'hangup',
+                'voicemailMessage' => 'voicemailMessage',
+                'voiceSpeed' => 0.5,
+            ],
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType

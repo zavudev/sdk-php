@@ -28,6 +28,13 @@ namespace Zavudev\Senders;
  * **Partner events:**
  * - `invitation.status_changed`: A partner invitation status changed (pending, in_progress, completed, cancelled)
  *
+ * **Voice Agent events:**
+ * For every voice event, `data` carries `callId`, `direction`, `from`, `to`, `status`, `durationSeconds`, `endReason`, and `transcriptAvailable`.
+ * - `call.initiated`: An outbound call was created and is dialing, or an inbound call was received. `data.status` = `ringing`
+ * - `call.answered`: The call was answered and the voice agent is connected. `data.status` = `in_progress`
+ * - `call.completed`: The call ended after a conversation. `data.status` = `completed`; `durationSeconds` and `endReason` describe how it ended, and `transcriptAvailable` indicates whether a transcript can be fetched.
+ * - `call.failed`: The call could not be completed (busy, no answer, canceled, or an error). `data.status` is the terminal status and `endReason` explains the cause.
+ *
  * **Custom domain events:**
  * - `domain.verified`: A custom email domain passed verification (DKIM, and SPF/DMARC/MAIL FROM if enhanced records are enabled)
  * - `domain.failed`: A custom email domain failed verification or is partially verified
@@ -55,6 +62,14 @@ enum WebhookEvent: string
     case TEMPLATE_STATUS_CHANGED = 'template.status_changed';
 
     case INVITATION_STATUS_CHANGED = 'invitation.status_changed';
+
+    case CALL_INITIATED = 'call.initiated';
+
+    case CALL_ANSWERED = 'call.answered';
+
+    case CALL_COMPLETED = 'call.completed';
+
+    case CALL_FAILED = 'call.failed';
 
     case DOMAIN_VERIFIED = 'domain.verified';
 

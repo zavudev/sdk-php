@@ -8,11 +8,14 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Senders\Agent\AgentUpdateParams\Voice;
 
 /**
  * Update an AI agent's configuration.
  *
  * @see Zavudev\Services\Senders\AgentService::update()
+ *
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentUpdateParams\Voice
  *
  * @phpstan-type AgentUpdateParamsShape = array{
  *   apiKey?: string|null,
@@ -27,6 +30,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   temperature?: float|null,
  *   triggerOnChannels?: list<string>|null,
  *   triggerOnMessageTypes?: list<string>|null,
+ *   voice?: null|Voice|VoiceShape,
  * }
  */
 final class AgentUpdateParams implements BaseModel
@@ -78,6 +82,12 @@ final class AgentUpdateParams implements BaseModel
     #[Optional(list: 'string')]
     public ?array $triggerOnMessageTypes;
 
+    /**
+     * Voice Agent configuration. Patch this object to enable voice, change the greeting, or adjust call limits. Requires the Voice Agents feature to be enabled for your team.
+     */
+    #[Optional]
+    public ?Voice $voice;
+
     public function __construct()
     {
         $this->initialize();
@@ -91,6 +101,7 @@ final class AgentUpdateParams implements BaseModel
      * @param AgentProvider|value-of<AgentProvider>|null $provider
      * @param list<string>|null $triggerOnChannels
      * @param list<string>|null $triggerOnMessageTypes
+     * @param Voice|VoiceShape|null $voice
      */
     public static function with(
         ?string $apiKey = null,
@@ -105,6 +116,7 @@ final class AgentUpdateParams implements BaseModel
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
+        Voice|array|null $voice = null,
     ): self {
         $self = new self;
 
@@ -120,6 +132,7 @@ final class AgentUpdateParams implements BaseModel
         null !== $temperature && $self['temperature'] = $temperature;
         null !== $triggerOnChannels && $self['triggerOnChannels'] = $triggerOnChannels;
         null !== $triggerOnMessageTypes && $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+        null !== $voice && $self['voice'] = $voice;
 
         return $self;
     }
@@ -229,6 +242,19 @@ final class AgentUpdateParams implements BaseModel
     ): self {
         $self = clone $this;
         $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+
+        return $self;
+    }
+
+    /**
+     * Voice Agent configuration. Patch this object to enable voice, change the greeting, or adjust call limits. Requires the Voice Agents feature to be enabled for your team.
+     *
+     * @param Voice|VoiceShape $voice
+     */
+    public function withVoice(Voice|array $voice): self
+    {
+        $self = clone $this;
+        $self['voice'] = $voice;
 
         return $self;
     }

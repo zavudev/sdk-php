@@ -8,6 +8,7 @@ use Zavudev\Client;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Core\Util;
 use Zavudev\RequestOptions;
+use Zavudev\Senders\Agent\AgentCreateParams\Voice;
 use Zavudev\Senders\Agent\AgentProvider;
 use Zavudev\Senders\Agent\AgentResponse;
 use Zavudev\Senders\Agent\AgentStats;
@@ -18,6 +19,8 @@ use Zavudev\Services\Senders\Agent\KnowledgeBasesService;
 use Zavudev\Services\Senders\Agent\ToolsService;
 
 /**
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentCreateParams\Voice
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentUpdateParams\Voice as VoiceShape1
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 final class AgentService implements AgentContract
@@ -68,6 +71,7 @@ final class AgentService implements AgentContract
      * @param string $apiKey API key for the LLM provider. Required unless provider is 'zavu'.
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param Voice|VoiceShape $voice Voice Agent configuration. Enable this to let the agent answer and place phone calls with Zavu's managed voice pipeline. Requires the Voice Agents feature to be enabled for your team.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -85,6 +89,7 @@ final class AgentService implements AgentContract
         ?float $temperature = null,
         array $triggerOnChannels = ['*'],
         array $triggerOnMessageTypes = ['text'],
+        Voice|array|null $voice = null,
         RequestOptions|array|null $requestOptions = null,
     ): AgentResponse {
         $params = Util::removeNulls(
@@ -100,6 +105,7 @@ final class AgentService implements AgentContract
                 'temperature' => $temperature,
                 'triggerOnChannels' => $triggerOnChannels,
                 'triggerOnMessageTypes' => $triggerOnMessageTypes,
+                'voice' => $voice,
             ],
         );
 
@@ -136,6 +142,7 @@ final class AgentService implements AgentContract
      * @param AgentProvider|value-of<AgentProvider> $provider LLM provider for the AI agent
      * @param list<string> $triggerOnChannels
      * @param list<string> $triggerOnMessageTypes
+     * @param \Zavudev\Senders\Agent\AgentUpdateParams\Voice|VoiceShape1 $voice Voice Agent configuration. Patch this object to enable voice, change the greeting, or adjust call limits. Requires the Voice Agents feature to be enabled for your team.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -154,6 +161,7 @@ final class AgentService implements AgentContract
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
+        \Zavudev\Senders\Agent\AgentUpdateParams\Voice|array|null $voice = null,
         RequestOptions|array|null $requestOptions = null,
     ): AgentResponse {
         $params = Util::removeNulls(
@@ -170,6 +178,7 @@ final class AgentService implements AgentContract
                 'temperature' => $temperature,
                 'triggerOnChannels' => $triggerOnChannels,
                 'triggerOnMessageTypes' => $triggerOnMessageTypes,
+                'voice' => $voice,
             ],
         );
 

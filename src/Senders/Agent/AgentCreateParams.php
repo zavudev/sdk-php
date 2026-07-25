@@ -9,11 +9,14 @@ use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Senders\Agent\AgentCreateParams\Voice;
 
 /**
  * Create an AI agent for a sender. Each sender can have at most one agent.
  *
  * @see Zavudev\Services\Senders\AgentService::create()
+ *
+ * @phpstan-import-type VoiceShape from \Zavudev\Senders\Agent\AgentCreateParams\Voice
  *
  * @phpstan-type AgentCreateParamsShape = array{
  *   model: string,
@@ -27,6 +30,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   temperature?: float|null,
  *   triggerOnChannels?: list<string>|null,
  *   triggerOnMessageTypes?: list<string>|null,
+ *   voice?: null|Voice|VoiceShape,
  * }
  */
 final class AgentCreateParams implements BaseModel
@@ -79,6 +83,12 @@ final class AgentCreateParams implements BaseModel
     public ?array $triggerOnMessageTypes;
 
     /**
+     * Voice Agent configuration. Enable this to let the agent answer and place phone calls with Zavu's managed voice pipeline. Requires the Voice Agents feature to be enabled for your team.
+     */
+    #[Optional]
+    public ?Voice $voice;
+
+    /**
      * `new AgentCreateParams()` is missing required properties by the API.
      *
      * To enforce required parameters use
@@ -109,6 +119,7 @@ final class AgentCreateParams implements BaseModel
      * @param AgentProvider|value-of<AgentProvider> $provider
      * @param list<string>|null $triggerOnChannels
      * @param list<string>|null $triggerOnMessageTypes
+     * @param Voice|VoiceShape|null $voice
      */
     public static function with(
         string $model,
@@ -122,6 +133,7 @@ final class AgentCreateParams implements BaseModel
         ?float $temperature = null,
         ?array $triggerOnChannels = null,
         ?array $triggerOnMessageTypes = null,
+        Voice|array|null $voice = null,
     ): self {
         $self = new self;
 
@@ -137,6 +149,7 @@ final class AgentCreateParams implements BaseModel
         null !== $temperature && $self['temperature'] = $temperature;
         null !== $triggerOnChannels && $self['triggerOnChannels'] = $triggerOnChannels;
         null !== $triggerOnMessageTypes && $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+        null !== $voice && $self['voice'] = $voice;
 
         return $self;
     }
@@ -241,6 +254,19 @@ final class AgentCreateParams implements BaseModel
     ): self {
         $self = clone $this;
         $self['triggerOnMessageTypes'] = $triggerOnMessageTypes;
+
+        return $self;
+    }
+
+    /**
+     * Voice Agent configuration. Enable this to let the agent answer and place phone calls with Zavu's managed voice pipeline. Requires the Voice Agents feature to be enabled for your team.
+     *
+     * @param Voice|VoiceShape $voice
+     */
+    public function withVoice(Voice|array $voice): self
+    {
+        $self = clone $this;
+        $self['voice'] = $voice;
 
         return $self;
     }
