@@ -65,6 +65,8 @@ final class ExecutionsRawService implements ExecutionsRawContract
      *
      * List recent agent executions with pagination.
      *
+     * An execution is one inbound message answered by the agent, so this covers the messaging channels only. Voice calls are never listed here regardless of how many the agent handled. Use `GET /v1/calls` (and `GET /v1/calls/{callId}` for the transcript) for voice.
+     *
      * @param array{
      *   cursor?: string,
      *   limit?: int,
