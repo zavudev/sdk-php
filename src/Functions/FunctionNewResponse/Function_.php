@@ -106,7 +106,7 @@ final class Function_ implements BaseModel
     public ?string $description;
 
     /**
-     * HTTPS endpoint when httpEnabled is true.
+     * HTTPS endpoint, present only while httpEnabled is true. Null otherwise, including for a function that was previously exposed — the stored URL stops serving the moment HTTP is turned off, so it is never returned.
      */
     #[Optional('publicUrl', nullable: true)]
     public ?string $publicURL;
@@ -334,7 +334,7 @@ final class Function_ implements BaseModel
     }
 
     /**
-     * HTTPS endpoint when httpEnabled is true.
+     * HTTPS endpoint, present only while httpEnabled is true. Null otherwise, including for a function that was previously exposed — the stored URL stops serving the moment HTTP is turned off, so it is never returned.
      */
     public function withPublicURL(?string $publicURL): self
     {
