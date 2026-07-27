@@ -17,6 +17,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *
  * @phpstan-type PhoneNumberSearchAvailableParamsShape = array{
  *   countryCode: string,
+ *   capabilities?: string|null,
  *   contains?: string|null,
  *   limit?: int|null,
  *   type?: null|PhoneNumberType|value-of<PhoneNumberType>,
@@ -33,6 +34,12 @@ final class PhoneNumberSearchAvailableParams implements BaseModel
      */
     #[Required]
     public string $countryCode;
+
+    /**
+     * Comma-separated capabilities the number must have: `sms`, `voice`, `mms`. Numbers missing any of them are dropped.
+     */
+    #[Optional]
+    public ?string $capabilities;
 
     /**
      * Search for numbers containing this string.
@@ -82,6 +89,7 @@ final class PhoneNumberSearchAvailableParams implements BaseModel
      */
     public static function with(
         string $countryCode,
+        ?string $capabilities = null,
         ?string $contains = null,
         ?int $limit = null,
         PhoneNumberType|string|null $type = null,
@@ -90,6 +98,7 @@ final class PhoneNumberSearchAvailableParams implements BaseModel
 
         $self['countryCode'] = $countryCode;
 
+        null !== $capabilities && $self['capabilities'] = $capabilities;
         null !== $contains && $self['contains'] = $contains;
         null !== $limit && $self['limit'] = $limit;
         null !== $type && $self['type'] = $type;
@@ -104,6 +113,17 @@ final class PhoneNumberSearchAvailableParams implements BaseModel
     {
         $self = clone $this;
         $self['countryCode'] = $countryCode;
+
+        return $self;
+    }
+
+    /**
+     * Comma-separated capabilities the number must have: `sms`, `voice`, `mms`. Numbers missing any of them are dropped.
+     */
+    public function withCapabilities(string $capabilities): self
+    {
+        $self = clone $this;
+        $self['capabilities'] = $capabilities;
 
         return $self;
     }

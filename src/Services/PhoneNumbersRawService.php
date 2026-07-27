@@ -226,6 +226,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
      *
      * @param array{
      *   countryCode: string,
+     *   capabilities?: string,
      *   contains?: string,
      *   limit?: int,
      *   type?: PhoneNumberType|value-of<PhoneNumberType>,

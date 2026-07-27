@@ -113,6 +113,7 @@ interface PhoneNumbersContract
      * @api
      *
      * @param string $countryCode two-letter ISO country code
+     * @param string $capabilities Comma-separated capabilities the number must have: `sms`, `voice`, `mms`. Numbers missing any of them are dropped.
      * @param string $contains search for numbers containing this string
      * @param int $limit maximum number of results to return
      * @param PhoneNumberType|value-of<PhoneNumberType> $type type of phone number to search for
@@ -122,6 +123,7 @@ interface PhoneNumbersContract
      */
     public function searchAvailable(
         string $countryCode,
+        ?string $capabilities = null,
         ?string $contains = null,
         int $limit = 10,
         PhoneNumberType|string|null $type = null,

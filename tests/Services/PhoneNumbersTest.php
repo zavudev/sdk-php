@@ -174,6 +174,7 @@ final class PhoneNumbersTest extends TestCase
 
         $result = $this->client->phoneNumbers->searchAvailable(
             countryCode: 'xx',
+            capabilities: 'voice,sms',
             contains: 'contains',
             limit: 50,
             type: PhoneNumberType::LOCAL,

@@ -60,6 +60,7 @@ final class SendersTest extends TestCase
             emailDomainID: 'emailDomainId',
             emailFromName: 'emailFromName',
             emailReceivingEnabled: true,
+            enableVoice: true,
             phoneNumber: 'phoneNumber',
             setAsDefault: true,
             webhookEvents: [WebhookEvent::MESSAGE_QUEUED],

@@ -20,6 +20,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   emailDomainID?: string|null,
  *   emailFromName?: string|null,
  *   emailReceivingEnabled?: bool|null,
+ *   enableVoice?: bool|null,
  *   name?: string|null,
  *   setAsDefault?: bool|null,
  *   webhookActive?: bool|null,
@@ -62,6 +63,12 @@ final class SenderUpdateParams implements BaseModel
      */
     #[Optional]
     public ?bool $emailReceivingEnabled;
+
+    /**
+     * Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
+     */
+    #[Optional]
+    public ?bool $enableVoice;
 
     #[Optional]
     public ?string $name;
@@ -107,6 +114,7 @@ final class SenderUpdateParams implements BaseModel
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        ?bool $enableVoice = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
         ?bool $webhookActive = null,
@@ -120,6 +128,7 @@ final class SenderUpdateParams implements BaseModel
         null !== $emailDomainID && $self['emailDomainID'] = $emailDomainID;
         null !== $emailFromName && $self['emailFromName'] = $emailFromName;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+        null !== $enableVoice && $self['enableVoice'] = $enableVoice;
         null !== $name && $self['name'] = $name;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
         null !== $webhookActive && $self['webhookActive'] = $webhookActive;
@@ -180,6 +189,17 @@ final class SenderUpdateParams implements BaseModel
     {
         $self = clone $this;
         $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+
+        return $self;
+    }
+
+    /**
+     * Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
+     */
+    public function withEnableVoice(bool $enableVoice): self
+    {
+        $self = clone $this;
+        $self['enableVoice'] = $enableVoice;
 
         return $self;
     }

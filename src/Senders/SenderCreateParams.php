@@ -21,6 +21,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   emailDomainID?: string|null,
  *   emailFromName?: string|null,
  *   emailReceivingEnabled?: bool|null,
+ *   enableVoice?: bool|null,
  *   phoneNumber?: string|null,
  *   setAsDefault?: bool|null,
  *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>|null,
@@ -61,7 +62,13 @@ final class SenderCreateParams implements BaseModel
     public ?bool $emailReceivingEnabled;
 
     /**
-     * Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
+     * Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
+     */
+    #[Optional]
+    public ?bool $enableVoice;
+
+    /**
+     * Phone number in E.164 format, and it must be a number your project already owns (see `GET /v1/phone-numbers`). The number is routed to the sender as part of this call, which is what turns the SMS channel on. Passing a number the project does not own, or one already attached to another sender, returns 400 rather than creating a sender that cannot send. Omit for an email-only sender.
      */
     #[Optional]
     public ?string $phoneNumber;
@@ -115,6 +122,7 @@ final class SenderCreateParams implements BaseModel
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        ?bool $enableVoice = null,
         ?string $phoneNumber = null,
         ?bool $setAsDefault = null,
         ?array $webhookEvents = null,
@@ -128,6 +136,7 @@ final class SenderCreateParams implements BaseModel
         null !== $emailDomainID && $self['emailDomainID'] = $emailDomainID;
         null !== $emailFromName && $self['emailFromName'] = $emailFromName;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+        null !== $enableVoice && $self['enableVoice'] = $enableVoice;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
         null !== $webhookEvents && $self['webhookEvents'] = $webhookEvents;
@@ -189,7 +198,18 @@ final class SenderCreateParams implements BaseModel
     }
 
     /**
-     * Phone number in E.164 format. Required for phone-based channels (SMS, WhatsApp). Omit for an email-only sender.
+     * Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
+     */
+    public function withEnableVoice(bool $enableVoice): self
+    {
+        $self = clone $this;
+        $self['enableVoice'] = $enableVoice;
+
+        return $self;
+    }
+
+    /**
+     * Phone number in E.164 format, and it must be a number your project already owns (see `GET /v1/phone-numbers`). The number is routed to the sender as part of this call, which is what turns the SMS channel on. Passing a number the project does not own, or one already attached to another sender, returns 400 rather than creating a sender that cannot send. Omit for an email-only sender.
      */
     public function withPhoneNumber(string $phoneNumber): self
     {
