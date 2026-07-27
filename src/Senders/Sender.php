@@ -18,6 +18,7 @@ use Zavudev\Senders\Sender\Whatsapp;
  *   id: string,
  *   name: string,
  *   phoneNumber: string,
+ *   channels?: list<string>|null,
  *   createdAt?: \DateTimeInterface|null,
  *   emailAddress?: string|null,
  *   emailCatchAllEnabled?: bool|null,
@@ -44,6 +45,14 @@ final class Sender implements BaseModel
      */
     #[Required]
     public string $phoneNumber;
+
+    /**
+     * Channels this sender can actually send on right now, computed from its configuration. Empty means the sender cannot send or receive anything yet: a phoneNumber alone does not enable SMS or voice. Check this rather than inferring capability from phoneNumber or emailAddress.
+     *
+     * @var list<string>|null $channels
+     */
+    #[Optional(list: 'string')]
+    public ?array $channels;
 
     #[Optional]
     public ?\DateTimeInterface $createdAt;
@@ -111,6 +120,7 @@ final class Sender implements BaseModel
      *
      * You must use named parameters to construct any parameters with a default value.
      *
+     * @param list<string>|null $channels
      * @param SenderWebhook|SenderWebhookShape|null $webhook
      * @param Whatsapp|WhatsappShape|null $whatsapp
      */
@@ -118,6 +128,7 @@ final class Sender implements BaseModel
         string $id,
         string $name,
         string $phoneNumber,
+        ?array $channels = null,
         ?\DateTimeInterface $createdAt = null,
         ?string $emailAddress = null,
         ?bool $emailCatchAllEnabled = null,
@@ -133,6 +144,7 @@ final class Sender implements BaseModel
         $self['name'] = $name;
         $self['phoneNumber'] = $phoneNumber;
 
+        null !== $channels && $self['channels'] = $channels;
         null !== $createdAt && $self['createdAt'] = $createdAt;
         null !== $emailAddress && $self['emailAddress'] = $emailAddress;
         null !== $emailCatchAllEnabled && $self['emailCatchAllEnabled'] = $emailCatchAllEnabled;
@@ -168,6 +180,19 @@ final class Sender implements BaseModel
     {
         $self = clone $this;
         $self['phoneNumber'] = $phoneNumber;
+
+        return $self;
+    }
+
+    /**
+     * Channels this sender can actually send on right now, computed from its configuration. Empty means the sender cannot send or receive anything yet: a phoneNumber alone does not enable SMS or voice. Check this rather than inferring capability from phoneNumber or emailAddress.
+     *
+     * @param list<string> $channels
+     */
+    public function withChannels(array $channels): self
+    {
+        $self = clone $this;
+        $self['channels'] = $channels;
 
         return $self;
     }
