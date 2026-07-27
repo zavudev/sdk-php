@@ -65,7 +65,8 @@ interface FunctionsContract
      *
      * @param string $functionID zavu Function ID
      * @param array<string,string> $dependencies new dependency map (replaces existing dependencies)
-     * @param string $sourceCode new source code to publish (replaces the draft)
+     * @param bool $httpEnabled Expose the function on its public HTTPS URL, or take it down. Applies to the already-deployed function without redeploying; the URL is returned as `publicUrl`.
+     * @param string $sourceCode new source code for the draft (replaces it)
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -73,6 +74,7 @@ interface FunctionsContract
     public function update(
         string $functionID,
         ?array $dependencies = null,
+        ?bool $httpEnabled = null,
         ?string $sourceCode = null,
         RequestOptions|array|null $requestOptions = null,
     ): FunctionUpdateResponse;

@@ -105,11 +105,11 @@ final class FunctionsRawService implements FunctionsRawContract
     /**
      * @api
      *
-     * Update the draft source code and/or dependency map without triggering a build. Visible in the dashboard immediately, but the live (deployed) function does not change until `POST /v1/functions/{functionId}/deploy` runs.
+     * Update an existing function. `sourceCode` / `dependencies` edit the draft without triggering a build — they go live on the next `POST /v1/functions/{functionId}/deploy`. `httpEnabled` is applied to the deployed function immediately, so turning the public endpoint on or off does not require a redeploy.
      *
      * @param string $functionID zavu Function ID
      * @param array{
-     *   dependencies?: array<string,string>, sourceCode?: string
+     *   dependencies?: array<string,string>, httpEnabled?: bool, sourceCode?: string
      * }|FunctionUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *

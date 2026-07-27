@@ -116,11 +116,12 @@ final class FunctionsService implements FunctionsContract
     /**
      * @api
      *
-     * Update the draft source code and/or dependency map without triggering a build. Visible in the dashboard immediately, but the live (deployed) function does not change until `POST /v1/functions/{functionId}/deploy` runs.
+     * Update an existing function. `sourceCode` / `dependencies` edit the draft without triggering a build — they go live on the next `POST /v1/functions/{functionId}/deploy`. `httpEnabled` is applied to the deployed function immediately, so turning the public endpoint on or off does not require a redeploy.
      *
      * @param string $functionID zavu Function ID
      * @param array<string,string> $dependencies new dependency map (replaces existing dependencies)
-     * @param string $sourceCode new source code to publish (replaces the draft)
+     * @param bool $httpEnabled Expose the function on its public HTTPS URL, or take it down. Applies to the already-deployed function without redeploying; the URL is returned as `publicUrl`.
+     * @param string $sourceCode new source code for the draft (replaces it)
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -128,11 +129,16 @@ final class FunctionsService implements FunctionsContract
     public function update(
         string $functionID,
         ?array $dependencies = null,
+        ?bool $httpEnabled = null,
         ?string $sourceCode = null,
         RequestOptions|array|null $requestOptions = null,
     ): FunctionUpdateResponse {
         $params = Util::removeNulls(
-            ['dependencies' => $dependencies, 'sourceCode' => $sourceCode]
+            [
+                'dependencies' => $dependencies,
+                'httpEnabled' => $httpEnabled,
+                'sourceCode' => $sourceCode,
+            ],
         );
 
         // @phpstan-ignore-next-line argument.type
