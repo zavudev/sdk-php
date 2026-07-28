@@ -21,6 +21,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   status: AgentExecutionStatus|value-of<AgentExecutionStatus>,
  *   errorMessage?: string|null,
  *   inboundMessageID?: string|null,
+ *   knowledgeChunksUsed?: int|null,
  *   responseMessageID?: string|null,
  *   responseText?: string|null,
  * }
@@ -67,6 +68,12 @@ final class AgentExecution implements BaseModel
 
     #[Optional('inboundMessageId')]
     public ?string $inboundMessageID;
+
+    /**
+     * Knowledge-base chunks retrieved for this answer. Zero on an agent that has documents attached means the reply was not grounded in them, which is otherwise indistinguishable from a correct answer in this record. Absent on executions recorded before this field existed, which is not the same as zero.
+     */
+    #[Optional(nullable: true)]
+    public ?int $knowledgeChunksUsed;
 
     #[Optional('responseMessageId', nullable: true)]
     public ?string $responseMessageID;
@@ -128,6 +135,7 @@ final class AgentExecution implements BaseModel
         AgentExecutionStatus|string $status,
         ?string $errorMessage = null,
         ?string $inboundMessageID = null,
+        ?int $knowledgeChunksUsed = null,
         ?string $responseMessageID = null,
         ?string $responseText = null,
     ): self {
@@ -144,6 +152,7 @@ final class AgentExecution implements BaseModel
 
         null !== $errorMessage && $self['errorMessage'] = $errorMessage;
         null !== $inboundMessageID && $self['inboundMessageID'] = $inboundMessageID;
+        null !== $knowledgeChunksUsed && $self['knowledgeChunksUsed'] = $knowledgeChunksUsed;
         null !== $responseMessageID && $self['responseMessageID'] = $responseMessageID;
         null !== $responseText && $self['responseText'] = $responseText;
 
@@ -234,6 +243,17 @@ final class AgentExecution implements BaseModel
     {
         $self = clone $this;
         $self['inboundMessageID'] = $inboundMessageID;
+
+        return $self;
+    }
+
+    /**
+     * Knowledge-base chunks retrieved for this answer. Zero on an agent that has documents attached means the reply was not grounded in them, which is otherwise indistinguishable from a correct answer in this record. Absent on executions recorded before this field existed, which is not the same as zero.
+     */
+    public function withKnowledgeChunksUsed(?int $knowledgeChunksUsed): self
+    {
+        $self = clone $this;
+        $self['knowledgeChunksUsed'] = $knowledgeChunksUsed;
 
         return $self;
     }
