@@ -8,10 +8,13 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Invitations\Invitation\ConnectedAccount;
 use Zavudev\Invitations\Invitation\ConnectionType;
 use Zavudev\Invitations\Invitation\Status;
 
 /**
+ * @phpstan-import-type ConnectedAccountShape from \Zavudev\Invitations\Invitation\ConnectedAccount
+ *
  * @phpstan-type InvitationShape = array{
  *   id: string,
  *   token: string,
@@ -24,7 +27,10 @@ use Zavudev\Invitations\Invitation\Status;
  *   clientName?: string|null,
  *   clientPhone?: string|null,
  *   completedAt?: \DateTimeInterface|null,
+ *   connectedAccount?: null|ConnectedAccount|ConnectedAccountShape,
  *   connectionType?: null|ConnectionType|value-of<ConnectionType>,
+ *   failedAt?: \DateTimeInterface|null,
+ *   failureReason?: string|null,
  *   phoneNumberID?: string|null,
  *   senderID?: string|null,
  *   startedAt?: \DateTimeInterface|null,
@@ -54,6 +60,8 @@ final class Invitation implements BaseModel
     /**
      * Current status of the partner invitation.
      *
+     * `failed` means the client started the connection and it did not finish (they cancelled Meta's dialog, denied a permission, or abandoned the tab). A failed invitation is still usable: the same link can be retried, and it moves back to `in_progress` when the client tries again.
+     *
      * @var value-of<Status> $status
      */
     #[Required(enum: Status::class)]
@@ -81,15 +89,30 @@ final class Invitation implements BaseModel
     public ?\DateTimeInterface $completedAt;
 
     /**
-     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup).
+     * The account the client linked, populated once the invitation is `completed`. Null before that. Use it to show the partner what was connected without fetching the sender.
+     */
+    #[Optional(nullable: true)]
+    public ?ConnectedAccount $connectedAccount;
+
+    /**
+     * Which Meta channel the client connects: `whatsapp_waba` (official WhatsApp Cloud API via embedded signup) or `messenger` (a Facebook Page's Messenger inbox, including Marketplace chats).
      *
      * @var value-of<ConnectionType>|null $connectionType
      */
     #[Optional(enum: ConnectionType::class)]
     public ?string $connectionType;
 
+    #[Optional(nullable: true)]
+    public ?\DateTimeInterface $failedAt;
+
     /**
-     * ID of a pre-assigned Zavu phone number for WhatsApp registration.
+     * Stable code for why the last attempt failed, present when `status` is `failed`. Values include `fb_cancelled` (client closed Meta's dialog), `fb_not_authorized` (permission denied), `signup_abandoned` (started but never finished), `meta_no_pages` (the client administers no Facebook Page), and `internal_error`. Treat unknown codes as a generic failure.
+     */
+    #[Optional(nullable: true)]
+    public ?string $failureReason;
+
+    /**
+     * ID of a pre-assigned Zavu phone number for WhatsApp registration. Always null for `messenger` invitations.
      */
     #[Optional('phoneNumberId', nullable: true)]
     public ?string $phoneNumberID;
@@ -146,6 +169,7 @@ final class Invitation implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Status|value-of<Status> $status
+     * @param ConnectedAccount|ConnectedAccountShape|null $connectedAccount
      * @param ConnectionType|value-of<ConnectionType>|null $connectionType
      */
     public static function with(
@@ -160,7 +184,10 @@ final class Invitation implements BaseModel
         ?string $clientName = null,
         ?string $clientPhone = null,
         ?\DateTimeInterface $completedAt = null,
+        ConnectedAccount|array|null $connectedAccount = null,
         ConnectionType|string|null $connectionType = null,
+        ?\DateTimeInterface $failedAt = null,
+        ?string $failureReason = null,
         ?string $phoneNumberID = null,
         ?string $senderID = null,
         ?\DateTimeInterface $startedAt = null,
@@ -180,7 +207,10 @@ final class Invitation implements BaseModel
         null !== $clientName && $self['clientName'] = $clientName;
         null !== $clientPhone && $self['clientPhone'] = $clientPhone;
         null !== $completedAt && $self['completedAt'] = $completedAt;
+        null !== $connectedAccount && $self['connectedAccount'] = $connectedAccount;
         null !== $connectionType && $self['connectionType'] = $connectionType;
+        null !== $failedAt && $self['failedAt'] = $failedAt;
+        null !== $failureReason && $self['failureReason'] = $failureReason;
         null !== $phoneNumberID && $self['phoneNumberID'] = $phoneNumberID;
         null !== $senderID && $self['senderID'] = $senderID;
         null !== $startedAt && $self['startedAt'] = $startedAt;
@@ -226,6 +256,8 @@ final class Invitation implements BaseModel
 
     /**
      * Current status of the partner invitation.
+     *
+     * `failed` means the client started the connection and it did not finish (they cancelled Meta's dialog, denied a permission, or abandoned the tab). A failed invitation is still usable: the same link can be retried, and it moves back to `in_progress` when the client tries again.
      *
      * @param Status|value-of<Status> $status
      */
@@ -289,7 +321,21 @@ final class Invitation implements BaseModel
     }
 
     /**
-     * How the client connects WhatsApp: `whatsapp_waba` (official Cloud API via embedded signup).
+     * The account the client linked, populated once the invitation is `completed`. Null before that. Use it to show the partner what was connected without fetching the sender.
+     *
+     * @param ConnectedAccount|ConnectedAccountShape|null $connectedAccount
+     */
+    public function withConnectedAccount(
+        ConnectedAccount|array|null $connectedAccount
+    ): self {
+        $self = clone $this;
+        $self['connectedAccount'] = $connectedAccount;
+
+        return $self;
+    }
+
+    /**
+     * Which Meta channel the client connects: `whatsapp_waba` (official WhatsApp Cloud API via embedded signup) or `messenger` (a Facebook Page's Messenger inbox, including Marketplace chats).
      *
      * @param ConnectionType|value-of<ConnectionType> $connectionType
      */
@@ -302,8 +348,27 @@ final class Invitation implements BaseModel
         return $self;
     }
 
+    public function withFailedAt(?\DateTimeInterface $failedAt): self
+    {
+        $self = clone $this;
+        $self['failedAt'] = $failedAt;
+
+        return $self;
+    }
+
     /**
-     * ID of a pre-assigned Zavu phone number for WhatsApp registration.
+     * Stable code for why the last attempt failed, present when `status` is `failed`. Values include `fb_cancelled` (client closed Meta's dialog), `fb_not_authorized` (permission denied), `signup_abandoned` (started but never finished), `meta_no_pages` (the client administers no Facebook Page), and `internal_error`. Treat unknown codes as a generic failure.
+     */
+    public function withFailureReason(?string $failureReason): self
+    {
+        $self = clone $this;
+        $self['failureReason'] = $failureReason;
+
+        return $self;
+    }
+
+    /**
+     * ID of a pre-assigned Zavu phone number for WhatsApp registration. Always null for `messenger` invitations.
      */
     public function withPhoneNumberID(?string $phoneNumberID): self
     {

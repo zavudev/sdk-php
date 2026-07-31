@@ -33,7 +33,13 @@ final class InvitationsRawService implements InvitationsRawContract
     /**
      * @api
      *
-     * Create a partner invitation link for a client to connect WhatsApp. The client opens the returned `url` and completes Meta's embedded signup, linking an official WhatsApp Business Account. The resulting sender is created in your project when the client completes the flow, and the invitation transitions to `completed`.
+     * Create a partner invitation link for a client to connect a Meta channel. The client opens the returned `url` and authorizes with Meta; the resulting sender is created in your project when they finish, and the invitation transitions to `completed`.
+     *
+     * `connectionType` picks the channel:
+     * - `whatsapp_waba` (default): Meta's embedded signup links an official WhatsApp Business Account.
+     * - `messenger`: the client picks a Facebook Page they administer; its Messenger inbox (including Marketplace chats) is routed to Zavu.
+     *
+     * One invitation connects one channel — create one per channel to onboard a client on several. `phoneNumberId` and `allowedPhoneCountries` apply to `whatsapp_waba` only.
      *
      * @param array{
      *   allowedPhoneCountries?: list<string>,

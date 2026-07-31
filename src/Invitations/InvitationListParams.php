@@ -34,6 +34,8 @@ final class InvitationListParams implements BaseModel
     /**
      * Current status of the partner invitation.
      *
+     * `failed` means the client started the connection and it did not finish (they cancelled Meta's dialog, denied a permission, or abandoned the tab). A failed invitation is still usable: the same link can be retried, and it moves back to `in_progress` when the client tries again.
+     *
      * @var value-of<Status>|null $status
      */
     #[Optional(enum: Status::class)]
@@ -83,6 +85,8 @@ final class InvitationListParams implements BaseModel
 
     /**
      * Current status of the partner invitation.
+     *
+     * `failed` means the client started the connection and it did not finish (they cancelled Meta's dialog, denied a permission, or abandoned the tab). A failed invitation is still usable: the same link can be retried, and it moves back to `in_progress` when the client tries again.
      *
      * @param Status|value-of<Status> $status
      */
