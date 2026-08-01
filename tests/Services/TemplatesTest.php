@@ -61,13 +61,13 @@ final class TemplatesTest extends TestCase
             addSecurityRecommendation: true,
             buttons: [
                 [
-                    'text' => 'text',
                     'type' => 'quick_reply',
                     'example' => 'ORD-12345',
                     'otpType' => 'COPY_CODE',
                     'packageName' => 'packageName',
                     'phoneNumber' => 'phoneNumber',
                     'signatureHash' => 'signatureHash',
+                    'text' => 'text',
                     'url' => 'https://example.com',
                 ],
             ],

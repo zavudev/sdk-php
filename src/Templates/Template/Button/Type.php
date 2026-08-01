@@ -13,4 +13,6 @@ enum Type: string
     case PHONE = 'phone';
 
     case OTP = 'otp';
+
+    case REQUEST_CONTACT_INFO = 'request_contact_info';
 }

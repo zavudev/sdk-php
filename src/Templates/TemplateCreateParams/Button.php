@@ -13,13 +13,13 @@ use Zavudev\Templates\TemplateCreateParams\Button\Type;
 
 /**
  * @phpstan-type ButtonShape = array{
- *   text: string,
  *   type: Type|value-of<Type>,
  *   example?: string|null,
  *   otpType?: null|OtpType|value-of<OtpType>,
  *   packageName?: string|null,
  *   phoneNumber?: string|null,
  *   signatureHash?: string|null,
+ *   text?: string|null,
  *   url?: string|null,
  * }
  */
@@ -28,10 +28,11 @@ final class Button implements BaseModel
     /** @use SdkModel<ButtonShape> */
     use SdkModel;
 
-    #[Required]
-    public string $text;
-
-    /** @var value-of<Type> $type */
+    /**
+     * `request_contact_info` renders a fixed **Share Contact Info** button that asks the recipient to share their phone number — useful when a contact adopted a WhatsApp username and you only know their BSUID. It takes no other fields.
+     *
+     * @var value-of<Type> $type
+     */
     #[Required(enum: Type::class)]
     public string $type;
 
@@ -65,6 +66,12 @@ final class Button implements BaseModel
     public ?string $signatureHash;
 
     /**
+     * Button label. Required for every type except `request_contact_info`, whose label is fixed by WhatsApp.
+     */
+    #[Optional]
+    public ?string $text;
+
+    /**
      * Button destination. Use `{{1}}` exactly once for a dynamic URL (e.g. `https://example.com/orders/{{1}}`); WhatsApp only accepts the strict `{{1}}` form. Static URLs must not contain any `{{...}}` placeholder.
      */
     #[Optional]
@@ -75,13 +82,13 @@ final class Button implements BaseModel
      *
      * To enforce required parameters use
      * ```
-     * Button::with(text: ..., type: ...)
+     * Button::with(type: ...)
      * ```
      *
      * Otherwise ensure the following setters are called
      *
      * ```
-     * (new Button)->withText(...)->withType(...)
+     * (new Button)->withType(...)
      * ```
      */
     public function __construct()
@@ -98,18 +105,17 @@ final class Button implements BaseModel
      * @param OtpType|value-of<OtpType>|null $otpType
      */
     public static function with(
-        string $text,
         Type|string $type,
         ?string $example = null,
         OtpType|string|null $otpType = null,
         ?string $packageName = null,
         ?string $phoneNumber = null,
         ?string $signatureHash = null,
+        ?string $text = null,
         ?string $url = null,
     ): self {
         $self = new self;
 
-        $self['text'] = $text;
         $self['type'] = $type;
 
         null !== $example && $self['example'] = $example;
@@ -117,20 +123,15 @@ final class Button implements BaseModel
         null !== $packageName && $self['packageName'] = $packageName;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
         null !== $signatureHash && $self['signatureHash'] = $signatureHash;
+        null !== $text && $self['text'] = $text;
         null !== $url && $self['url'] = $url;
 
         return $self;
     }
 
-    public function withText(string $text): self
-    {
-        $self = clone $this;
-        $self['text'] = $text;
-
-        return $self;
-    }
-
     /**
+     * `request_contact_info` renders a fixed **Share Contact Info** button that asks the recipient to share their phone number — useful when a contact adopted a WhatsApp username and you only know their BSUID. It takes no other fields.
+     *
      * @param Type|value-of<Type> $type
      */
     public function withType(Type|string $type): self
@@ -191,6 +192,17 @@ final class Button implements BaseModel
     {
         $self = clone $this;
         $self['signatureHash'] = $signatureHash;
+
+        return $self;
+    }
+
+    /**
+     * Button label. Required for every type except `request_contact_info`, whose label is fixed by WhatsApp.
+     */
+    public function withText(string $text): self
+    {
+        $self = clone $this;
+        $self['text'] = $text;
 
         return $self;
     }
