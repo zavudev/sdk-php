@@ -21,7 +21,7 @@ final class PhoneNumberPricing implements BaseModel
     use SdkModel;
 
     /**
-     * Whether this number qualifies for the free first US number offer.
+     * Whether this number qualifies as the plan-included first US number on paid plans.
      */
     #[Optional]
     public ?bool $isFreeEligible;
@@ -63,7 +63,7 @@ final class PhoneNumberPricing implements BaseModel
     }
 
     /**
-     * Whether this number qualifies for the free first US number offer.
+     * Whether this number qualifies as the plan-included first US number on paid plans.
      */
     public function withIsFreeEligible(bool $isFreeEligible): self
     {
