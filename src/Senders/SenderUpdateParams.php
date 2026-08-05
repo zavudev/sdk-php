@@ -20,6 +20,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   emailDomainID?: string|null,
  *   emailFromName?: string|null,
  *   emailReceivingEnabled?: bool|null,
+ *   enableSMSOneway?: bool|null,
  *   enableVoice?: bool|null,
  *   name?: string|null,
  *   setAsDefault?: bool|null,
@@ -63,6 +64,12 @@ final class SenderUpdateParams implements BaseModel
      */
     #[Optional]
     public ?bool $emailReceivingEnabled;
+
+    /**
+     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
+     */
+    #[Optional('enableSmsOneway')]
+    public ?bool $enableSMSOneway;
 
     /**
      * Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
@@ -114,6 +121,7 @@ final class SenderUpdateParams implements BaseModel
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        ?bool $enableSMSOneway = null,
         ?bool $enableVoice = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
@@ -128,6 +136,7 @@ final class SenderUpdateParams implements BaseModel
         null !== $emailDomainID && $self['emailDomainID'] = $emailDomainID;
         null !== $emailFromName && $self['emailFromName'] = $emailFromName;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+        null !== $enableSMSOneway && $self['enableSMSOneway'] = $enableSMSOneway;
         null !== $enableVoice && $self['enableVoice'] = $enableVoice;
         null !== $name && $self['name'] = $name;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
@@ -189,6 +198,17 @@ final class SenderUpdateParams implements BaseModel
     {
         $self = clone $this;
         $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+
+        return $self;
+    }
+
+    /**
+     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
+     */
+    public function withEnableSMSOneway(bool $enableSMSOneway): self
+    {
+        $self = clone $this;
+        $self['enableSMSOneway'] = $enableSMSOneway;
 
         return $self;
     }

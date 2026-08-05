@@ -60,6 +60,7 @@ final class SendersService implements SendersContract
      * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
      * @param string $emailFromName display name shown in the recipient's inbox for the email channel
      * @param bool $emailReceivingEnabled Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+     * @param bool $enableSMSOneway Enable the one-way SMS channel (`sms_oneway`). Needs nothing else — no phone number, no credential — so it is the fastest way to get a sender that can send. Recipients cannot reply. Confirm with `sms_oneway` in the `channels` array on the response.
      * @param bool $enableVoice Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
      * @param string $phoneNumber Phone number in E.164 format, and it must be a number your project already owns (see `GET /v1/phone-numbers`). The number is routed to the sender as part of this call, which is what turns the SMS channel on. Passing a number the project does not own, or one already attached to another sender, returns 400 rather than creating a sender that cannot send. Omit for an email-only sender.
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
@@ -74,6 +75,7 @@ final class SendersService implements SendersContract
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        bool $enableSMSOneway = false,
         bool $enableVoice = false,
         ?string $phoneNumber = null,
         bool $setAsDefault = false,
@@ -88,6 +90,7 @@ final class SendersService implements SendersContract
                 'emailDomainID' => $emailDomainID,
                 'emailFromName' => $emailFromName,
                 'emailReceivingEnabled' => $emailReceivingEnabled,
+                'enableSMSOneway' => $enableSMSOneway,
                 'enableVoice' => $enableVoice,
                 'phoneNumber' => $phoneNumber,
                 'setAsDefault' => $setAsDefault,
@@ -131,6 +134,7 @@ final class SendersService implements SendersContract
      * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
      * @param string $emailFromName display name shown in the recipient's inbox for the email channel
      * @param bool $emailReceivingEnabled enable or disable inbound email receiving for this sender
+     * @param bool $enableSMSOneway Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
      * @param bool $enableVoice Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
      * @param bool $webhookActive whether the webhook is active
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
@@ -146,6 +150,7 @@ final class SendersService implements SendersContract
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        ?bool $enableSMSOneway = null,
         ?bool $enableVoice = null,
         ?string $name = null,
         ?bool $setAsDefault = null,
@@ -161,6 +166,7 @@ final class SendersService implements SendersContract
                 'emailDomainID' => $emailDomainID,
                 'emailFromName' => $emailFromName,
                 'emailReceivingEnabled' => $emailReceivingEnabled,
+                'enableSMSOneway' => $enableSMSOneway,
                 'enableVoice' => $enableVoice,
                 'name' => $name,
                 'setAsDefault' => $setAsDefault,

@@ -21,6 +21,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   emailDomainID?: string|null,
  *   emailFromName?: string|null,
  *   emailReceivingEnabled?: bool|null,
+ *   enableSMSOneway?: bool|null,
  *   enableVoice?: bool|null,
  *   phoneNumber?: string|null,
  *   setAsDefault?: bool|null,
@@ -60,6 +61,12 @@ final class SenderCreateParams implements BaseModel
      */
     #[Optional]
     public ?bool $emailReceivingEnabled;
+
+    /**
+     * Enable the one-way SMS channel (`sms_oneway`). Needs nothing else — no phone number, no credential — so it is the fastest way to get a sender that can send. Recipients cannot reply. Confirm with `sms_oneway` in the `channels` array on the response.
+     */
+    #[Optional('enableSmsOneway')]
+    public ?bool $enableSMSOneway;
 
     /**
      * Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
@@ -122,6 +129,7 @@ final class SenderCreateParams implements BaseModel
         ?string $emailDomainID = null,
         ?string $emailFromName = null,
         ?bool $emailReceivingEnabled = null,
+        ?bool $enableSMSOneway = null,
         ?bool $enableVoice = null,
         ?string $phoneNumber = null,
         ?bool $setAsDefault = null,
@@ -136,6 +144,7 @@ final class SenderCreateParams implements BaseModel
         null !== $emailDomainID && $self['emailDomainID'] = $emailDomainID;
         null !== $emailFromName && $self['emailFromName'] = $emailFromName;
         null !== $emailReceivingEnabled && $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+        null !== $enableSMSOneway && $self['enableSMSOneway'] = $enableSMSOneway;
         null !== $enableVoice && $self['enableVoice'] = $enableVoice;
         null !== $phoneNumber && $self['phoneNumber'] = $phoneNumber;
         null !== $setAsDefault && $self['setAsDefault'] = $setAsDefault;
@@ -193,6 +202,17 @@ final class SenderCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['emailReceivingEnabled'] = $emailReceivingEnabled;
+
+        return $self;
+    }
+
+    /**
+     * Enable the one-way SMS channel (`sms_oneway`). Needs nothing else — no phone number, no credential — so it is the fastest way to get a sender that can send. Recipients cannot reply. Confirm with `sms_oneway` in the `channels` array on the response.
+     */
+    public function withEnableSMSOneway(bool $enableSMSOneway): self
+    {
+        $self = clone $this;
+        $self['enableSMSOneway'] = $enableSMSOneway;
 
         return $self;
     }
