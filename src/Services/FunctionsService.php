@@ -57,6 +57,7 @@ final class FunctionsService implements FunctionsContract
      * @param MemoryMB|value-of<MemoryMB> $memoryMB
      * @param Runtime|value-of<Runtime> $runtime runtime the function is deployed on
      * @param string $sourceCode typeScript source code for the function entry point (max ~900KB)
+     * @param int $timeoutSec Per-invocation timeout in seconds. Event and cron invocations are asynchronous, so a long timeout only bounds cost; a tool called during a live conversation holds up the reply, and a function exposed over HTTP is additionally bounded by the platform's HTTP response limit.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -70,7 +71,7 @@ final class FunctionsService implements FunctionsContract
         MemoryMB|int $memoryMB = 256,
         Runtime|string|null $runtime = null,
         ?string $sourceCode = null,
-        int $timeoutSec = 10,
+        int $timeoutSec = 30,
         RequestOptions|array|null $requestOptions = null,
     ): FunctionNewResponse {
         $params = Util::removeNulls(

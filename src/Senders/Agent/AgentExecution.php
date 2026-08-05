@@ -24,6 +24,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   knowledgeChunksUsed?: int|null,
  *   responseMessageID?: string|null,
  *   responseText?: string|null,
+ *   toolCalls?: int|null,
  * }
  */
 final class AgentExecution implements BaseModel
@@ -82,6 +83,12 @@ final class AgentExecution implements BaseModel
     public ?string $responseText;
 
     /**
+     * Tools the agent called while producing this reply. Zero on an agent that has tools configured means it answered without calling any — the case where a reply says it will look something up and nothing ever reaches your endpoint. Absent on executions recorded before this field existed, which is not the same as zero.
+     */
+    #[Optional(nullable: true)]
+    public ?int $toolCalls;
+
+    /**
      * `new AgentExecution()` is missing required properties by the API.
      *
      * To enforce required parameters use
@@ -138,6 +145,7 @@ final class AgentExecution implements BaseModel
         ?int $knowledgeChunksUsed = null,
         ?string $responseMessageID = null,
         ?string $responseText = null,
+        ?int $toolCalls = null,
     ): self {
         $self = new self;
 
@@ -155,6 +163,7 @@ final class AgentExecution implements BaseModel
         null !== $knowledgeChunksUsed && $self['knowledgeChunksUsed'] = $knowledgeChunksUsed;
         null !== $responseMessageID && $self['responseMessageID'] = $responseMessageID;
         null !== $responseText && $self['responseText'] = $responseText;
+        null !== $toolCalls && $self['toolCalls'] = $toolCalls;
 
         return $self;
     }
@@ -270,6 +279,17 @@ final class AgentExecution implements BaseModel
     {
         $self = clone $this;
         $self['responseText'] = $responseText;
+
+        return $self;
+    }
+
+    /**
+     * Tools the agent called while producing this reply. Zero on an agent that has tools configured means it answered without calling any — the case where a reply says it will look something up and nothing ever reaches your endpoint. Absent on executions recorded before this field existed, which is not the same as zero.
+     */
+    public function withToolCalls(?int $toolCalls): self
+    {
+        $self = clone $this;
+        $self['toolCalls'] = $toolCalls;
 
         return $self;
     }

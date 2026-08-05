@@ -221,7 +221,11 @@ final class ToolsRawService implements ToolsRawContract
     /**
      * @api
      *
-     * Test a tool by triggering its webhook with test parameters.
+     * Run a tool with the parameters you supply and return what it answered.
+     *
+     * The call is synchronous: the response carries the tool's status, body, and duration, so a green result is evidence the tool ran rather than evidence it was accepted. Each run is also recorded and readable afterwards via `GET /v1/senders/{senderId}/agent/tools/{toolId}/test-runs`.
+     *
+     * A tool that answers with an error is reported as a run with `success: false` — the endpoint itself still returns 200. This fires the tool's real webhook, so a test has whatever side effects the tool has.
      *
      * @param string $toolID Path param
      * @param array{

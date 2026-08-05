@@ -81,6 +81,9 @@ final class FunctionCreateParams implements BaseModel
     #[Optional]
     public ?string $sourceCode;
 
+    /**
+     * Per-invocation timeout in seconds. Event and cron invocations are asynchronous, so a long timeout only bounds cost; a tool called during a live conversation holds up the reply, and a function exposed over HTTP is additionally bounded by the platform's HTTP response limit.
+     */
     #[Optional]
     public ?int $timeoutSec;
 
@@ -225,6 +228,9 @@ final class FunctionCreateParams implements BaseModel
         return $self;
     }
 
+    /**
+     * Per-invocation timeout in seconds. Event and cron invocations are asynchronous, so a long timeout only bounds cost; a tool called during a live conversation holds up the reply, and a function exposed over HTTP is additionally bounded by the platform's HTTP response limit.
+     */
     public function withTimeoutSec(int $timeoutSec): self
     {
         $self = clone $this;
