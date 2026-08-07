@@ -43,7 +43,7 @@ final class ToolsService implements ToolsContract
      *
      * @param ToolParameters|ToolParametersShape $parameters
      * @param string $webhookURL must be HTTPS
-     * @param string $webhookSecret optional secret for webhook signature verification
+     * @param string $webhookSecret Signing secret for the webhook. Optional: Zavu generates one when omitted and returns it on this response only. Supply your own if you already have a secret you want reused.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException

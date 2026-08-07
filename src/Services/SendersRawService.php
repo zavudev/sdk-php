@@ -11,6 +11,7 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Sender;
 use Zavudev\Senders\SenderCreateParams;
+use Zavudev\Senders\SenderCreateParams\WebhookSignatureVersion;
 use Zavudev\Senders\SenderListParams;
 use Zavudev\Senders\SenderUpdateParams;
 use Zavudev\Senders\SenderUpdateProfileParams;
@@ -51,6 +52,7 @@ final class SendersRawService implements SendersRawContract
      *   phoneNumber?: string,
      *   setAsDefault?: bool,
      *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>,
+     *   webhookSignatureVersion?: WebhookSignatureVersion|value-of<WebhookSignatureVersion>,
      *   webhookURL?: string,
      * }|SenderCreateParams $params
      * @param RequestOpts|null $requestOptions
@@ -119,6 +121,7 @@ final class SendersRawService implements SendersRawContract
      *   setAsDefault?: bool,
      *   webhookActive?: bool,
      *   webhookEvents?: list<WebhookEvent|value-of<WebhookEvent>>,
+     *   webhookSignatureVersion?: SenderUpdateParams\WebhookSignatureVersion|value-of<SenderUpdateParams\WebhookSignatureVersion>,
      *   webhookURL?: string|null,
      * }|SenderUpdateParams $params
      * @param RequestOpts|null $requestOptions

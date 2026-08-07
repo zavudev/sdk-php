@@ -65,6 +65,7 @@ final class SendersTest extends TestCase
             phoneNumber: 'phoneNumber',
             setAsDefault: true,
             webhookEvents: [WebhookEvent::MESSAGE_QUEUED],
+            webhookSignatureVersion: 'v2',
             webhookURL: 'https://example.com',
         );
 

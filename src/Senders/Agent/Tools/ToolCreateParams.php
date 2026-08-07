@@ -51,7 +51,7 @@ final class ToolCreateParams implements BaseModel
     public ?bool $enabled;
 
     /**
-     * Optional secret for webhook signature verification.
+     * Signing secret for the webhook. Optional: Zavu generates one when omitted and returns it on this response only. Supply your own if you already have a secret you want reused.
      */
     #[Optional]
     public ?string $webhookSecret;
@@ -156,7 +156,7 @@ final class ToolCreateParams implements BaseModel
     }
 
     /**
-     * Optional secret for webhook signature verification.
+     * Signing secret for the webhook. Optional: Zavu generates one when omitted and returns it on this response only. Supply your own if you already have a secret you want reused.
      */
     public function withWebhookSecret(string $webhookSecret): self
     {

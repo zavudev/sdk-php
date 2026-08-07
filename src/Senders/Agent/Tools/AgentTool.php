@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zavudev\Senders\Agent\Tools;
 
+use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
@@ -21,6 +22,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   parameters: ToolParameters|ToolParametersShape,
  *   updatedAt: \DateTimeInterface,
  *   webhookURL: string,
+ *   webhookSecret?: string|null,
  * }
  */
 final class AgentTool implements BaseModel
@@ -60,6 +62,14 @@ final class AgentTool implements BaseModel
      */
     #[Required('webhookUrl')]
     public string $webhookURL;
+
+    /**
+     * Signing secret for this tool's webhook. **Returned only when the tool is created**, never on a later read.
+     *
+     * Zavu generates one if you do not supply it, and signs every call to this tool with it: `X-Zavu-Signature: <hex>`, the HMAC-SHA256 of the request body. Verify it before trusting the call. Lost it? Rotate with `POST /v1/senders/{senderId}/agent/tools/{toolId}/webhook/secret`.
+     */
+    #[Optional]
+    public ?string $webhookSecret;
 
     /**
      * `new AgentTool()` is missing required properties by the API.
@@ -116,6 +126,7 @@ final class AgentTool implements BaseModel
         ToolParameters|array $parameters,
         \DateTimeInterface $updatedAt,
         string $webhookURL,
+        ?string $webhookSecret = null,
     ): self {
         $self = new self;
 
@@ -128,6 +139,8 @@ final class AgentTool implements BaseModel
         $self['parameters'] = $parameters;
         $self['updatedAt'] = $updatedAt;
         $self['webhookURL'] = $webhookURL;
+
+        null !== $webhookSecret && $self['webhookSecret'] = $webhookSecret;
 
         return $self;
     }
@@ -209,6 +222,19 @@ final class AgentTool implements BaseModel
     {
         $self = clone $this;
         $self['webhookURL'] = $webhookURL;
+
+        return $self;
+    }
+
+    /**
+     * Signing secret for this tool's webhook. **Returned only when the tool is created**, never on a later read.
+     *
+     * Zavu generates one if you do not supply it, and signs every call to this tool with it: `X-Zavu-Signature: <hex>`, the HMAC-SHA256 of the request body. Verify it before trusting the call. Lost it? Rotate with `POST /v1/senders/{senderId}/agent/tools/{toolId}/webhook/secret`.
+     */
+    public function withWebhookSecret(string $webhookSecret): self
+    {
+        $self = clone $this;
+        $self['webhookSecret'] = $webhookSecret;
 
         return $self;
     }

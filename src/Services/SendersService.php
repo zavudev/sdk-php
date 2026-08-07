@@ -10,6 +10,7 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Sender;
+use Zavudev\Senders\SenderCreateParams\WebhookSignatureVersion;
 use Zavudev\Senders\SenderUpdateProfileResponse;
 use Zavudev\Senders\SenderUploadProfilePictureParams\MimeType;
 use Zavudev\Senders\SenderUploadProfilePictureResponse;
@@ -64,6 +65,13 @@ final class SendersService implements SendersContract
      * @param bool $enableVoice Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
      * @param string $phoneNumber Phone number in E.164 format, and it must be a number your project already owns (see `GET /v1/phone-numbers`). The number is routed to the sender as part of this call, which is what turns the SMS channel on. Passing a number the project does not own, or one already attached to another sender, returns 400 rather than creating a sender that cannot send. Omit for an email-only sender.
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
+     * @param WebhookSignatureVersion|value-of<WebhookSignatureVersion> $webhookSignatureVersion Which `X-Zavu-Signature` scheme this receiver is sent.
+     *
+     * - `v1`: `v1=HMAC_SHA256(secret, body)`. The scheme used before this was configurable. Existing webhooks stay on it until you move them.
+     * - `v2`: `v2=HMAC_SHA256(secret, "{t}.{body}")`. The current scheme, and the default for new senders. It signs the timestamp together with the body.
+     * - `v1+v2`: both signatures, sharing one `t`. The migration setting: a receiver reading either one works, so you can deploy and confirm your new verifier before switching over.
+     *
+     * Moving from `v1` straight to `v2` returns `400`. Set `v1+v2` first. See https://docs.zavu.dev/guides/receiving-messages/signature-migration
      * @param string $webhookURL HTTPS URL for webhook events
      * @param RequestOpts|null $requestOptions
      *
@@ -80,6 +88,7 @@ final class SendersService implements SendersContract
         ?string $phoneNumber = null,
         bool $setAsDefault = false,
         ?array $webhookEvents = null,
+        WebhookSignatureVersion|string|null $webhookSignatureVersion = null,
         ?string $webhookURL = null,
         RequestOptions|array|null $requestOptions = null,
     ): Sender {
@@ -95,6 +104,7 @@ final class SendersService implements SendersContract
                 'phoneNumber' => $phoneNumber,
                 'setAsDefault' => $setAsDefault,
                 'webhookEvents' => $webhookEvents,
+                'webhookSignatureVersion' => $webhookSignatureVersion,
                 'webhookURL' => $webhookURL,
             ],
         );
@@ -138,6 +148,13 @@ final class SendersService implements SendersContract
      * @param bool $enableVoice Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
      * @param bool $webhookActive whether the webhook is active
      * @param list<WebhookEvent|value-of<WebhookEvent>> $webhookEvents events to subscribe to
+     * @param \Zavudev\Senders\SenderUpdateParams\WebhookSignatureVersion|value-of<\Zavudev\Senders\SenderUpdateParams\WebhookSignatureVersion> $webhookSignatureVersion Which `X-Zavu-Signature` scheme this receiver is sent.
+     *
+     * - `v1`: `v1=HMAC_SHA256(secret, body)`. The scheme used before this was configurable. Existing webhooks stay on it until you move them.
+     * - `v2`: `v2=HMAC_SHA256(secret, "{t}.{body}")`. The current scheme, and the default for new senders. It signs the timestamp together with the body.
+     * - `v1+v2`: both signatures, sharing one `t`. The migration setting: a receiver reading either one works, so you can deploy and confirm your new verifier before switching over.
+     *
+     * Moving from `v1` straight to `v2` returns `400`. Set `v1+v2` first. See https://docs.zavu.dev/guides/receiving-messages/signature-migration
      * @param string|null $webhookURL HTTPS URL for webhook events. Set to null to remove webhook.
      * @param RequestOpts|null $requestOptions
      *
@@ -156,6 +173,7 @@ final class SendersService implements SendersContract
         ?bool $setAsDefault = null,
         ?bool $webhookActive = null,
         ?array $webhookEvents = null,
+        \Zavudev\Senders\SenderUpdateParams\WebhookSignatureVersion|string|null $webhookSignatureVersion = null,
         ?string $webhookURL = null,
         RequestOptions|array|null $requestOptions = null,
     ): Sender {
@@ -172,6 +190,7 @@ final class SendersService implements SendersContract
                 'setAsDefault' => $setAsDefault,
                 'webhookActive' => $webhookActive,
                 'webhookEvents' => $webhookEvents,
+                'webhookSignatureVersion' => $webhookSignatureVersion,
                 'webhookURL' => $webhookURL,
             ],
         );
