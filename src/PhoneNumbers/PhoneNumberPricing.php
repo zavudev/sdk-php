@@ -21,7 +21,7 @@ final class PhoneNumberPricing implements BaseModel
     use SdkModel;
 
     /**
-     * Whether this number qualifies as the plan-included first US number on paid plans.
+     * Whether this number qualifies as the plan-included US number on paid plans. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
      */
     #[Optional]
     public ?bool $isFreeEligible;
@@ -63,7 +63,7 @@ final class PhoneNumberPricing implements BaseModel
     }
 
     /**
-     * Whether this number qualifies as the plan-included first US number on paid plans.
+     * Whether this number qualifies as the plan-included US number on paid plans. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
      */
     public function withIsFreeEligible(bool $isFreeEligible): self
     {

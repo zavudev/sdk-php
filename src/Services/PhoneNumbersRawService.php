@@ -132,7 +132,7 @@ final class PhoneNumbersRawService implements PhoneNumbersRawContract
     /**
      * @api
      *
-     * Purchase an available phone number. Requires a paid plan: the Free plan cannot purchase phone numbers and receives `402` with code `paid_plan_required`. Paid plans include the first US number at no charge.
+     * Purchase an available phone number. Requires a paid plan: the Free plan cannot purchase phone numbers and receives `402` with code `paid_plan_required`. Paid plans include one US number at no charge. The included number is one per account and is granted once: claiming it spends the benefit for good, so releasing that number does not make another one free, and numbers the account already bought do not consume it.
      *
      * @param array{
      *   phoneNumber: string, name?: string
