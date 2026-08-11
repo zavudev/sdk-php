@@ -51,6 +51,9 @@ final class Deployment implements BaseModel
     #[Required]
     public int $version;
 
+    /**
+     * Size of the built bundle in bytes. Null until the build finishes.
+     */
     #[Optional(nullable: true)]
     public ?int $bundleBytes;
 
@@ -63,6 +66,9 @@ final class Deployment implements BaseModel
     #[Optional(nullable: true)]
     public ?string $errorMessage;
 
+    /**
+     * Total size of the deployed source tree in bytes.
+     */
     #[Optional(nullable: true)]
     public ?int $sourceCodeBytes;
 
@@ -174,6 +180,9 @@ final class Deployment implements BaseModel
         return $self;
     }
 
+    /**
+     * Size of the built bundle in bytes. Null until the build finishes.
+     */
     public function withBundleBytes(?int $bundleBytes): self
     {
         $self = clone $this;
@@ -201,6 +210,9 @@ final class Deployment implements BaseModel
         return $self;
     }
 
+    /**
+     * Total size of the deployed source tree in bytes.
+     */
     public function withSourceCodeBytes(?int $sourceCodeBytes): self
     {
         $self = clone $this;

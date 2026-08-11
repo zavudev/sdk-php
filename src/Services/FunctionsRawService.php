@@ -46,6 +46,8 @@ final class FunctionsRawService implements FunctionsRawContract
      *   slug: string,
      *   dependencies?: array<string,string>,
      *   description?: string,
+     *   entrypoint?: string,
+     *   files?: array<string,string>,
      *   httpEnabled?: bool,
      *   memoryMB?: MemoryMB|value-of<MemoryMB>,
      *   runtime?: Runtime|value-of<Runtime>,
@@ -109,7 +111,11 @@ final class FunctionsRawService implements FunctionsRawContract
      *
      * @param string $functionID zavu Function ID
      * @param array{
-     *   dependencies?: array<string,string>, httpEnabled?: bool, sourceCode?: string
+     *   dependencies?: array<string,string>,
+     *   entrypoint?: string,
+     *   files?: array<string,string>,
+     *   httpEnabled?: bool,
+     *   sourceCode?: string,
      * }|FunctionUpdateParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -169,7 +175,10 @@ final class FunctionsRawService implements FunctionsRawContract
      *
      * @param string $functionID zavu Function ID
      * @param array{
-     *   dependencies?: array<string,string>, sourceCode?: string
+     *   dependencies?: array<string,string>,
+     *   entrypoint?: string,
+     *   files?: array<string,string>,
+     *   sourceCode?: string,
      * }|FunctionDeployParams $params
      * @param RequestOpts|null $requestOptions
      *

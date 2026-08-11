@@ -26,10 +26,14 @@ interface FunctionsContract
      *
      * @param string $slug URL-safe identifier (lowercase, digits, hyphens). Must be unique per project.
      * @param array<string,string> $dependencies npm dependencies. Keys are package names, values are semver ranges.
+     * @param string $entrypoint Which file in `files` is the entry point. Defaults to `index.ts`.
+     * @param array<string,string> $files The project's source files, keyed by path relative to the project root (e.g. `index.ts`, `lib/orders.ts`). Imports between them are resolved when the function is built, so a function can be split across as many files as it needs.
+     *
+     * Paths must be relative and use forward slashes; `..`, `node_modules/` and `package.json` are rejected. npm packages are not uploaded here — declare them under `dependencies` and Zavu installs them. Limits: 200 files and 900,000 bytes for the whole tree.
      * @param bool $httpEnabled whether to expose a public HTTPS URL for this function
      * @param MemoryMB|value-of<MemoryMB> $memoryMB
      * @param Runtime|value-of<Runtime> $runtime runtime the function is deployed on
-     * @param string $sourceCode typeScript source code for the function entry point (max ~900KB)
+     * @param string $sourceCode Shortcut for a single-file function: exactly equivalent to sending `files` with one entry named after `entrypoint` (`index.ts` by default). Fully supported — use whichever fits. If both are sent, `files` wins.
      * @param int $timeoutSec Per-invocation timeout in seconds. Event and cron invocations are asynchronous, so a long timeout only bounds cost; a tool called during a live conversation holds up the reply, and a function exposed over HTTP is additionally bounded by the platform's HTTP response limit.
      * @param RequestOpts|null $requestOptions
      *
@@ -40,6 +44,8 @@ interface FunctionsContract
         string $slug,
         ?array $dependencies = null,
         ?string $description = null,
+        string $entrypoint = 'index.ts',
+        ?array $files = null,
         bool $httpEnabled = false,
         MemoryMB|int $memoryMB = 256,
         Runtime|string|null $runtime = null,
@@ -66,8 +72,12 @@ interface FunctionsContract
      *
      * @param string $functionID zavu Function ID
      * @param array<string,string> $dependencies new dependency map (replaces existing dependencies)
+     * @param string $entrypoint Which file in `files` is the entry point. Defaults to `index.ts`.
+     * @param array<string,string> $files The project's source files, keyed by path relative to the project root (e.g. `index.ts`, `lib/orders.ts`). Imports between them are resolved when the function is built, so a function can be split across as many files as it needs.
+     *
+     * Paths must be relative and use forward slashes; `..`, `node_modules/` and `package.json` are rejected. npm packages are not uploaded here — declare them under `dependencies` and Zavu installs them. Limits: 200 files and 900,000 bytes for the whole tree.
      * @param bool $httpEnabled Expose the function on its public HTTPS URL, or take it down. Applies to the already-deployed function without redeploying; the URL is returned as `publicUrl`.
-     * @param string $sourceCode new source code for the draft (replaces it)
+     * @param string $sourceCode Shortcut for a single-file function: exactly equivalent to sending `files` with one entry named after `entrypoint` (`index.ts` by default). Fully supported — use whichever fits. If both are sent, `files` wins.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -75,6 +85,8 @@ interface FunctionsContract
     public function update(
         string $functionID,
         ?array $dependencies = null,
+        string $entrypoint = 'index.ts',
+        ?array $files = null,
         ?bool $httpEnabled = null,
         ?string $sourceCode = null,
         RequestOptions|array|null $requestOptions = null,
@@ -98,7 +110,11 @@ interface FunctionsContract
      *
      * @param string $functionID zavu Function ID
      * @param array<string,string> $dependencies new dependency map (replaces existing dependencies)
-     * @param string $sourceCode new source code to publish (replaces the draft)
+     * @param string $entrypoint Which file in `files` is the entry point. Defaults to `index.ts`.
+     * @param array<string,string> $files The project's source files, keyed by path relative to the project root (e.g. `index.ts`, `lib/orders.ts`). Imports between them are resolved when the function is built, so a function can be split across as many files as it needs.
+     *
+     * Paths must be relative and use forward slashes; `..`, `node_modules/` and `package.json` are rejected. npm packages are not uploaded here — declare them under `dependencies` and Zavu installs them. Limits: 200 files and 900,000 bytes for the whole tree.
+     * @param string $sourceCode Shortcut for a single-file function: exactly equivalent to sending `files` with one entry named after `entrypoint` (`index.ts` by default). Fully supported — use whichever fits. If both are sent, `files` wins.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -106,6 +122,8 @@ interface FunctionsContract
     public function deploy(
         string $functionID,
         ?array $dependencies = null,
+        string $entrypoint = 'index.ts',
+        ?array $files = null,
         ?string $sourceCode = null,
         RequestOptions|array|null $requestOptions = null,
     ): FunctionDeployResponse;

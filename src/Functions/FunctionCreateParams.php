@@ -24,6 +24,8 @@ use Zavudev\Functions\FunctionCreateParams\Runtime;
  *   slug: string,
  *   dependencies?: array<string,string>|null,
  *   description?: string|null,
+ *   entrypoint?: string|null,
+ *   files?: array<string,string>|null,
  *   httpEnabled?: bool|null,
  *   memoryMB?: null|MemoryMB|value-of<MemoryMB>,
  *   runtime?: null|Runtime|value-of<Runtime>,
@@ -58,6 +60,22 @@ final class FunctionCreateParams implements BaseModel
     public ?string $description;
 
     /**
+     * Which file in `files` is the entry point. Defaults to `index.ts`.
+     */
+    #[Optional]
+    public ?string $entrypoint;
+
+    /**
+     * The project's source files, keyed by path relative to the project root (e.g. `index.ts`, `lib/orders.ts`). Imports between them are resolved when the function is built, so a function can be split across as many files as it needs.
+     *
+     * Paths must be relative and use forward slashes; `..`, `node_modules/` and `package.json` are rejected. npm packages are not uploaded here — declare them under `dependencies` and Zavu installs them. Limits: 200 files and 900,000 bytes for the whole tree.
+     *
+     * @var array<string,string>|null $files
+     */
+    #[Optional(map: 'string')]
+    public ?array $files;
+
+    /**
      * Whether to expose a public HTTPS URL for this function.
      */
     #[Optional]
@@ -76,7 +94,7 @@ final class FunctionCreateParams implements BaseModel
     public ?string $runtime;
 
     /**
-     * TypeScript source code for the function entry point (max ~900KB).
+     * Shortcut for a single-file function: exactly equivalent to sending `files` with one entry named after `entrypoint` (`index.ts` by default). Fully supported — use whichever fits. If both are sent, `files` wins.
      */
     #[Optional]
     public ?string $sourceCode;
@@ -112,6 +130,7 @@ final class FunctionCreateParams implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param array<string,string>|null $dependencies
+     * @param array<string,string>|null $files
      * @param MemoryMB|value-of<MemoryMB>|null $memoryMB
      * @param Runtime|value-of<Runtime>|null $runtime
      */
@@ -120,6 +139,8 @@ final class FunctionCreateParams implements BaseModel
         string $slug,
         ?array $dependencies = null,
         ?string $description = null,
+        ?string $entrypoint = null,
+        ?array $files = null,
         ?bool $httpEnabled = null,
         MemoryMB|int|null $memoryMB = null,
         Runtime|string|null $runtime = null,
@@ -133,6 +154,8 @@ final class FunctionCreateParams implements BaseModel
 
         null !== $dependencies && $self['dependencies'] = $dependencies;
         null !== $description && $self['description'] = $description;
+        null !== $entrypoint && $self['entrypoint'] = $entrypoint;
+        null !== $files && $self['files'] = $files;
         null !== $httpEnabled && $self['httpEnabled'] = $httpEnabled;
         null !== $memoryMB && $self['memoryMB'] = $memoryMB;
         null !== $runtime && $self['runtime'] = $runtime;
@@ -183,6 +206,32 @@ final class FunctionCreateParams implements BaseModel
     }
 
     /**
+     * Which file in `files` is the entry point. Defaults to `index.ts`.
+     */
+    public function withEntrypoint(string $entrypoint): self
+    {
+        $self = clone $this;
+        $self['entrypoint'] = $entrypoint;
+
+        return $self;
+    }
+
+    /**
+     * The project's source files, keyed by path relative to the project root (e.g. `index.ts`, `lib/orders.ts`). Imports between them are resolved when the function is built, so a function can be split across as many files as it needs.
+     *
+     * Paths must be relative and use forward slashes; `..`, `node_modules/` and `package.json` are rejected. npm packages are not uploaded here — declare them under `dependencies` and Zavu installs them. Limits: 200 files and 900,000 bytes for the whole tree.
+     *
+     * @param array<string,string> $files
+     */
+    public function withFiles(array $files): self
+    {
+        $self = clone $this;
+        $self['files'] = $files;
+
+        return $self;
+    }
+
+    /**
      * Whether to expose a public HTTPS URL for this function.
      */
     public function withHTTPEnabled(bool $httpEnabled): self
@@ -218,7 +267,7 @@ final class FunctionCreateParams implements BaseModel
     }
 
     /**
-     * TypeScript source code for the function entry point (max ~900KB).
+     * Shortcut for a single-file function: exactly equivalent to sending `files` with one entry named after `entrypoint` (`index.ts` by default). Fully supported — use whichever fits. If both are sent, `files` wins.
      */
     public function withSourceCode(string $sourceCode): self
     {
