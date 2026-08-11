@@ -17,6 +17,7 @@ use Zavudev\Functions\FunctionDeployResponse\Deployment\Status;
  *   functionID: string,
  *   status: Status|value-of<Status>,
  *   version: int,
+ *   buildLogs?: string|null,
  *   bundleBytes?: int|null,
  *   deployedAt?: \DateTimeInterface|null,
  *   errorMessage?: string|null,
@@ -50,6 +51,12 @@ final class Deployment implements BaseModel
      */
     #[Required]
     public int $version;
+
+    /**
+     * What the build printed: dependency installation, the bundler's output, and the compiler's message when it failed. Returned when fetching a single deployment, omitted from the list. Read this first when a deploy fails — `errorMessage` is often the outer wrapper's summary, and the line that names the broken import or the syntax error is here.
+     */
+    #[Optional(nullable: true)]
+    public ?string $buildLogs;
 
     /**
      * Size of the built bundle in bytes. Null until the build finishes.
@@ -111,6 +118,7 @@ final class Deployment implements BaseModel
         string $functionID,
         Status|string $status,
         int $version,
+        ?string $buildLogs = null,
         ?int $bundleBytes = null,
         ?\DateTimeInterface $deployedAt = null,
         ?string $errorMessage = null,
@@ -124,6 +132,7 @@ final class Deployment implements BaseModel
         $self['status'] = $status;
         $self['version'] = $version;
 
+        null !== $buildLogs && $self['buildLogs'] = $buildLogs;
         null !== $bundleBytes && $self['bundleBytes'] = $bundleBytes;
         null !== $deployedAt && $self['deployedAt'] = $deployedAt;
         null !== $errorMessage && $self['errorMessage'] = $errorMessage;
@@ -176,6 +185,17 @@ final class Deployment implements BaseModel
     {
         $self = clone $this;
         $self['version'] = $version;
+
+        return $self;
+    }
+
+    /**
+     * What the build printed: dependency installation, the bundler's output, and the compiler's message when it failed. Returned when fetching a single deployment, omitted from the list. Read this first when a deploy fails — `errorMessage` is often the outer wrapper's summary, and the line that names the broken import or the syntax error is here.
+     */
+    public function withBuildLogs(?string $buildLogs): self
+    {
+        $self = clone $this;
+        $self['buildLogs'] = $buildLogs;
 
         return $self;
     }
