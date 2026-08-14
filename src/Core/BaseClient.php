@@ -16,6 +16,7 @@ use Zavudev\Core\Conversion\Contracts\ConverterSource;
 use Zavudev\Core\Exceptions\APIConnectionException;
 use Zavudev\Core\Exceptions\APIStatusException;
 use Zavudev\Core\Implementation\RawResponse;
+use Zavudev\Core\Implementation\StreamingHttpClient;
 use Zavudev\RequestOptions;
 
 /**
@@ -249,7 +250,13 @@ abstract class BaseClient
         $err = null;
 
         try {
-            $rsp = $transporter->sendRequest($req);
+            if ($transporter instanceof StreamingHttpClient) {
+                $rsp = $transporter->sendRequest($req, timeout: $opts->timeout);
+            } elseif (is_a($transporter, '\GuzzleHttp\Client')) {
+                $rsp = $transporter->send($req, ['timeout' => $opts->timeout]);
+            } else {
+                $rsp = $transporter->sendRequest($req);
+            }
         } catch (ClientExceptionInterface $e) {
             $err = $e;
         }
