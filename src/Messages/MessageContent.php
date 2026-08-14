@@ -10,6 +10,7 @@ use Zavudev\Core\Contracts\BaseModel;
 use Zavudev\Messages\MessageContent\Button;
 use Zavudev\Messages\MessageContent\Contact;
 use Zavudev\Messages\MessageContent\CtaHeaderType;
+use Zavudev\Messages\MessageContent\Referral;
 use Zavudev\Messages\MessageContent\Section;
 
 /**
@@ -17,6 +18,7 @@ use Zavudev\Messages\MessageContent\Section;
  *
  * @phpstan-import-type ButtonShape from \Zavudev\Messages\MessageContent\Button
  * @phpstan-import-type ContactShape from \Zavudev\Messages\MessageContent\Contact
+ * @phpstan-import-type ReferralShape from \Zavudev\Messages\MessageContent\Referral
  * @phpstan-import-type SectionShape from \Zavudev\Messages\MessageContent\Section
  *
  * @phpstan-type MessageContentShape = array{
@@ -39,6 +41,7 @@ use Zavudev\Messages\MessageContent\Section;
  *   mediaURL?: string|null,
  *   mimeType?: string|null,
  *   reactToMessageID?: string|null,
+ *   referral?: null|Referral|ReferralShape,
  *   replyToFrom?: string|null,
  *   replyToMessageID?: string|null,
  *   replyToMessageType?: string|null,
@@ -177,6 +180,16 @@ final class MessageContent implements BaseModel
     public ?string $reactToMessageID;
 
     /**
+     * Click-to-WhatsApp (CTWA) ad attribution: where an inbound conversation came from.
+     *
+     * WhatsApp only. Present on the **first inbound message** of a conversation opened from a Meta ad or post, and on no message after it — so store it when it arrives rather than expecting it again. Organic conversations never carry it.
+     *
+     * Field names are camelCased to match the rest of this API; Meta sends them as snake_case (`ctwa_clid`, `source_id`, ...). Fields that do not apply are omitted: a `post` source has no click id, and an image ad has no `videoUrl`.
+     */
+    #[Optional]
+    public ?Referral $referral;
+
+    /**
      * Sender of the quoted message (phone number in E.164 format).
      */
     #[Optional]
@@ -263,6 +276,7 @@ final class MessageContent implements BaseModel
      * @param list<Button|ButtonShape>|null $buttons
      * @param list<Contact|ContactShape>|null $contacts
      * @param CtaHeaderType|value-of<CtaHeaderType>|null $ctaHeaderType
+     * @param Referral|ReferralShape|null $referral
      * @param list<Section|SectionShape>|null $sections
      * @param array<string,string>|null $templateButtonVariables
      * @param array<string,string>|null $templateHeaderVariables
@@ -288,6 +302,7 @@ final class MessageContent implements BaseModel
         ?string $mediaURL = null,
         ?string $mimeType = null,
         ?string $reactToMessageID = null,
+        Referral|array|null $referral = null,
         ?string $replyToFrom = null,
         ?string $replyToMessageID = null,
         ?string $replyToMessageType = null,
@@ -320,6 +335,7 @@ final class MessageContent implements BaseModel
         null !== $mediaURL && $self['mediaURL'] = $mediaURL;
         null !== $mimeType && $self['mimeType'] = $mimeType;
         null !== $reactToMessageID && $self['reactToMessageID'] = $reactToMessageID;
+        null !== $referral && $self['referral'] = $referral;
         null !== $replyToFrom && $self['replyToFrom'] = $replyToFrom;
         null !== $replyToMessageID && $self['replyToMessageID'] = $replyToMessageID;
         null !== $replyToMessageType && $self['replyToMessageType'] = $replyToMessageType;
@@ -545,6 +561,23 @@ final class MessageContent implements BaseModel
     {
         $self = clone $this;
         $self['reactToMessageID'] = $reactToMessageID;
+
+        return $self;
+    }
+
+    /**
+     * Click-to-WhatsApp (CTWA) ad attribution: where an inbound conversation came from.
+     *
+     * WhatsApp only. Present on the **first inbound message** of a conversation opened from a Meta ad or post, and on no message after it — so store it when it arrives rather than expecting it again. Organic conversations never carry it.
+     *
+     * Field names are camelCased to match the rest of this API; Meta sends them as snake_case (`ctwa_clid`, `source_id`, ...). Fields that do not apply are omitted: a `post` source has no click id, and an image ad has no `videoUrl`.
+     *
+     * @param Referral|ReferralShape $referral
+     */
+    public function withReferral(Referral|array $referral): self
+    {
+        $self = clone $this;
+        $self['referral'] = $referral;
 
         return $self;
     }
