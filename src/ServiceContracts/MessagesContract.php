@@ -8,6 +8,7 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
+use Zavudev\Messages\MessageListAttachmentsResponse;
 use Zavudev\Messages\MessageListParams\Channel;
 use Zavudev\Messages\MessageListParams\Status;
 use Zavudev\Messages\MessageResponse;
@@ -54,6 +55,18 @@ interface MessagesContract
         ?string $to = null,
         RequestOptions|array|null $requestOptions = null,
     ): Cursor;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listAttachments(
+        string $messageID,
+        RequestOptions|array|null $requestOptions = null
+    ): MessageListAttachmentsResponse;
 
     /**
      * @api

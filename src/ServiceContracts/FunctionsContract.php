@@ -11,7 +11,10 @@ use Zavudev\Functions\FunctionDeleteResponse;
 use Zavudev\Functions\FunctionDeployResponse;
 use Zavudev\Functions\FunctionGetDeploymentResponse;
 use Zavudev\Functions\FunctionGetResponse;
+use Zavudev\Functions\FunctionListDeploymentsResponse;
+use Zavudev\Functions\FunctionListEventTypesResponse;
 use Zavudev\Functions\FunctionNewResponse;
+use Zavudev\Functions\FunctionRollbackDeploymentResponse;
 use Zavudev\Functions\FunctionTailLogsResponse;
 use Zavudev\Functions\FunctionUpdateResponse;
 use Zavudev\RequestOptions;
@@ -140,6 +143,46 @@ interface FunctionsContract
         string $deploymentID,
         RequestOptions|array|null $requestOptions = null
     ): FunctionGetDeploymentResponse;
+
+    /**
+     * @api
+     *
+     * @param string $functionID zavu Function ID
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listDeployments(
+        string $functionID,
+        int $limit = 20,
+        RequestOptions|array|null $requestOptions = null,
+    ): FunctionListDeploymentsResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listEventTypes(
+        RequestOptions|array|null $requestOptions = null
+    ): FunctionListEventTypesResponse;
+
+    /**
+     * @api
+     *
+     * @param string $functionID zavu Function ID
+     * @param string $deploymentID ID of the deployment to roll back to
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function rollbackDeployment(
+        string $functionID,
+        string $deploymentID,
+        RequestOptions|array|null $requestOptions = null,
+    ): FunctionRollbackDeploymentResponse;
 
     /**
      * @api

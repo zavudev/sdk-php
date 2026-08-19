@@ -13,12 +13,17 @@ use Zavudev\Functions\FunctionDeleteResponse;
 use Zavudev\Functions\FunctionDeployResponse;
 use Zavudev\Functions\FunctionGetDeploymentResponse;
 use Zavudev\Functions\FunctionGetResponse;
+use Zavudev\Functions\FunctionListDeploymentsResponse;
+use Zavudev\Functions\FunctionListEventTypesResponse;
 use Zavudev\Functions\FunctionNewResponse;
+use Zavudev\Functions\FunctionRollbackDeploymentResponse;
 use Zavudev\Functions\FunctionTailLogsResponse;
 use Zavudev\Functions\FunctionUpdateResponse;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\FunctionsContract;
+use Zavudev\Services\Functions\GitLinkService;
 use Zavudev\Services\Functions\SecretsService;
+use Zavudev\Services\Functions\TriggersService;
 
 /**
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
@@ -36,12 +41,24 @@ final class FunctionsService implements FunctionsContract
     public SecretsService $secrets;
 
     /**
+     * @api
+     */
+    public TriggersService $triggers;
+
+    /**
+     * @api
+     */
+    public GitLinkService $gitLink;
+
+    /**
      * @internal
      */
     public function __construct(private Client $client)
     {
         $this->raw = new FunctionsRawService($client);
         $this->secrets = new SecretsService($client);
+        $this->triggers = new TriggersService($client);
+        $this->gitLink = new GitLinkService($client);
     }
 
     /**
@@ -239,6 +256,71 @@ final class FunctionsService implements FunctionsContract
     ): FunctionGetDeploymentResponse {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->getDeployment($deploymentID, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * List a function's deployment history, newest first. Source code is omitted; fetch a single deployment via GET /v1/functions/deployments/{deploymentId} for full details.
+     *
+     * @param string $functionID zavu Function ID
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listDeployments(
+        string $functionID,
+        int $limit = 20,
+        RequestOptions|array|null $requestOptions = null,
+    ): FunctionListDeploymentsResponse {
+        $params = Util::removeNulls(['limit' => $limit]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->listDeployments($functionID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * List the event types a function trigger can subscribe to. Includes the special type `cron`, which fires on a schedule (see POST /v1/functions/{functionId}/triggers) rather than on a messaging event.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listEventTypes(
+        RequestOptions|array|null $requestOptions = null
+    ): FunctionListEventTypesResponse {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->listEventTypes(requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Re-deploy a previous version by copying its source, dependencies, and runtime pin onto the function's draft, then deploying. Returns immediately with a deployment ID — poll GET /v1/functions/deployments/{deploymentId} until status is active or failed. Secrets are not rolled back.
+     *
+     * @param string $functionID zavu Function ID
+     * @param string $deploymentID ID of the deployment to roll back to
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function rollbackDeployment(
+        string $functionID,
+        string $deploymentID,
+        RequestOptions|array|null $requestOptions = null,
+    ): FunctionRollbackDeploymentResponse {
+        $params = Util::removeNulls(['deploymentID' => $deploymentID]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->rollbackDeployment($functionID, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

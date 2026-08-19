@@ -7,6 +7,7 @@ namespace Zavudev\ServiceContracts;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
+use Zavudev\URLs\URLEscalateResponse;
 use Zavudev\URLs\URLGetDetailsResponse;
 use Zavudev\URLs\URLListVerifiedParams\Status;
 use Zavudev\URLs\URLSubmitForVerificationResponse;
@@ -17,6 +18,20 @@ use Zavudev\URLs\VerifiedURL;
  */
 interface URLsContract
 {
+    /**
+     * @api
+     *
+     * @param string $reason why the URL should be reviewed manually
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function escalate(
+        string $urlID,
+        string $reason,
+        RequestOptions|array|null $requestOptions = null,
+    ): URLEscalateResponse;
+
     /**
      * @api
      *

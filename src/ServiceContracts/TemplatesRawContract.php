@@ -12,6 +12,8 @@ use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
+use Zavudev\Templates\TemplateSyncParams;
+use Zavudev\Templates\TemplateSyncResponse;
 
 /**
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
@@ -89,6 +91,21 @@ interface TemplatesRawContract
     public function submit(
         string $templateID,
         array|TemplateSubmitParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param array<string,mixed>|TemplateSyncParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<TemplateSyncResponse>
+     *
+     * @throws APIException
+     */
+    public function sync(
+        array|TemplateSyncParams $params,
         RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

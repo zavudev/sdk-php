@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Tests\UnsupportedMockTests;
 use Zavudev\Client;
 use Zavudev\Core\Util;
+use Zavudev\Introspect\IntrospectValidateEmailResponse;
 use Zavudev\Introspect\IntrospectValidatePhoneResponse;
 
 /**
@@ -26,6 +27,19 @@ final class IntrospectTest extends TestCase
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
+    }
+
+    #[Test]
+    public function testValidateEmail(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->introspect->validateEmail();
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(IntrospectValidateEmailResponse::class, $result);
     }
 
     #[Test]

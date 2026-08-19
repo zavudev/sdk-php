@@ -11,6 +11,7 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Messages\Channel;
 use Zavudev\Messages\Message;
+use Zavudev\Messages\MessageListAttachmentsResponse;
 use Zavudev\Messages\MessageResponse;
 use Zavudev\Messages\MessageShowTypingResponse;
 use Zavudev\Messages\MessageType;
@@ -62,6 +63,19 @@ final class MessagesTest extends TestCase
             // @phpstan-ignore-next-line method.alreadyNarrowedType
             $this->assertInstanceOf(Message::class, $item);
         }
+    }
+
+    #[Test]
+    public function testListAttachments(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->messages->listAttachments('messageId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(MessageListAttachmentsResponse::class, $result);
     }
 
     #[Test]

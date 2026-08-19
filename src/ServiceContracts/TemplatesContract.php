@@ -10,6 +10,7 @@ use Zavudev\RequestOptions;
 use Zavudev\Templates\Template;
 use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\TemplateCreateParams\HeaderType;
+use Zavudev\Templates\TemplateSyncResponse;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
@@ -109,4 +110,17 @@ interface TemplatesContract
         WhatsappCategory|string|null $category = null,
         RequestOptions|array|null $requestOptions = null,
     ): Template;
+
+    /**
+     * @api
+     *
+     * @param string $senderID Sync only the WhatsApp Business Account attached to this sender. If omitted, every WhatsApp sender in the project is synced.
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function sync(
+        ?string $senderID = null,
+        RequestOptions|array|null $requestOptions = null
+    ): TemplateSyncResponse;
 }

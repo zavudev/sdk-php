@@ -8,6 +8,7 @@ use Zavudev\Core\Contracts\BaseResponse;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\Messages\Message;
+use Zavudev\Messages\MessageListAttachmentsResponse;
 use Zavudev\Messages\MessageListParams;
 use Zavudev\Messages\MessageReactParams;
 use Zavudev\Messages\MessageResponse;
@@ -48,6 +49,20 @@ interface MessagesRawContract
     public function list(
         array|MessageListParams $params,
         RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<MessageListAttachmentsResponse>
+     *
+     * @throws APIException
+     */
+    public function listAttachments(
+        string $messageID,
+        RequestOptions|array|null $requestOptions = null
     ): BaseResponse;
 
     /**

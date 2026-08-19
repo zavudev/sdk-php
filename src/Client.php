@@ -10,9 +10,14 @@ use Zavudev\Core\BaseClient;
 use Zavudev\Core\Implementation\StreamingHttpClient;
 use Zavudev\Core\Util;
 use Zavudev\Services\AddressesService;
+use Zavudev\Services\AgentsService;
+use Zavudev\Services\AgentTemplatesService;
 use Zavudev\Services\BalanceService;
 use Zavudev\Services\BroadcastsService;
+use Zavudev\Services\CallsService;
 use Zavudev\Services\ContactsService;
+use Zavudev\Services\ConversationsService;
+use Zavudev\Services\EmailDomainsService;
 use Zavudev\Services\FunctionsService;
 use Zavudev\Services\IntrospectService;
 use Zavudev\Services\InvitationsService;
@@ -115,6 +120,31 @@ class Client extends BaseClient
     public FunctionsService $functions;
 
     /**
+     * @api
+     */
+    public ConversationsService $conversations;
+
+    /**
+     * @api
+     */
+    public CallsService $calls;
+
+    /**
+     * @api
+     */
+    public AgentTemplatesService $agentTemplates;
+
+    /**
+     * @api
+     */
+    public EmailDomainsService $emailDomains;
+
+    /**
+     * @api
+     */
+    public AgentsService $agents;
+
+    /**
      * @param RequestOpts|null $requestOptions
      */
     public function __construct(
@@ -186,6 +216,11 @@ class Client extends BaseClient
         $this->number10dlc = new Number10dlcService($this);
         $this->me = new MeService($this);
         $this->functions = new FunctionsService($this);
+        $this->conversations = new ConversationsService($this);
+        $this->calls = new CallsService($this);
+        $this->agentTemplates = new AgentTemplatesService($this);
+        $this->emailDomains = new EmailDomainsService($this);
+        $this->agents = new AgentsService($this);
     }
 
     /** @return array<string,string> */

@@ -11,8 +11,12 @@ use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentCreateParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentDeleteParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentGetDocumentResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentListParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentRetrieveDocumentParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentResponse;
 
 /**
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
@@ -66,6 +70,39 @@ interface DocumentsRawContract
     public function delete(
         string $docID,
         array|DocumentDeleteParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param array<string,mixed>|DocumentRetrieveDocumentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<DocumentGetDocumentResponse>
+     *
+     * @throws APIException
+     */
+    public function retrieveDocument(
+        string $docID,
+        array|DocumentRetrieveDocumentParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $docID Path param
+     * @param array<string,mixed>|DocumentUpdateDocumentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<DocumentUpdateDocumentResponse>
+     *
+     * @throws APIException
+     */
+    public function updateDocument(
+        string $docID,
+        array|DocumentUpdateDocumentParams $params,
         RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 }

@@ -10,6 +10,7 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Messages\Message;
 use Zavudev\Messages\MessageContent;
+use Zavudev\Messages\MessageListAttachmentsResponse;
 use Zavudev\Messages\MessageListParams\Channel;
 use Zavudev\Messages\MessageListParams\Status;
 use Zavudev\Messages\MessageResponse;
@@ -91,6 +92,25 @@ final class MessagesService implements MessagesContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->list(params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * List the stored file attachments for an email message and get a short-lived signed `downloadUrl` for each. Works for both inbound emails (received via `message.inbound`) and outbound emails you sent with attachments. Messages without stored attachments (including SMS, WhatsApp, and other channels) return an empty list. Each `downloadUrl` is generated fresh per request and expires — fetch the file promptly and do not cache the URL.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listAttachments(
+        string $messageID,
+        RequestOptions|array|null $requestOptions = null
+    ): MessageListAttachmentsResponse {
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->listAttachments($messageID, requestOptions: $requestOptions);
 
         return $response->parse();
     }

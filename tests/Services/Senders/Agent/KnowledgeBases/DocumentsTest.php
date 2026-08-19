@@ -10,7 +10,9 @@ use Zavudev\Client;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentGetDocumentResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentResponse;
 
 /**
  * @internal
@@ -142,5 +144,91 @@ final class DocumentsTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertNull($result);
+    }
+
+    #[Test]
+    public function testRetrieveDocument(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this
+            ->client
+            ->senders
+            ->agent
+            ->knowledgeBases
+            ->documents
+            ->retrieveDocument('docId', senderID: 'senderId', kbID: 'kbId')
+        ;
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(DocumentGetDocumentResponse::class, $result);
+    }
+
+    #[Test]
+    public function testRetrieveDocumentWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this
+            ->client
+            ->senders
+            ->agent
+            ->knowledgeBases
+            ->documents
+            ->retrieveDocument('docId', senderID: 'senderId', kbID: 'kbId')
+        ;
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(DocumentGetDocumentResponse::class, $result);
+    }
+
+    #[Test]
+    public function testUpdateDocument(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this
+            ->client
+            ->senders
+            ->agent
+            ->knowledgeBases
+            ->documents
+            ->updateDocument('docId', senderID: 'senderId', kbID: 'kbId')
+        ;
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(DocumentUpdateDocumentResponse::class, $result);
+    }
+
+    #[Test]
+    public function testUpdateDocumentWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this
+            ->client
+            ->senders
+            ->agent
+            ->knowledgeBases
+            ->documents
+            ->updateDocument(
+                'docId',
+                senderID: 'senderId',
+                kbID: 'kbId',
+                content: 'content',
+                title: 'title',
+            )
+        ;
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(DocumentUpdateDocumentResponse::class, $result);
     }
 }

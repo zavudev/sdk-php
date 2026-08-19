@@ -11,11 +11,13 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolParameters;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
 use Zavudev\ServiceContracts\Senders\Agent\ToolsContract;
+use Zavudev\Services\Senders\Agent\Tools\WebhookService;
 
 /**
  * @phpstan-import-type ToolParametersShape from \Zavudev\Senders\Agent\Tools\ToolParameters
@@ -29,11 +31,17 @@ final class ToolsService implements ToolsContract
     public ToolsRawService $raw;
 
     /**
+     * @api
+     */
+    public WebhookService $webhook;
+
+    /**
      * @internal
      */
     public function __construct(private Client $client)
     {
         $this->raw = new ToolsRawService($client);
+        $this->webhook = new WebhookService($client);
     }
 
     /**
@@ -189,6 +197,32 @@ final class ToolsService implements ToolsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($toolID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Recent runs of this tool triggered from the test endpoint, newest first. Covers manual tests only: a tool called by an agent during a real conversation is not recorded here.
+     *
+     * @param string $toolID Path param
+     * @param string $senderID Path param
+     * @param int $limit Query param
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listTestRuns(
+        string $toolID,
+        string $senderID,
+        int $limit = 20,
+        RequestOptions|array|null $requestOptions = null,
+    ): ToolListTestRunsResponse {
+        $params = Util::removeNulls(['senderID' => $senderID, 'limit' => $limit]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->listTestRuns($toolID, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

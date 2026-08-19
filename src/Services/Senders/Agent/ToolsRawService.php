@@ -14,6 +14,8 @@ use Zavudev\Senders\Agent\Tools\ToolCreateParams;
 use Zavudev\Senders\Agent\Tools\ToolDeleteParams;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolListParams;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsParams;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolParameters;
 use Zavudev\Senders\Agent\Tools\ToolRetrieveParams;
@@ -215,6 +217,41 @@ final class ToolsRawService implements ToolsRawContract
             path: ['v1/senders/%1$s/agent/tools/%2$s', $senderID, $toolID],
             options: $options,
             convert: null,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Recent runs of this tool triggered from the test endpoint, newest first. Covers manual tests only: a tool called by an agent during a real conversation is not recorded here.
+     *
+     * @param string $toolID Path param
+     * @param array{senderID: string, limit?: int}|ToolListTestRunsParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<ToolListTestRunsResponse>
+     *
+     * @throws APIException
+     */
+    public function listTestRuns(
+        string $toolID,
+        array|ToolListTestRunsParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = ToolListTestRunsParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $senderID = $parsed['senderID'];
+        unset($parsed['senderID']);
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: ['v1/senders/%1$s/agent/tools/%2$s/test-runs', $senderID, $toolID],
+            query: $parsed,
+            options: $options,
+            convert: ToolListTestRunsResponse::class,
         );
     }
 

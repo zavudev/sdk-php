@@ -9,6 +9,7 @@ use Tests\UnsupportedMockTests;
 use Zavudev\Client;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
+use Zavudev\URLs\URLEscalateResponse;
 use Zavudev\URLs\URLGetDetailsResponse;
 use Zavudev\URLs\URLSubmitForVerificationResponse;
 use Zavudev\URLs\VerifiedURL;
@@ -29,6 +30,38 @@ final class URLsTest extends TestCase
         $client = new Client(apiKey: 'My API Key', baseUrl: $testUrl);
 
         $this->client = $client;
+    }
+
+    #[Test]
+    public function testEscalate(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->urls->escalate(
+            'urlId',
+            reason: 'This is our official landing page and was rejected in error.',
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(URLEscalateResponse::class, $result);
+    }
+
+    #[Test]
+    public function testEscalateWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->urls->escalate(
+            'urlId',
+            reason: 'This is our official landing page and was rejected in error.',
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(URLEscalateResponse::class, $result);
     }
 
     #[Test]

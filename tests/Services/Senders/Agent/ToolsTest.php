@@ -11,6 +11,7 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Senders\Agent\Tools\AgentTool;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
 use Zavudev\Senders\Agent\Tools\ToolUpdateResponse;
@@ -209,6 +210,39 @@ final class ToolsTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertNull($result);
+    }
+
+    #[Test]
+    public function testListTestRuns(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->senders->agent->tools->listTestRuns(
+            'toolId',
+            senderID: 'senderId'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(ToolListTestRunsResponse::class, $result);
+    }
+
+    #[Test]
+    public function testListTestRunsWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->senders->agent->tools->listTestRuns(
+            'toolId',
+            senderID: 'senderId',
+            limit: 100
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(ToolListTestRunsResponse::class, $result);
     }
 
     #[Test]

@@ -12,7 +12,12 @@ use Zavudev\Functions\FunctionDeployParams;
 use Zavudev\Functions\FunctionDeployResponse;
 use Zavudev\Functions\FunctionGetDeploymentResponse;
 use Zavudev\Functions\FunctionGetResponse;
+use Zavudev\Functions\FunctionListDeploymentsParams;
+use Zavudev\Functions\FunctionListDeploymentsResponse;
+use Zavudev\Functions\FunctionListEventTypesResponse;
 use Zavudev\Functions\FunctionNewResponse;
+use Zavudev\Functions\FunctionRollbackDeploymentParams;
+use Zavudev\Functions\FunctionRollbackDeploymentResponse;
 use Zavudev\Functions\FunctionTailLogsParams;
 use Zavudev\Functions\FunctionTailLogsResponse;
 use Zavudev\Functions\FunctionUpdateParams;
@@ -116,6 +121,53 @@ interface FunctionsRawContract
     public function getDeployment(
         string $deploymentID,
         RequestOptions|array|null $requestOptions = null
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $functionID zavu Function ID
+     * @param array<string,mixed>|FunctionListDeploymentsParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionListDeploymentsResponse>
+     *
+     * @throws APIException
+     */
+    public function listDeployments(
+        string $functionID,
+        array|FunctionListDeploymentsParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionListEventTypesResponse>
+     *
+     * @throws APIException
+     */
+    public function listEventTypes(
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $functionID zavu Function ID
+     * @param array<string,mixed>|FunctionRollbackDeploymentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionRollbackDeploymentResponse>
+     *
+     * @throws APIException
+     */
+    public function rollbackDeployment(
+        string $functionID,
+        array|FunctionRollbackDeploymentParams $params,
+        RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 
     /**

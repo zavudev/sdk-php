@@ -20,6 +20,7 @@ use Zavudev\Senders\WhatsappBusinessProfileResponse;
 use Zavudev\Senders\WhatsappBusinessProfileVertical;
 use Zavudev\ServiceContracts\SendersContract;
 use Zavudev\Services\Senders\AgentService;
+use Zavudev\Services\Senders\TelegramService;
 use Zavudev\Services\Senders\WhatsappSyncService;
 
 /**
@@ -43,6 +44,11 @@ final class SendersService implements SendersContract
     public WhatsappSyncService $whatsappSync;
 
     /**
+     * @api
+     */
+    public TelegramService $telegram;
+
+    /**
      * @internal
      */
     public function __construct(private Client $client)
@@ -50,6 +56,7 @@ final class SendersService implements SendersContract
         $this->raw = new SendersRawService($client);
         $this->agent = new AgentService($client);
         $this->whatsappSync = new WhatsappSyncService($client);
+        $this->telegram = new TelegramService($client);
     }
 
     /**

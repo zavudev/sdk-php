@@ -15,7 +15,12 @@ use Zavudev\Functions\FunctionDeployParams;
 use Zavudev\Functions\FunctionDeployResponse;
 use Zavudev\Functions\FunctionGetDeploymentResponse;
 use Zavudev\Functions\FunctionGetResponse;
+use Zavudev\Functions\FunctionListDeploymentsParams;
+use Zavudev\Functions\FunctionListDeploymentsResponse;
+use Zavudev\Functions\FunctionListEventTypesResponse;
 use Zavudev\Functions\FunctionNewResponse;
+use Zavudev\Functions\FunctionRollbackDeploymentParams;
+use Zavudev\Functions\FunctionRollbackDeploymentResponse;
 use Zavudev\Functions\FunctionTailLogsParams;
 use Zavudev\Functions\FunctionTailLogsResponse;
 use Zavudev\Functions\FunctionUpdateParams;
@@ -228,6 +233,95 @@ final class FunctionsRawService implements FunctionsRawContract
             path: ['v1/functions/deployments/%1$s', $deploymentID],
             options: $requestOptions,
             convert: FunctionGetDeploymentResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * List a function's deployment history, newest first. Source code is omitted; fetch a single deployment via GET /v1/functions/deployments/{deploymentId} for full details.
+     *
+     * @param string $functionID zavu Function ID
+     * @param array{limit?: int}|FunctionListDeploymentsParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionListDeploymentsResponse>
+     *
+     * @throws APIException
+     */
+    public function listDeployments(
+        string $functionID,
+        array|FunctionListDeploymentsParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = FunctionListDeploymentsParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: ['v1/functions/%1$s/deployments', $functionID],
+            query: $parsed,
+            options: $options,
+            convert: FunctionListDeploymentsResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * List the event types a function trigger can subscribe to. Includes the special type `cron`, which fires on a schedule (see POST /v1/functions/{functionId}/triggers) rather than on a messaging event.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionListEventTypesResponse>
+     *
+     * @throws APIException
+     */
+    public function listEventTypes(
+        RequestOptions|array|null $requestOptions = null
+    ): BaseResponse {
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: 'v1/functions/event-types',
+            options: $requestOptions,
+            convert: FunctionListEventTypesResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Re-deploy a previous version by copying its source, dependencies, and runtime pin onto the function's draft, then deploying. Returns immediately with a deployment ID — poll GET /v1/functions/deployments/{deploymentId} until status is active or failed. Secrets are not rolled back.
+     *
+     * @param string $functionID zavu Function ID
+     * @param array{deploymentID: string}|FunctionRollbackDeploymentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<FunctionRollbackDeploymentResponse>
+     *
+     * @throws APIException
+     */
+    public function rollbackDeployment(
+        string $functionID,
+        array|FunctionRollbackDeploymentParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = FunctionRollbackDeploymentParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/functions/%1$s/rollback', $functionID],
+            body: (object) $parsed,
+            options: $options,
+            convert: FunctionRollbackDeploymentResponse::class,
         );
     }
 

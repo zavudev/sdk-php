@@ -10,7 +10,9 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentGetDocumentResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBases\DocumentsContract;
 
 /**
@@ -112,6 +114,66 @@ final class DocumentsService implements DocumentsContract
 
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($docID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Get a single document from a knowledge base.
+     *
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function retrieveDocument(
+        string $docID,
+        string $senderID,
+        string $kbID,
+        RequestOptions|array|null $requestOptions = null,
+    ): DocumentGetDocumentResponse {
+        $params = Util::removeNulls(['senderID' => $senderID, 'kbID' => $kbID]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->retrieveDocument($docID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
+    }
+
+    /**
+     * @api
+     *
+     * Update a document's title or content. Updating content reprocesses the document for RAG.
+     *
+     * @param string $docID Path param
+     * @param string $senderID Path param
+     * @param string $kbID Path param
+     * @param string $content Body param
+     * @param string $title Body param
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function updateDocument(
+        string $docID,
+        string $senderID,
+        string $kbID,
+        ?string $content = null,
+        ?string $title = null,
+        RequestOptions|array|null $requestOptions = null,
+    ): DocumentUpdateDocumentResponse {
+        $params = Util::removeNulls(
+            [
+                'senderID' => $senderID,
+                'kbID' => $kbID,
+                'content' => $content,
+                'title' => $title,
+            ],
+        );
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->updateDocument($docID, params: $params, requestOptions: $requestOptions);
 
         return $response->parse();
     }

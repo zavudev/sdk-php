@@ -10,6 +10,7 @@ use Zavudev\Client;
 use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\Templates\Template;
+use Zavudev\Templates\TemplateSyncResponse;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
@@ -161,5 +162,18 @@ final class TemplatesTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(Template::class, $result);
+    }
+
+    #[Test]
+    public function testSync(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->templates->sync();
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(TemplateSyncResponse::class, $result);
     }
 }

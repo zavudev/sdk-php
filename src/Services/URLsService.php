@@ -10,6 +10,7 @@ use Zavudev\Core\Util;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\URLsContract;
+use Zavudev\URLs\URLEscalateResponse;
 use Zavudev\URLs\URLGetDetailsResponse;
 use Zavudev\URLs\URLListVerifiedParams\Status;
 use Zavudev\URLs\URLSubmitForVerificationResponse;
@@ -31,6 +32,29 @@ final class URLsService implements URLsContract
     public function __construct(private Client $client)
     {
         $this->raw = new URLsRawService($client);
+    }
+
+    /**
+     * @api
+     *
+     * Request manual review of a rejected URL. Only URLs in 'rejected' status can be escalated; the status then moves to 'escalated'.
+     *
+     * @param string $reason why the URL should be reviewed manually
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function escalate(
+        string $urlID,
+        string $reason,
+        RequestOptions|array|null $requestOptions = null,
+    ): URLEscalateResponse {
+        $params = Util::removeNulls(['reason' => $reason]);
+
+        // @phpstan-ignore-next-line argument.type
+        $response = $this->raw->escalate($urlID, params: $params, requestOptions: $requestOptions);
+
+        return $response->parse();
     }
 
     /**

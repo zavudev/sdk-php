@@ -16,6 +16,8 @@ use Zavudev\Templates\TemplateCreateParams\Button;
 use Zavudev\Templates\TemplateCreateParams\HeaderType;
 use Zavudev\Templates\TemplateListParams;
 use Zavudev\Templates\TemplateSubmitParams;
+use Zavudev\Templates\TemplateSyncParams;
+use Zavudev\Templates\TemplateSyncResponse;
 use Zavudev\Templates\WhatsappCategory;
 
 /**
@@ -187,6 +189,43 @@ final class TemplatesRawService implements TemplatesRawContract
             body: (object) $parsed,
             options: $options,
             convert: Template::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Reconcile this project's templates against WhatsApp. Two things happen per connected WhatsApp Business Account: templates that exist on Meta but not in Zavu are imported (or linked to an existing template with the same name), and the approval status of the templates Zavu already knows about is refreshed from Meta.
+     *
+     * This is what to call when a template was created outside Zavu — in Meta Business Manager, or by another tool — or when a `template.status_changed` webhook was missed and a template is stuck in `pending`. Status changes normally arrive by webhook; this endpoint is the recovery path and the only path for a template Zavu never created.
+     *
+     * Templates that Meta reports as rejected or disabled are not imported; they are counted in `skipped`. Existing local templates are matched first by Meta template ID, then by name.
+     *
+     * By default every sender in the project with a WhatsApp Business Account is synced. Pass `senderId` to sync only that sender's account. The call is synchronous — it waits for Meta and returns what changed — so it can take a few seconds per account. A failure on one account does not fail the request: it is reported in `errors` and the remaining accounts are still synced.
+     *
+     * @param array{senderID?: string}|TemplateSyncParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<TemplateSyncResponse>
+     *
+     * @throws APIException
+     */
+    public function sync(
+        array|TemplateSyncParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = TemplateSyncParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: 'v1/templates/sync',
+            body: (object) $parsed,
+            options: $options,
+            convert: TemplateSyncResponse::class,
         );
     }
 }

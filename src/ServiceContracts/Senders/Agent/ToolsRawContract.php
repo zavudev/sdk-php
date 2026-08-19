@@ -13,6 +13,8 @@ use Zavudev\Senders\Agent\Tools\ToolCreateParams;
 use Zavudev\Senders\Agent\Tools\ToolDeleteParams;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
 use Zavudev\Senders\Agent\Tools\ToolListParams;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsParams;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolRetrieveParams;
 use Zavudev\Senders\Agent\Tools\ToolTestParams;
@@ -103,6 +105,23 @@ interface ToolsRawContract
     public function delete(
         string $toolID,
         array|ToolDeleteParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
+    /**
+     * @api
+     *
+     * @param string $toolID Path param
+     * @param array<string,mixed>|ToolListTestRunsParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<ToolListTestRunsResponse>
+     *
+     * @throws APIException
+     */
+    public function listTestRuns(
+        string $toolID,
+        array|ToolListTestRunsParams $params,
         RequestOptions|array|null $requestOptions = null,
     ): BaseResponse;
 

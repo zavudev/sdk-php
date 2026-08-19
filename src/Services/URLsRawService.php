@@ -10,6 +10,8 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\ServiceContracts\URLsRawContract;
+use Zavudev\URLs\URLEscalateParams;
+use Zavudev\URLs\URLEscalateResponse;
 use Zavudev\URLs\URLGetDetailsResponse;
 use Zavudev\URLs\URLListVerifiedParams;
 use Zavudev\URLs\URLListVerifiedParams\Status;
@@ -27,6 +29,38 @@ final class URLsRawService implements URLsRawContract
      * @internal
      */
     public function __construct(private Client $client) {}
+
+    /**
+     * @api
+     *
+     * Request manual review of a rejected URL. Only URLs in 'rejected' status can be escalated; the status then moves to 'escalated'.
+     *
+     * @param array{reason: string}|URLEscalateParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<URLEscalateResponse>
+     *
+     * @throws APIException
+     */
+    public function escalate(
+        string $urlID,
+        array|URLEscalateParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = URLEscalateParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'post',
+            path: ['v1/urls/%1$s/escalate', $urlID],
+            body: (object) $parsed,
+            options: $options,
+            convert: URLEscalateResponse::class,
+        );
+    }
 
     /**
      * @api

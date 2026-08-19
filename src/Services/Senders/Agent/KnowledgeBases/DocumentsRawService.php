@@ -12,8 +12,12 @@ use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\KnowledgeBases\AgentDocument;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentCreateParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentDeleteParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentGetDocumentResponse;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentListParams;
 use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentNewResponse;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentRetrieveDocumentParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentParams;
+use Zavudev\Senders\Agent\KnowledgeBases\Documents\DocumentUpdateDocumentResponse;
 use Zavudev\ServiceContracts\Senders\Agent\KnowledgeBases\DocumentsRawContract;
 
 /**
@@ -143,6 +147,92 @@ final class DocumentsRawService implements DocumentsRawContract
             ],
             options: $options,
             convert: null,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Get a single document from a knowledge base.
+     *
+     * @param array{
+     *   senderID: string, kbID: string
+     * }|DocumentRetrieveDocumentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<DocumentGetDocumentResponse>
+     *
+     * @throws APIException
+     */
+    public function retrieveDocument(
+        string $docID,
+        array|DocumentRetrieveDocumentParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = DocumentRetrieveDocumentParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $senderID = $parsed['senderID'];
+        unset($parsed['senderID']);
+        $kbID = $parsed['kbID'];
+        unset($parsed['kbID']);
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'get',
+            path: [
+                'v1/senders/%1$s/agent/knowledge-bases/%2$s/documents/%3$s',
+                $senderID,
+                $kbID,
+                $docID,
+            ],
+            options: $options,
+            convert: DocumentGetDocumentResponse::class,
+        );
+    }
+
+    /**
+     * @api
+     *
+     * Update a document's title or content. Updating content reprocesses the document for RAG.
+     *
+     * @param string $docID Path param
+     * @param array{
+     *   senderID: string, kbID: string, content?: string, title?: string
+     * }|DocumentUpdateDocumentParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<DocumentUpdateDocumentResponse>
+     *
+     * @throws APIException
+     */
+    public function updateDocument(
+        string $docID,
+        array|DocumentUpdateDocumentParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse {
+        [$parsed, $options] = DocumentUpdateDocumentParams::parseRequest(
+            $params,
+            $requestOptions,
+        );
+        $senderID = $parsed['senderID'];
+        unset($parsed['senderID']);
+        $kbID = $parsed['kbID'];
+        unset($parsed['kbID']);
+
+        // @phpstan-ignore-next-line return.type
+        return $this->client->request(
+            method: 'patch',
+            path: [
+                'v1/senders/%1$s/agent/knowledge-bases/%2$s/documents/%3$s',
+                $senderID,
+                $kbID,
+                $docID,
+            ],
+            body: (object) array_diff_key($parsed, array_flip(['senderID', 'kbID'])),
+            options: $options,
+            convert: DocumentUpdateDocumentResponse::class,
         );
     }
 }

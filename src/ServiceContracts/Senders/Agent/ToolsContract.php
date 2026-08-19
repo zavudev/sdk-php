@@ -9,6 +9,7 @@ use Zavudev\Cursor;
 use Zavudev\RequestOptions;
 use Zavudev\Senders\Agent\Tools\AgentTool;
 use Zavudev\Senders\Agent\Tools\ToolGetResponse;
+use Zavudev\Senders\Agent\Tools\ToolListTestRunsResponse;
 use Zavudev\Senders\Agent\Tools\ToolNewResponse;
 use Zavudev\Senders\Agent\Tools\ToolParameters;
 use Zavudev\Senders\Agent\Tools\ToolTestResponse;
@@ -110,6 +111,23 @@ interface ToolsContract
         string $senderID,
         RequestOptions|array|null $requestOptions = null,
     ): mixed;
+
+    /**
+     * @api
+     *
+     * @param string $toolID Path param
+     * @param string $senderID Path param
+     * @param int $limit Query param
+     * @param RequestOpts|null $requestOptions
+     *
+     * @throws APIException
+     */
+    public function listTestRuns(
+        string $toolID,
+        string $senderID,
+        int $limit = 20,
+        RequestOptions|array|null $requestOptions = null,
+    ): ToolListTestRunsResponse;
 
     /**
      * @api

@@ -8,6 +8,8 @@ use Zavudev\Core\Contracts\BaseResponse;
 use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\RequestOptions;
+use Zavudev\URLs\URLEscalateParams;
+use Zavudev\URLs\URLEscalateResponse;
 use Zavudev\URLs\URLGetDetailsResponse;
 use Zavudev\URLs\URLListVerifiedParams;
 use Zavudev\URLs\URLSubmitForVerificationParams;
@@ -19,6 +21,22 @@ use Zavudev\URLs\VerifiedURL;
  */
 interface URLsRawContract
 {
+    /**
+     * @api
+     *
+     * @param array<string,mixed>|URLEscalateParams $params
+     * @param RequestOpts|null $requestOptions
+     *
+     * @return BaseResponse<URLEscalateResponse>
+     *
+     * @throws APIException
+     */
+    public function escalate(
+        string $urlID,
+        array|URLEscalateParams $params,
+        RequestOptions|array|null $requestOptions = null,
+    ): BaseResponse;
+
     /**
      * @api
      *

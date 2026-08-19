@@ -12,7 +12,10 @@ use Zavudev\Functions\FunctionDeleteResponse;
 use Zavudev\Functions\FunctionDeployResponse;
 use Zavudev\Functions\FunctionGetDeploymentResponse;
 use Zavudev\Functions\FunctionGetResponse;
+use Zavudev\Functions\FunctionListDeploymentsResponse;
+use Zavudev\Functions\FunctionListEventTypesResponse;
 use Zavudev\Functions\FunctionNewResponse;
+use Zavudev\Functions\FunctionRollbackDeploymentResponse;
 use Zavudev\Functions\FunctionTailLogsResponse;
 use Zavudev\Functions\FunctionUpdateResponse;
 
@@ -141,6 +144,64 @@ final class FunctionsTest extends TestCase
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(FunctionGetDeploymentResponse::class, $result);
+    }
+
+    #[Test]
+    public function testListDeployments(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->functions->listDeployments('functionId');
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(FunctionListDeploymentsResponse::class, $result);
+    }
+
+    #[Test]
+    public function testListEventTypes(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->functions->listEventTypes();
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(FunctionListEventTypesResponse::class, $result);
+    }
+
+    #[Test]
+    public function testRollbackDeployment(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->functions->rollbackDeployment(
+            'functionId',
+            deploymentID: 'fnd_abc123'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(FunctionRollbackDeploymentResponse::class, $result);
+    }
+
+    #[Test]
+    public function testRollbackDeploymentWithOptionalParams(): void
+    {
+        if (UnsupportedMockTests::$skip) {
+            $this->markTestSkipped('Mock server tests are disabled');
+        }
+
+        $result = $this->client->functions->rollbackDeployment(
+            'functionId',
+            deploymentID: 'fnd_abc123'
+        );
+
+        // @phpstan-ignore-next-line method.alreadyNarrowedType
+        $this->assertInstanceOf(FunctionRollbackDeploymentResponse::class, $result);
     }
 
     #[Test]
