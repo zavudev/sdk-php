@@ -127,19 +127,6 @@ final class ContactsTest extends TestCase
     }
 
     #[Test]
-    public function testDismissMergeSuggestion(): void
-    {
-        if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Mock server tests are disabled');
-        }
-
-        $result = $this->client->contacts->dismissMergeSuggestion('contactId');
-
-        // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertNull($result);
-    }
-
-    #[Test]
     public function testMerge(): void
     {
         if (UnsupportedMockTests::$skip) {

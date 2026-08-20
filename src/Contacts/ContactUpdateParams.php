@@ -17,6 +17,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *
  * @phpstan-type ContactUpdateParamsShape = array{
  *   defaultChannel?: null|DefaultChannel|value-of<DefaultChannel>,
+ *   displayName?: string|null,
  *   metadata?: array<string,string>|null,
  * }
  */
@@ -33,6 +34,12 @@ final class ContactUpdateParams implements BaseModel
      */
     #[Optional(enum: DefaultChannel::class, nullable: true)]
     public ?string $defaultChannel;
+
+    /**
+     * Human-readable name for this contact. Set to null to clear it and fall back to the contact's identifier. Contacts created automatically from an inbound message have no display name until you set one.
+     */
+    #[Optional(nullable: true)]
+    public ?string $displayName;
 
     /** @var array<string,string>|null $metadata */
     #[Optional(map: 'string')]
@@ -53,11 +60,13 @@ final class ContactUpdateParams implements BaseModel
      */
     public static function with(
         DefaultChannel|string|null $defaultChannel = null,
-        ?array $metadata = null
+        ?string $displayName = null,
+        ?array $metadata = null,
     ): self {
         $self = new self;
 
         null !== $defaultChannel && $self['defaultChannel'] = $defaultChannel;
+        null !== $displayName && $self['displayName'] = $displayName;
         null !== $metadata && $self['metadata'] = $metadata;
 
         return $self;
@@ -73,6 +82,17 @@ final class ContactUpdateParams implements BaseModel
     ): self {
         $self = clone $this;
         $self['defaultChannel'] = $defaultChannel;
+
+        return $self;
+    }
+
+    /**
+     * Human-readable name for this contact. Set to null to clear it and fall back to the contact's identifier. Contacts created automatically from an inbound message have no display name until you set one.
+     */
+    public function withDisplayName(?string $displayName): self
+    {
+        $self = clone $this;
+        $self['displayName'] = $displayName;
 
         return $self;
     }

@@ -96,6 +96,7 @@ final class ContactsRawService implements ContactsRawContract
      *
      * @param array{
      *   defaultChannel?: DefaultChannel|value-of<DefaultChannel>|null,
+     *   displayName?: string|null,
      *   metadata?: array<string,string>,
      * }|ContactUpdateParams $params
      * @param RequestOpts|null $requestOptions
@@ -130,7 +131,11 @@ final class ContactsRawService implements ContactsRawContract
      * List contacts with their communication channels.
      *
      * @param array{
-     *   cursor?: string, limit?: int, phoneNumber?: string
+     *   cursor?: string,
+     *   limit?: int,
+     *   phoneNumber?: string,
+     *   search?: string,
+     *   tag?: list<string>,
      * }|ContactListParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -177,30 +182,6 @@ final class ContactsRawService implements ContactsRawContract
         return $this->client->request(
             method: 'delete',
             path: ['v1/contacts/%1$s', $contactID],
-            options: $requestOptions,
-            convert: null,
-        );
-    }
-
-    /**
-     * @api
-     *
-     * Dismiss the merge suggestion for a contact.
-     *
-     * @param RequestOpts|null $requestOptions
-     *
-     * @return BaseResponse<mixed>
-     *
-     * @throws APIException
-     */
-    public function dismissMergeSuggestion(
-        string $contactID,
-        RequestOptions|array|null $requestOptions = null
-    ): BaseResponse {
-        // @phpstan-ignore-next-line return.type
-        return $this->client->request(
-            method: 'delete',
-            path: ['v1/contacts/%1$s/merge-suggestion', $contactID],
             options: $requestOptions,
             convert: null,
         );

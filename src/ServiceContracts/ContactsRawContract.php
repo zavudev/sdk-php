@@ -96,20 +96,6 @@ interface ContactsRawContract
     /**
      * @api
      *
-     * @param RequestOpts|null $requestOptions
-     *
-     * @return BaseResponse<mixed>
-     *
-     * @throws APIException
-     */
-    public function dismissMergeSuggestion(
-        string $contactID,
-        RequestOptions|array|null $requestOptions = null
-    ): BaseResponse;
-
-    /**
-     * @api
-     *
      * @param array<string,mixed>|ContactMergeParams $params
      * @param RequestOpts|null $requestOptions
      *

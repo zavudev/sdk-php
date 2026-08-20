@@ -27,7 +27,6 @@ use Zavudev\Core\Contracts\BaseModel;
  *   primaryEmail?: string|null,
  *   primaryPhone?: string|null,
  *   profileName?: string|null,
- *   suggestedMergeWith?: string|null,
  *   updatedAt?: \DateTimeInterface|null,
  * }
  */
@@ -109,12 +108,6 @@ final class Contact implements BaseModel
     #[Optional(nullable: true)]
     public ?string $profileName;
 
-    /**
-     * ID of a contact suggested for merging.
-     */
-    #[Optional]
-    public ?string $suggestedMergeWith;
-
     #[Optional]
     public ?\DateTimeInterface $updatedAt;
 
@@ -168,7 +161,6 @@ final class Contact implements BaseModel
         ?string $primaryEmail = null,
         ?string $primaryPhone = null,
         ?string $profileName = null,
-        ?string $suggestedMergeWith = null,
         ?\DateTimeInterface $updatedAt = null,
     ): self {
         $self = new self;
@@ -187,7 +179,6 @@ final class Contact implements BaseModel
         null !== $primaryEmail && $self['primaryEmail'] = $primaryEmail;
         null !== $primaryPhone && $self['primaryPhone'] = $primaryPhone;
         null !== $profileName && $self['profileName'] = $profileName;
-        null !== $suggestedMergeWith && $self['suggestedMergeWith'] = $suggestedMergeWith;
         null !== $updatedAt && $self['updatedAt'] = $updatedAt;
 
         return $self;
@@ -330,17 +321,6 @@ final class Contact implements BaseModel
     {
         $self = clone $this;
         $self['profileName'] = $profileName;
-
-        return $self;
-    }
-
-    /**
-     * ID of a contact suggested for merging.
-     */
-    public function withSuggestedMergeWith(string $suggestedMergeWith): self
-    {
-        $self = clone $this;
-        $self['suggestedMergeWith'] = $suggestedMergeWith;
 
         return $self;
     }

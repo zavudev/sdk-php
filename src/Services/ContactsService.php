@@ -97,6 +97,7 @@ final class ContactsService implements ContactsContract
      * Update contact
      *
      * @param DefaultChannel|value-of<DefaultChannel>|null $defaultChannel Preferred channel for this contact. Set to null to clear.
+     * @param string|null $displayName Human-readable name for this contact. Set to null to clear it and fall back to the contact's identifier. Contacts created automatically from an inbound message have no display name until you set one.
      * @param array<string,string> $metadata
      * @param RequestOpts|null $requestOptions
      *
@@ -105,11 +106,16 @@ final class ContactsService implements ContactsContract
     public function update(
         string $contactID,
         DefaultChannel|string|null $defaultChannel = null,
+        ?string $displayName = null,
         ?array $metadata = null,
         RequestOptions|array|null $requestOptions = null,
     ): Contact {
         $params = Util::removeNulls(
-            ['defaultChannel' => $defaultChannel, 'metadata' => $metadata]
+            [
+                'defaultChannel' => $defaultChannel,
+                'displayName' => $displayName,
+                'metadata' => $metadata,
+            ],
         );
 
         // @phpstan-ignore-next-line argument.type
@@ -123,6 +129,16 @@ final class ContactsService implements ContactsContract
      *
      * List contacts with their communication channels.
      *
+     * @param string $cursor Opaque cursor from a previous response's `nextCursor`. Do not construct it.
+     * @param string $phoneNumber Exact match on the contact's primary phone number, in E.164.
+     * @param string $search Free-text match over the contact's name (`displayName` and the WhatsApp profile name), phone numbers and email addresses. Case- and accent-insensitive. A phone number matches on a trailing fragment too, so `5551234` finds `+14155551234`.
+     *
+     * Contacts created automatically from an inbound message have no `displayName` — they are matched by their identifier until you set one with `PATCH /v1/contacts/{contactId}`.
+     *
+     * Results come back in relevance order rather than newest-first. `cursor` is opaque in both modes; pass back exactly what the previous response returned, and start a new pagination run when the search term changes.
+     * @param list<string> $tag Tag name. Repeatable: `?tag=vip&tag=chile` returns contacts carrying **every** tag given, not any of them — the same rule the dashboard filter applies.
+     *
+     * Tags are matched by name, case-insensitively. An unknown tag returns 400 rather than being ignored, because a typo that silently matched every contact would be a worse answer than an error.
      * @param RequestOpts|null $requestOptions
      *
      * @return Cursor<Contact>
@@ -133,10 +149,18 @@ final class ContactsService implements ContactsContract
         ?string $cursor = null,
         int $limit = 50,
         ?string $phoneNumber = null,
+        ?string $search = null,
+        ?array $tag = null,
         RequestOptions|array|null $requestOptions = null,
     ): Cursor {
         $params = Util::removeNulls(
-            ['cursor' => $cursor, 'limit' => $limit, 'phoneNumber' => $phoneNumber]
+            [
+                'cursor' => $cursor,
+                'limit' => $limit,
+                'phoneNumber' => $phoneNumber,
+                'search' => $search,
+                'tag' => $tag,
+            ],
         );
 
         // @phpstan-ignore-next-line argument.type
@@ -160,25 +184,6 @@ final class ContactsService implements ContactsContract
     ): mixed {
         // @phpstan-ignore-next-line argument.type
         $response = $this->raw->delete($contactID, requestOptions: $requestOptions);
-
-        return $response->parse();
-    }
-
-    /**
-     * @api
-     *
-     * Dismiss the merge suggestion for a contact.
-     *
-     * @param RequestOpts|null $requestOptions
-     *
-     * @throws APIException
-     */
-    public function dismissMergeSuggestion(
-        string $contactID,
-        RequestOptions|array|null $requestOptions = null
-    ): mixed {
-        // @phpstan-ignore-next-line argument.type
-        $response = $this->raw->dismissMergeSuggestion($contactID, requestOptions: $requestOptions);
 
         return $response->parse();
     }
