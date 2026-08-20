@@ -8,6 +8,7 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\Messages\Message\Direction;
 
 /**
  * @phpstan-import-type MessageContentShape from \Zavudev\Messages\MessageContent
@@ -16,6 +17,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   id: string,
  *   channel: Channel|value-of<Channel>,
  *   createdAt: \DateTimeInterface,
+ *   direction: Direction|value-of<Direction>,
  *   messageType: MessageType|value-of<MessageType>,
  *   status: MessageStatus|value-of<MessageStatus>,
  *   to: string,
@@ -52,6 +54,14 @@ final class Message implements BaseModel
 
     #[Required]
     public \DateTimeInterface $createdAt;
+
+    /**
+     * Who sent the message. Needed to render a thread: `status` cannot tell the two apart, because an inbound message is also stored as `delivered`.
+     *
+     * @var value-of<Direction> $direction
+     */
+    #[Required(enum: Direction::class)]
+    public string $direction;
 
     /**
      * Type of message. Non-text types are supported by WhatsApp and Telegram (varies by type).
@@ -139,7 +149,13 @@ final class Message implements BaseModel
      * To enforce required parameters use
      * ```
      * Message::with(
-     *   id: ..., channel: ..., createdAt: ..., messageType: ..., status: ..., to: ...
+     *   id: ...,
+     *   channel: ...,
+     *   createdAt: ...,
+     *   direction: ...,
+     *   messageType: ...,
+     *   status: ...,
+     *   to: ...,
      * )
      * ```
      *
@@ -150,6 +166,7 @@ final class Message implements BaseModel
      *   ->withID(...)
      *   ->withChannel(...)
      *   ->withCreatedAt(...)
+     *   ->withDirection(...)
      *   ->withMessageType(...)
      *   ->withStatus(...)
      *   ->withTo(...)
@@ -166,6 +183,7 @@ final class Message implements BaseModel
      * You must use named parameters to construct any parameters with a default value.
      *
      * @param Channel|value-of<Channel> $channel
+     * @param Direction|value-of<Direction> $direction
      * @param MessageType|value-of<MessageType> $messageType
      * @param MessageStatus|value-of<MessageStatus> $status
      * @param MessageContent|MessageContentShape|null $content
@@ -175,6 +193,7 @@ final class Message implements BaseModel
         string $id,
         Channel|string $channel,
         \DateTimeInterface $createdAt,
+        Direction|string $direction,
         MessageType|string $messageType,
         MessageStatus|string $status,
         string $to,
@@ -197,6 +216,7 @@ final class Message implements BaseModel
         $self['id'] = $id;
         $self['channel'] = $channel;
         $self['createdAt'] = $createdAt;
+        $self['direction'] = $direction;
         $self['messageType'] = $messageType;
         $self['status'] = $status;
         $self['to'] = $to;
@@ -243,6 +263,19 @@ final class Message implements BaseModel
     {
         $self = clone $this;
         $self['createdAt'] = $createdAt;
+
+        return $self;
+    }
+
+    /**
+     * Who sent the message. Needed to render a thread: `status` cannot tell the two apart, because an inbound message is also stored as `delivered`.
+     *
+     * @param Direction|value-of<Direction> $direction
+     */
+    public function withDirection(Direction|string $direction): self
+    {
+        $self = clone $this;
+        $self['direction'] = $direction;
 
         return $self;
     }
