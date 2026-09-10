@@ -33,6 +33,7 @@ use Zavudev\Number10dlc\Brands\TenDlcBrand\Status;
  *   ein?: string|null,
  *   failureReason?: string|null,
  *   firstName?: string|null,
+ *   identityStatus?: string|null,
  *   lastName?: string|null,
  *   stockExchange?: string|null,
  *   stockSymbol?: string|null,
@@ -93,6 +94,13 @@ final class TenDlcBrand implements BaseModel
     /**
      * Status of a 10DLC brand registration.
      *
+     * - `draft`: created, not yet submitted to the carrier.
+     * - `pending`: submitted, awaiting the carrier's answer.
+     * - `verified`: the carrier registered the brand AND verified the business behind it.
+     * - `unverified`: the carrier registered the brand but did not verify the business — the registration exists, the identity check did not pass or has not been resolved. Campaigns are allowed, with lower daily limits. Read `identityStatus` for the carrier's own wording.
+     * - `rejected`: refused by the carrier.
+     * - `failed`: the registration never reached the carrier; the fee is refunded.
+     *
      * @var value-of<Status> $status
      */
     #[Required(enum: Status::class)]
@@ -139,6 +147,12 @@ final class TenDlcBrand implements BaseModel
 
     #[Optional(nullable: true)]
     public ?string $firstName;
+
+    /**
+     * The carrier's raw identity verdict on the business, as the carrier spells it (`VERIFIED`, `VETTED_VERIFIED`, `SELF_DECLARED`, `UNVERIFIED`). Null while the identity has not been resolved — which is not the same as verified, and is why such a brand reports `status: unverified`.
+     */
+    #[Optional(nullable: true)]
+    public ?string $identityStatus;
 
     #[Optional(nullable: true)]
     public ?string $lastName;
@@ -235,6 +249,7 @@ final class TenDlcBrand implements BaseModel
         ?string $ein = null,
         ?string $failureReason = null,
         ?string $firstName = null,
+        ?string $identityStatus = null,
         ?string $lastName = null,
         ?string $stockExchange = null,
         ?string $stockSymbol = null,
@@ -265,6 +280,7 @@ final class TenDlcBrand implements BaseModel
         null !== $ein && $self['ein'] = $ein;
         null !== $failureReason && $self['failureReason'] = $failureReason;
         null !== $firstName && $self['firstName'] = $firstName;
+        null !== $identityStatus && $self['identityStatus'] = $identityStatus;
         null !== $lastName && $self['lastName'] = $lastName;
         null !== $stockExchange && $self['stockExchange'] = $stockExchange;
         null !== $stockSymbol && $self['stockSymbol'] = $stockSymbol;
@@ -372,6 +388,13 @@ final class TenDlcBrand implements BaseModel
     /**
      * Status of a 10DLC brand registration.
      *
+     * - `draft`: created, not yet submitted to the carrier.
+     * - `pending`: submitted, awaiting the carrier's answer.
+     * - `verified`: the carrier registered the brand AND verified the business behind it.
+     * - `unverified`: the carrier registered the brand but did not verify the business — the registration exists, the identity check did not pass or has not been resolved. Campaigns are allowed, with lower daily limits. Read `identityStatus` for the carrier's own wording.
+     * - `rejected`: refused by the carrier.
+     * - `failed`: the registration never reached the carrier; the fee is refunded.
+     *
      * @param Status|value-of<Status> $status
      */
     public function withStatus(Status|string $status): self
@@ -465,6 +488,17 @@ final class TenDlcBrand implements BaseModel
     {
         $self = clone $this;
         $self['firstName'] = $firstName;
+
+        return $self;
+    }
+
+    /**
+     * The carrier's raw identity verdict on the business, as the carrier spells it (`VERIFIED`, `VETTED_VERIFIED`, `SELF_DECLARED`, `UNVERIFIED`). Null while the identity has not been resolved — which is not the same as verified, and is why such a brand reports `status: unverified`.
+     */
+    public function withIdentityStatus(?string $identityStatus): self
+    {
+        $self = clone $this;
+        $self['identityStatus'] = $identityStatus;
 
         return $self;
     }
