@@ -31,7 +31,7 @@ final class PhoneNumberUpdateParams implements BaseModel
     public ?string $name;
 
     /**
-     * Sender ID to assign the phone number to. Set to null to unassign.
+     * Sender ID to assign the phone number to. Set to null to unassign. A number under regulatory review is recorded now and connected to the sender when approved; a rejected number is refused.
      */
     #[Optional('senderId', nullable: true)]
     public ?string $senderID;
@@ -70,7 +70,7 @@ final class PhoneNumberUpdateParams implements BaseModel
     }
 
     /**
-     * Sender ID to assign the phone number to. Set to null to unassign.
+     * Sender ID to assign the phone number to. Set to null to unassign. A number under regulatory review is recorded now and connected to the sender when approved; a rejected number is refused.
      */
     public function withSenderID(?string $senderID): self
     {

@@ -19,20 +19,23 @@ interface AddressesContract
     /**
      * @api
      *
+     * @param string $firstName first name of the person the address is registered to
+     * @param string $lastName last name of the person the address is registered to
+     * @param string $businessName Business name, when the address belongs to a business. Defaults to the person's full name.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function create(
         string $countryCode,
+        string $firstName,
+        string $lastName,
         string $locality,
         string $postalCode,
         string $streetAddress,
         ?string $administrativeArea = null,
         ?string $businessName = null,
         ?string $extendedAddress = null,
-        ?string $firstName = null,
-        ?string $lastName = null,
         RequestOptions|array|null $requestOptions = null,
     ): AddressNewResponse;
 

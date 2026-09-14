@@ -40,6 +40,8 @@ final class AddressesTest extends TestCase
 
         $result = $this->client->addresses->create(
             countryCode: 'DE',
+            firstName: 'John',
+            lastName: 'Doe',
             locality: 'Berlin',
             postalCode: '10115',
             streetAddress: '123 Main St',
@@ -58,14 +60,14 @@ final class AddressesTest extends TestCase
 
         $result = $this->client->addresses->create(
             countryCode: 'DE',
+            firstName: 'John',
+            lastName: 'Doe',
             locality: 'Berlin',
             postalCode: '10115',
             streetAddress: '123 Main St',
             administrativeArea: 'administrativeArea',
             businessName: 'businessName',
             extendedAddress: 'extendedAddress',
-            firstName: 'John',
-            lastName: 'Doe',
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType

@@ -103,7 +103,14 @@ final class PhoneNumbersTest extends TestCase
 
         $result = $this->client->phoneNumbers->purchase(
             phoneNumber: '+15551234567',
-            name: 'Primary Line'
+            name: 'Primary Line',
+            regulatoryRequirements: [
+                [
+                    'fieldValue' => 'jd7x2k3m4n5p6q7r8s9t0abc',
+                    'requirementType' => '8c5b1a2e-0f3d-4f5b-9a61-2c7e4d9b1f10',
+                ],
+            ],
+            type: PhoneNumberType::LOCAL,
         );
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
@@ -130,23 +137,7 @@ final class PhoneNumbersTest extends TestCase
             $this->markTestSkipped('Mock server tests are disabled');
         }
 
-        $result = $this->client->phoneNumbers->requirements(countryCode: 'xx');
-
-        // @phpstan-ignore-next-line method.alreadyNarrowedType
-        $this->assertInstanceOf(PhoneNumberRequirementsResponse::class, $result);
-    }
-
-    #[Test]
-    public function testRequirementsWithOptionalParams(): void
-    {
-        if (UnsupportedMockTests::$skip) {
-            $this->markTestSkipped('Mock server tests are disabled');
-        }
-
-        $result = $this->client->phoneNumbers->requirements(
-            countryCode: 'xx',
-            type: PhoneNumberType::LOCAL
-        );
+        $result = $this->client->phoneNumbers->requirements();
 
         // @phpstan-ignore-next-line method.alreadyNarrowedType
         $this->assertInstanceOf(PhoneNumberRequirementsResponse::class, $result);

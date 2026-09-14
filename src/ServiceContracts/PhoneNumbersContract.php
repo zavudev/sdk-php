@@ -8,6 +8,7 @@ use Zavudev\Core\Exceptions\APIException;
 use Zavudev\Cursor;
 use Zavudev\PhoneNumbers\OwnedPhoneNumber;
 use Zavudev\PhoneNumbers\PhoneNumberGetResponse;
+use Zavudev\PhoneNumbers\PhoneNumberPurchaseParams\RegulatoryRequirement;
 use Zavudev\PhoneNumbers\PhoneNumberPurchaseResponse;
 use Zavudev\PhoneNumbers\PhoneNumberRequirementsResponse;
 use Zavudev\PhoneNumbers\PhoneNumberSearchAvailableResponse;
@@ -17,6 +18,7 @@ use Zavudev\PhoneNumbers\PhoneNumberUpdateResponse;
 use Zavudev\RequestOptions;
 
 /**
+ * @phpstan-import-type RegulatoryRequirementShape from \Zavudev\PhoneNumbers\PhoneNumberPurchaseParams\RegulatoryRequirement
  * @phpstan-import-type RequestOpts from \Zavudev\RequestOptions
  */
 interface PhoneNumbersContract
@@ -37,7 +39,7 @@ interface PhoneNumbersContract
      * @api
      *
      * @param string|null $name Custom name for the phone number. Set to null to clear.
-     * @param string|null $senderID Sender ID to assign the phone number to. Set to null to unassign.
+     * @param string|null $senderID Sender ID to assign the phone number to. Set to null to unassign. A number under regulatory review is recorded now and connected to the sender when approved; a rejected number is refused.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -72,6 +74,10 @@ interface PhoneNumbersContract
      *
      * @param string $phoneNumber Phone number in E.164 format.
      * @param string $name optional custom name for the phone number
+     * @param list<RegulatoryRequirement|RegulatoryRequirementShape> $regulatoryRequirements Regulatory information, for numbers whose requirements list is not empty. Get the list with `GET /v1/phone-numbers/requirements?phoneNumber=...` and send one entry per requirement id, except `action` requirements, which take no value. Every required id must be present, once, and no unknown id may be sent; otherwise the purchase is refused with `400 invalid_request` before anything is charged.
+     *
+     * The information is kept for your project under the number's country and `type`. A later purchase there may omit this field if what is kept still covers that number's requirements. Omit it for numbers without requirements.
+     * @param PhoneNumberType|value-of<PhoneNumberType> $type Type of phone number. `mobile` is stocked in countries where no geographic (`local`) or non-geographic (`national`) inventory exists, and in several markets it is the only type that can receive SMS.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
@@ -79,6 +85,8 @@ interface PhoneNumbersContract
     public function purchase(
         string $phoneNumber,
         ?string $name = null,
+        ?array $regulatoryRequirements = null,
+        PhoneNumberType|string|null $type = null,
         RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberPurchaseResponse;
 
@@ -97,14 +105,16 @@ interface PhoneNumbersContract
     /**
      * @api
      *
-     * @param string $countryCode two-letter ISO country code
-     * @param PhoneNumberType|value-of<PhoneNumberType> $type type of phone number (local, mobile, tollFree)
+     * @param string $countryCode Two-letter ISO country code. Required unless `phoneNumber` is given.
+     * @param string $phoneNumber E.164 number from `GET /v1/phone-numbers/available`, with `+` encoded as `%2B`. Returns the requirements the purchase of that number checks. Takes precedence over `countryCode`.
+     * @param PhoneNumberType|value-of<PhoneNumberType> $type Type of phone number (local, national, mobile, tollFree). Defaults to `local`. With `phoneNumber`, used only when the number's own requirements cannot be resolved and the country list is returned.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function requirements(
-        string $countryCode,
+        ?string $countryCode = null,
+        ?string $phoneNumber = null,
         PhoneNumberType|string|null $type = null,
         RequestOptions|array|null $requestOptions = null,
     ): PhoneNumberRequirementsResponse;

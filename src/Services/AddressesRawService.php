@@ -30,18 +30,18 @@ final class AddressesRawService implements AddressesRawContract
     /**
      * @api
      *
-     * Create a regulatory address for phone number purchases. Some countries require a verified address before phone numbers can be activated.
+     * Create a regulatory address, to use as the value of an `address` requirement when buying a phone number. It is registered for review when it is created, with status `pending`.
      *
      * @param array{
      *   countryCode: string,
+     *   firstName: string,
+     *   lastName: string,
      *   locality: string,
      *   postalCode: string,
      *   streetAddress: string,
      *   administrativeArea?: string,
      *   businessName?: string,
      *   extendedAddress?: string,
-     *   firstName?: string,
-     *   lastName?: string,
      * }|AddressCreateParams $params
      * @param RequestOpts|null $requestOptions
      *
@@ -127,7 +127,7 @@ final class AddressesRawService implements AddressesRawContract
     /**
      * @api
      *
-     * Delete a regulatory address. Cannot delete addresses that are in use.
+     * Delete a regulatory address from this project. Any address can be deleted, whatever its status. Phone numbers already purchased with it are not affected, and neither is information already submitted for later purchases in its country.
      *
      * @param RequestOpts|null $requestOptions
      *

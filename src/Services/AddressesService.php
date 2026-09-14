@@ -35,35 +35,38 @@ final class AddressesService implements AddressesContract
     /**
      * @api
      *
-     * Create a regulatory address for phone number purchases. Some countries require a verified address before phone numbers can be activated.
+     * Create a regulatory address, to use as the value of an `address` requirement when buying a phone number. It is registered for review when it is created, with status `pending`.
      *
+     * @param string $firstName first name of the person the address is registered to
+     * @param string $lastName last name of the person the address is registered to
+     * @param string $businessName Business name, when the address belongs to a business. Defaults to the person's full name.
      * @param RequestOpts|null $requestOptions
      *
      * @throws APIException
      */
     public function create(
         string $countryCode,
+        string $firstName,
+        string $lastName,
         string $locality,
         string $postalCode,
         string $streetAddress,
         ?string $administrativeArea = null,
         ?string $businessName = null,
         ?string $extendedAddress = null,
-        ?string $firstName = null,
-        ?string $lastName = null,
         RequestOptions|array|null $requestOptions = null,
     ): AddressNewResponse {
         $params = Util::removeNulls(
             [
                 'countryCode' => $countryCode,
+                'firstName' => $firstName,
+                'lastName' => $lastName,
                 'locality' => $locality,
                 'postalCode' => $postalCode,
                 'streetAddress' => $streetAddress,
                 'administrativeArea' => $administrativeArea,
                 'businessName' => $businessName,
                 'extendedAddress' => $extendedAddress,
-                'firstName' => $firstName,
-                'lastName' => $lastName,
             ],
         );
 
@@ -119,7 +122,7 @@ final class AddressesService implements AddressesContract
     /**
      * @api
      *
-     * Delete a regulatory address. Cannot delete addresses that are in use.
+     * Delete a regulatory address from this project. Any address can be deleted, whatever its status. Phone numbers already purchased with it are not affected, and neither is information already submitted for later purchases in its country.
      *
      * @param RequestOpts|null $requestOptions
      *

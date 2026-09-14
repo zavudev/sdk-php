@@ -11,20 +11,20 @@ use Zavudev\Core\Concerns\SdkParams;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * Create a regulatory address for phone number purchases. Some countries require a verified address before phone numbers can be activated.
+ * Create a regulatory address, to use as the value of an `address` requirement when buying a phone number. It is registered for review when it is created, with status `pending`.
  *
  * @see Zavudev\Services\AddressesService::create()
  *
  * @phpstan-type AddressCreateParamsShape = array{
  *   countryCode: string,
+ *   firstName: string,
+ *   lastName: string,
  *   locality: string,
  *   postalCode: string,
  *   streetAddress: string,
  *   administrativeArea?: string|null,
  *   businessName?: string|null,
  *   extendedAddress?: string|null,
- *   firstName?: string|null,
- *   lastName?: string|null,
  * }
  */
 final class AddressCreateParams implements BaseModel
@@ -35,6 +35,18 @@ final class AddressCreateParams implements BaseModel
 
     #[Required]
     public string $countryCode;
+
+    /**
+     * First name of the person the address is registered to.
+     */
+    #[Required]
+    public string $firstName;
+
+    /**
+     * Last name of the person the address is registered to.
+     */
+    #[Required]
+    public string $lastName;
 
     #[Required]
     public string $locality;
@@ -48,17 +60,14 @@ final class AddressCreateParams implements BaseModel
     #[Optional]
     public ?string $administrativeArea;
 
+    /**
+     * Business name, when the address belongs to a business. Defaults to the person's full name.
+     */
     #[Optional]
     public ?string $businessName;
 
     #[Optional]
     public ?string $extendedAddress;
-
-    #[Optional]
-    public ?string $firstName;
-
-    #[Optional]
-    public ?string $lastName;
 
     /**
      * `new AddressCreateParams()` is missing required properties by the API.
@@ -66,7 +75,12 @@ final class AddressCreateParams implements BaseModel
      * To enforce required parameters use
      * ```
      * AddressCreateParams::with(
-     *   countryCode: ..., locality: ..., postalCode: ..., streetAddress: ...
+     *   countryCode: ...,
+     *   firstName: ...,
+     *   lastName: ...,
+     *   locality: ...,
+     *   postalCode: ...,
+     *   streetAddress: ...,
      * )
      * ```
      *
@@ -75,6 +89,8 @@ final class AddressCreateParams implements BaseModel
      * ```
      * (new AddressCreateParams)
      *   ->withCountryCode(...)
+     *   ->withFirstName(...)
+     *   ->withLastName(...)
      *   ->withLocality(...)
      *   ->withPostalCode(...)
      *   ->withStreetAddress(...)
@@ -92,18 +108,20 @@ final class AddressCreateParams implements BaseModel
      */
     public static function with(
         string $countryCode,
+        string $firstName,
+        string $lastName,
         string $locality,
         string $postalCode,
         string $streetAddress,
         ?string $administrativeArea = null,
         ?string $businessName = null,
         ?string $extendedAddress = null,
-        ?string $firstName = null,
-        ?string $lastName = null,
     ): self {
         $self = new self;
 
         $self['countryCode'] = $countryCode;
+        $self['firstName'] = $firstName;
+        $self['lastName'] = $lastName;
         $self['locality'] = $locality;
         $self['postalCode'] = $postalCode;
         $self['streetAddress'] = $streetAddress;
@@ -111,8 +129,6 @@ final class AddressCreateParams implements BaseModel
         null !== $administrativeArea && $self['administrativeArea'] = $administrativeArea;
         null !== $businessName && $self['businessName'] = $businessName;
         null !== $extendedAddress && $self['extendedAddress'] = $extendedAddress;
-        null !== $firstName && $self['firstName'] = $firstName;
-        null !== $lastName && $self['lastName'] = $lastName;
 
         return $self;
     }
@@ -121,6 +137,28 @@ final class AddressCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['countryCode'] = $countryCode;
+
+        return $self;
+    }
+
+    /**
+     * First name of the person the address is registered to.
+     */
+    public function withFirstName(string $firstName): self
+    {
+        $self = clone $this;
+        $self['firstName'] = $firstName;
+
+        return $self;
+    }
+
+    /**
+     * Last name of the person the address is registered to.
+     */
+    public function withLastName(string $lastName): self
+    {
+        $self = clone $this;
+        $self['lastName'] = $lastName;
 
         return $self;
     }
@@ -157,6 +195,9 @@ final class AddressCreateParams implements BaseModel
         return $self;
     }
 
+    /**
+     * Business name, when the address belongs to a business. Defaults to the person's full name.
+     */
     public function withBusinessName(string $businessName): self
     {
         $self = clone $this;
@@ -169,22 +210,6 @@ final class AddressCreateParams implements BaseModel
     {
         $self = clone $this;
         $self['extendedAddress'] = $extendedAddress;
-
-        return $self;
-    }
-
-    public function withFirstName(string $firstName): self
-    {
-        $self = clone $this;
-        $self['firstName'] = $firstName;
-
-        return $self;
-    }
-
-    public function withLastName(string $lastName): self
-    {
-        $self = clone $this;
-        $self['lastName'] = $lastName;
 
         return $self;
     }

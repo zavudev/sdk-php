@@ -8,6 +8,7 @@ use Zavudev\Core\Attributes\Optional;
 use Zavudev\Core\Attributes\Required;
 use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
+use Zavudev\PhoneNumbers\OwnedPhoneNumber\RegulatoryStatus;
 
 /**
  * @phpstan-import-type OwnedPhoneNumberPricingShape from \Zavudev\PhoneNumbers\OwnedPhoneNumberPricing
@@ -18,6 +19,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   createdAt: \DateTimeInterface,
  *   phoneNumber: string,
  *   pricing: OwnedPhoneNumberPricing|OwnedPhoneNumberPricingShape,
+ *   regulatoryStatus: RegulatoryStatus|value-of<RegulatoryStatus>,
  *   status: PhoneNumberStatus|value-of<PhoneNumberStatus>,
  *   name?: string|null,
  *   nextRenewalDate?: \DateTimeInterface|null,
@@ -46,7 +48,21 @@ final class OwnedPhoneNumber implements BaseModel
     #[Required]
     public OwnedPhoneNumberPricing $pricing;
 
-    /** @var value-of<PhoneNumberStatus> $status */
+    /**
+     * Regulatory review state. Numbers that need no review are `approved` immediately. A number bought with regulatory information is owned and billed from purchase and starts `pending_review`; it cannot send messages or place calls until this is `approved`. The state is re-checked every 6 hours: poll `GET /v1/phone-numbers/{phoneNumberId}` to follow it.
+     *
+     * Assign it to a sender with `PATCH /v1/phone-numbers/{phoneNumberId}` (`senderId`) before or after approval. A number assigned while under review is recorded and connected to that sender when it is approved; the connection is retried until it succeeds. A sender created over the API is set up for SMS as part of the assignment. `rejected` means review refused the information: the number cannot be assigned to a sender. A number that stays `pending_review` may be waiting on information the API cannot supply; contact support.
+     *
+     * @var value-of<RegulatoryStatus> $regulatoryStatus
+     */
+    #[Required(enum: RegulatoryStatus::class)]
+    public string $regulatoryStatus;
+
+    /**
+     * Billing state of an owned number, separate from `regulatoryStatus`. `pending` is legacy and is not written to numbers today. The SDKs carry `active`, `suspended` and `pending` only; `releasing` and `released` are returned by the REST API until their next release.
+     *
+     * @var value-of<PhoneNumberStatus> $status
+     */
     #[Required(enum: PhoneNumberStatus::class)]
     public string $status;
 
@@ -79,6 +95,7 @@ final class OwnedPhoneNumber implements BaseModel
      *   createdAt: ...,
      *   phoneNumber: ...,
      *   pricing: ...,
+     *   regulatoryStatus: ...,
      *   status: ...,
      * )
      * ```
@@ -92,6 +109,7 @@ final class OwnedPhoneNumber implements BaseModel
      *   ->withCreatedAt(...)
      *   ->withPhoneNumber(...)
      *   ->withPricing(...)
+     *   ->withRegulatoryStatus(...)
      *   ->withStatus(...)
      * ```
      */
@@ -107,6 +125,7 @@ final class OwnedPhoneNumber implements BaseModel
      *
      * @param list<string> $capabilities
      * @param OwnedPhoneNumberPricing|OwnedPhoneNumberPricingShape $pricing
+     * @param RegulatoryStatus|value-of<RegulatoryStatus> $regulatoryStatus
      * @param PhoneNumberStatus|value-of<PhoneNumberStatus> $status
      */
     public static function with(
@@ -115,6 +134,7 @@ final class OwnedPhoneNumber implements BaseModel
         \DateTimeInterface $createdAt,
         string $phoneNumber,
         OwnedPhoneNumberPricing|array $pricing,
+        RegulatoryStatus|string $regulatoryStatus,
         PhoneNumberStatus|string $status,
         ?string $name = null,
         ?\DateTimeInterface $nextRenewalDate = null,
@@ -128,6 +148,7 @@ final class OwnedPhoneNumber implements BaseModel
         $self['createdAt'] = $createdAt;
         $self['phoneNumber'] = $phoneNumber;
         $self['pricing'] = $pricing;
+        $self['regulatoryStatus'] = $regulatoryStatus;
         $self['status'] = $status;
 
         null !== $name && $self['name'] = $name;
@@ -185,6 +206,24 @@ final class OwnedPhoneNumber implements BaseModel
     }
 
     /**
+     * Regulatory review state. Numbers that need no review are `approved` immediately. A number bought with regulatory information is owned and billed from purchase and starts `pending_review`; it cannot send messages or place calls until this is `approved`. The state is re-checked every 6 hours: poll `GET /v1/phone-numbers/{phoneNumberId}` to follow it.
+     *
+     * Assign it to a sender with `PATCH /v1/phone-numbers/{phoneNumberId}` (`senderId`) before or after approval. A number assigned while under review is recorded and connected to that sender when it is approved; the connection is retried until it succeeds. A sender created over the API is set up for SMS as part of the assignment. `rejected` means review refused the information: the number cannot be assigned to a sender. A number that stays `pending_review` may be waiting on information the API cannot supply; contact support.
+     *
+     * @param RegulatoryStatus|value-of<RegulatoryStatus> $regulatoryStatus
+     */
+    public function withRegulatoryStatus(
+        RegulatoryStatus|string $regulatoryStatus
+    ): self {
+        $self = clone $this;
+        $self['regulatoryStatus'] = $regulatoryStatus;
+
+        return $self;
+    }
+
+    /**
+     * Billing state of an owned number, separate from `regulatoryStatus`. `pending` is legacy and is not written to numbers today. The SDKs carry `active`, `suspended` and `pending` only; `releasing` and `released` are returned by the REST API until their next release.
+     *
      * @param PhoneNumberStatus|value-of<PhoneNumberStatus> $status
      */
     public function withStatus(PhoneNumberStatus|string $status): self

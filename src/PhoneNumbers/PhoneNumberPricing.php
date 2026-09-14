@@ -21,7 +21,7 @@ final class PhoneNumberPricing implements BaseModel
     use SdkModel;
 
     /**
-     * Whether this number qualifies as the plan-included US number on paid plans. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
+     * Whether this number qualifies as the plan-included number: a US or Canadian number (a +1 number) costing $20 a month or less. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
      */
     #[Optional]
     public ?bool $isFreeEligible;
@@ -63,7 +63,7 @@ final class PhoneNumberPricing implements BaseModel
     }
 
     /**
-     * Whether this number qualifies as the plan-included US number on paid plans. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
+     * Whether this number qualifies as the plan-included number: a US or Canadian number (a +1 number) costing $20 a month or less. The benefit is one per account: it is never offered again once claimed, not even after the number is released.
      */
     public function withIsFreeEligible(bool $isFreeEligible): self
     {

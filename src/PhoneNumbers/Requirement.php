@@ -9,7 +9,7 @@ use Zavudev\Core\Concerns\SdkModel;
 use Zavudev\Core\Contracts\BaseModel;
 
 /**
- * A group of requirements for a specific country/phone type combination.
+ * The requirements for ordering a number: for a country and number type, or for one specific number when requested with `phoneNumber` (then `id` is that phone number and `countryCode` is taken from it).
  *
  * @phpstan-import-type RequirementTypeShape from \Zavudev\PhoneNumbers\RequirementType
  *

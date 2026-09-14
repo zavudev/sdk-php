@@ -28,6 +28,9 @@ final class RequirementType implements BaseModel
     /** @use SdkModel<RequirementTypeShape> */
     use SdkModel;
 
+    /**
+     * Send this as `requirementType` in `regulatoryRequirements` when purchasing.
+     */
     #[Required]
     public string $id;
 
@@ -106,6 +109,9 @@ final class RequirementType implements BaseModel
         return $self;
     }
 
+    /**
+     * Send this as `requirementType` in `regulatoryRequirements` when purchasing.
+     */
     public function withID(string $id): self
     {
         $self = clone $this;
