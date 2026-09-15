@@ -59,7 +59,7 @@ final class SenderCreateParams implements BaseModel
     public ?string $emailFromName;
 
     /**
-     * Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+     * Enable inbound email receiving on this sender. Requires a verified inbound MX record on the domain; the request is ignored otherwise. Read `emailReceivingEnabled` back off the response to see whether it was applied — it comes back `false` when the MX has not verified.
      */
     #[Optional]
     public ?bool $emailReceivingEnabled;
@@ -215,7 +215,7 @@ final class SenderCreateParams implements BaseModel
     }
 
     /**
-     * Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+     * Enable inbound email receiving on this sender. Requires a verified inbound MX record on the domain; the request is ignored otherwise. Read `emailReceivingEnabled` back off the response to see whether it was applied — it comes back `false` when the MX has not verified.
      */
     public function withEmailReceivingEnabled(bool $emailReceivingEnabled): self
     {

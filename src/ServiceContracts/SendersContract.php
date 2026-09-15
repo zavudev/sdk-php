@@ -28,7 +28,7 @@ interface SendersContract
      * @param string $emailAddress From-address for the email channel (e.g. noreply@yourdomain.com). The address's domain must be a verified email domain in your project. Setting this attaches the email channel to the sender.
      * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
      * @param string $emailFromName display name shown in the recipient's inbox for the email channel
-     * @param bool $emailReceivingEnabled Enable inbound email receiving on this sender. Requires a verified MX record on the domain; ignored otherwise.
+     * @param bool $emailReceivingEnabled Enable inbound email receiving on this sender. Requires a verified inbound MX record on the domain; the request is ignored otherwise. Read `emailReceivingEnabled` back off the response to see whether it was applied — it comes back `false` when the MX has not verified.
      * @param bool $enableSMSOneway Enable the one-way SMS channel (`sms_oneway`). Needs nothing else — no phone number, no credential — so it is the fastest way to get a sender that can send. Recipients cannot reply. Confirm with `sms_oneway` in the `channels` array on the response.
      * @param bool $enableVoice Let this sender place and answer phone calls. Requires `phoneNumber`; enabling it without one returns 400. Check the `channels` array on the response to confirm `voice` is on.
      * @param string $phoneNumber Phone number in E.164 format, and it must be a number your project already owns (see `GET /v1/phone-numbers`). The number is routed to the sender as part of this call, which is what turns the SMS channel on. Passing a number the project does not own, one already attached to another sender, or one rejected in regulatory review returns 400 rather than creating a sender that cannot send. A number still under review is attached and starts carrying messages when it is approved. Omit for an email-only sender.
@@ -80,7 +80,7 @@ interface SendersContract
      * @param bool $emailCatchAllEnabled Enable or disable domain catch-all. When enabled (with emailReceivingEnabled true), this sender receives email for any address at its domain. Ignored (treated as false) if receiving is not enabled.
      * @param string $emailDomainID ID of the verified email domain to attach. Optional — resolved from `emailAddress`'s domain when omitted.
      * @param string $emailFromName display name shown in the recipient's inbox for the email channel
-     * @param bool $emailReceivingEnabled enable or disable inbound email receiving for this sender
+     * @param bool $emailReceivingEnabled Enable or disable inbound email receiving for this sender. Enabling requires a verified inbound MX record on the domain; the request is ignored otherwise, and `emailReceivingEnabled` comes back `false` on the response. Disabling always applies.
      * @param bool $enableSMSOneway Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
      * @param bool $enableVoice Turn the voice channel on or off. The sender must already have a phone number provisioned for calls; enabling it otherwise returns 400 instead of storing a flag that changes nothing. Confirm with the `channels` array on the response.
      * @param bool $webhookActive whether the webhook is active

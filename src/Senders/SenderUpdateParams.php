@@ -62,7 +62,7 @@ final class SenderUpdateParams implements BaseModel
     public ?string $emailFromName;
 
     /**
-     * Enable or disable inbound email receiving for this sender.
+     * Enable or disable inbound email receiving for this sender. Enabling requires a verified inbound MX record on the domain; the request is ignored otherwise, and `emailReceivingEnabled` comes back `false` on the response. Disabling always applies.
      */
     #[Optional]
     public ?bool $emailReceivingEnabled;
@@ -211,7 +211,7 @@ final class SenderUpdateParams implements BaseModel
     }
 
     /**
-     * Enable or disable inbound email receiving for this sender.
+     * Enable or disable inbound email receiving for this sender. Enabling requires a verified inbound MX record on the domain; the request is ignored otherwise, and `emailReceivingEnabled` comes back `false` on the response. Disabling always applies.
      */
     public function withEmailReceivingEnabled(bool $emailReceivingEnabled): self
     {
