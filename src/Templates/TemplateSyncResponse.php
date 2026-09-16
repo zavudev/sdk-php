@@ -56,7 +56,7 @@ final class TemplateSyncResponse implements BaseModel
     public int $skipped;
 
     /**
-     * Templates whose approval status changed to match Meta.
+     * Templates brought back in line with Meta — approval status, category, or both. A template whose status and category both moved is counted once.
      */
     #[Required]
     public int $updated;
@@ -178,7 +178,7 @@ final class TemplateSyncResponse implements BaseModel
     }
 
     /**
-     * Templates whose approval status changed to match Meta.
+     * Templates brought back in line with Meta — approval status, category, or both. A template whose status and category both moved is counted once.
      */
     public function withUpdated(int $updated): self
     {
