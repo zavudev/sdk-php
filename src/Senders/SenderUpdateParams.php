@@ -68,7 +68,7 @@ final class SenderUpdateParams implements BaseModel
     public ?bool $emailReceivingEnabled;
 
     /**
-     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
+     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response. Turning the channel on needs nothing, but SENDING on it requires an approved business verification (KYB): without one every send is refused with `403 kyb_required`.
      */
     #[Optional('enableSmsOneway')]
     public ?bool $enableSMSOneway;
@@ -222,7 +222,7 @@ final class SenderUpdateParams implements BaseModel
     }
 
     /**
-     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response.
+     * Turn the one-way SMS channel on or off. Enabling needs nothing else and takes effect immediately; disabling removes the channel from the sender. Confirm with the `channels` array on the response. Turning the channel on needs nothing, but SENDING on it requires an approved business verification (KYB): without one every send is refused with `403 kyb_required`.
      */
     public function withEnableSMSOneway(bool $enableSMSOneway): self
     {
