@@ -37,6 +37,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   scheduledAt?: \DateTimeInterface|null,
  *   senderID?: string|null,
  *   sendingCount?: int|null,
+ *   sentCount?: int|null,
  *   startedAt?: \DateTimeInterface|null,
  *   text?: string|null,
  *   updatedAt?: \DateTimeInterface|null,
@@ -101,6 +102,9 @@ final class Broadcast implements BaseModel
     #[Optional]
     public ?BroadcastContent $content;
 
+    /**
+     * Recipients with confirmed delivery to the device.
+     */
     #[Optional]
     public ?int $deliveredCount;
 
@@ -149,6 +153,12 @@ final class Broadcast implements BaseModel
 
     #[Optional]
     public ?int $sendingCount;
+
+    /**
+     * Recipients whose message the provider accepted, without a confirmed delivery yet. Channels that never report delivery keep their recipients here.
+     */
+    #[Optional]
+    public ?int $sentCount;
 
     #[Optional]
     public ?\DateTimeInterface $startedAt;
@@ -228,6 +238,7 @@ final class Broadcast implements BaseModel
         ?\DateTimeInterface $scheduledAt = null,
         ?string $senderID = null,
         ?int $sendingCount = null,
+        ?int $sentCount = null,
         ?\DateTimeInterface $startedAt = null,
         ?string $text = null,
         ?\DateTimeInterface $updatedAt = null,
@@ -257,6 +268,7 @@ final class Broadcast implements BaseModel
         null !== $scheduledAt && $self['scheduledAt'] = $scheduledAt;
         null !== $senderID && $self['senderID'] = $senderID;
         null !== $sendingCount && $self['sendingCount'] = $sendingCount;
+        null !== $sentCount && $self['sentCount'] = $sentCount;
         null !== $startedAt && $self['startedAt'] = $startedAt;
         null !== $text && $self['text'] = $text;
         null !== $updatedAt && $self['updatedAt'] = $updatedAt;
@@ -371,6 +383,9 @@ final class Broadcast implements BaseModel
         return $self;
     }
 
+    /**
+     * Recipients with confirmed delivery to the device.
+     */
     public function withDeliveredCount(int $deliveredCount): self
     {
         $self = clone $this;
@@ -481,6 +496,17 @@ final class Broadcast implements BaseModel
     {
         $self = clone $this;
         $self['sendingCount'] = $sendingCount;
+
+        return $self;
+    }
+
+    /**
+     * Recipients whose message the provider accepted, without a confirmed delivery yet. Channels that never report delivery keep their recipients here.
+     */
+    public function withSentCount(int $sentCount): self
+    {
+        $self = clone $this;
+        $self['sentCount'] = $sentCount;
 
         return $self;
     }

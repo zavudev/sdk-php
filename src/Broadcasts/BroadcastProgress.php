@@ -24,6 +24,7 @@ use Zavudev\Core\Contracts\BaseModel;
  *   estimatedCompletionAt?: \DateTimeInterface|null,
  *   estimatedCost?: float|null,
  *   reservedAmount?: float|null,
+ *   sent?: int|null,
  *   startedAt?: \DateTimeInterface|null,
  * }
  */
@@ -36,7 +37,7 @@ final class BroadcastProgress implements BaseModel
     public string $broadcastID;
 
     /**
-     * Successfully delivered.
+     * Confirmed delivered to the device.
      */
     #[Required]
     public int $delivered;
@@ -106,6 +107,12 @@ final class BroadcastProgress implements BaseModel
     #[Optional(nullable: true)]
     public ?float $reservedAmount;
 
+    /**
+     * Accepted by the provider, delivery not confirmed yet.
+     */
+    #[Optional]
+    public ?int $sent;
+
     #[Optional]
     public ?\DateTimeInterface $startedAt;
 
@@ -168,6 +175,7 @@ final class BroadcastProgress implements BaseModel
         ?\DateTimeInterface $estimatedCompletionAt = null,
         ?float $estimatedCost = null,
         ?float $reservedAmount = null,
+        ?int $sent = null,
         ?\DateTimeInterface $startedAt = null,
     ): self {
         $self = new self;
@@ -186,6 +194,7 @@ final class BroadcastProgress implements BaseModel
         null !== $estimatedCompletionAt && $self['estimatedCompletionAt'] = $estimatedCompletionAt;
         null !== $estimatedCost && $self['estimatedCost'] = $estimatedCost;
         null !== $reservedAmount && $self['reservedAmount'] = $reservedAmount;
+        null !== $sent && $self['sent'] = $sent;
         null !== $startedAt && $self['startedAt'] = $startedAt;
 
         return $self;
@@ -200,7 +209,7 @@ final class BroadcastProgress implements BaseModel
     }
 
     /**
-     * Successfully delivered.
+     * Confirmed delivered to the device.
      */
     public function withDelivered(int $delivered): self
     {
@@ -327,6 +336,17 @@ final class BroadcastProgress implements BaseModel
     {
         $self = clone $this;
         $self['reservedAmount'] = $reservedAmount;
+
+        return $self;
+    }
+
+    /**
+     * Accepted by the provider, delivery not confirmed yet.
+     */
+    public function withSent(int $sent): self
+    {
+        $self = clone $this;
+        $self['sent'] = $sent;
 
         return $self;
     }
