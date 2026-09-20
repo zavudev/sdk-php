@@ -84,7 +84,7 @@ final class FlowsTest extends TestCase
             ],
             trigger: [
                 'type' => 'keyword',
-                'intent' => 'intent',
+                'intent' => 'quiere saber precios o cotizar',
                 'keywords' => ['info', 'pricing', 'demo'],
             ],
             description: 'Capture lead information',
@@ -167,7 +167,9 @@ final class FlowsTest extends TestCase
                 ],
             ],
             trigger: [
-                'type' => 'keyword', 'intent' => 'intent', 'keywords' => ['string'],
+                'type' => 'keyword',
+                'intent' => 'quiere saber precios o cotizar',
+                'keywords' => ['string'],
             ],
         );
 
